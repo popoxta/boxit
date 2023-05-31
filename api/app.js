@@ -1,4 +1,5 @@
 const express = require('express')
+const router = require('./routes/login.js');
 const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
@@ -34,6 +35,9 @@ require('./config/passport')
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+// ROUTES
+app.use(router)
 
 app.use((req, res) => res.send('I\'ll end it here.'))
 

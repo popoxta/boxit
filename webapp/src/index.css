@@ -11,6 +11,10 @@
     align-items: center;
 }
 
+.column {
+    flex-direction: column;
+}
+
 .apart {
     justify-content: space-between;
 }

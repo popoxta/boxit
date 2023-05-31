@@ -4,8 +4,8 @@ export default function ErrorPage() {
     return (
         <>
             <Header/>
-            <h1>OOPS! An error has occurred...</h1>
-            <h2>Please try again.</h2>
+            <h2>OOPS! An error has occurred...</h2>
+            <h3>Please try again.</h3>
         </>
     )
 }

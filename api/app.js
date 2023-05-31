@@ -1,13 +1,7 @@
 const express = require('express')
-const mongoose = require('mongoose').default
-require('dotenv').config()
+const connection = require('./config/database')
 
 const app = express()
-
-// MONGODB CONN //
-const connectionString = process.env.MONGO_CONNECT
-const connection = mongoose.connect(connectionString)
-    .catch(err => console.log(err))
 
 // MIDDLEWARE //
 app.use(express.json())

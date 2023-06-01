@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt')
 
 // LOGIN ROUTES
 
-
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) next({message: `An error has occurred during user login: ${err}`})
@@ -13,6 +12,7 @@ router.post('/login', (req, res, next) => {
         return res.json(info)
     })(req, res, next)
 })
+
 router.post('/register', async (req, res, next) => {
     try {
         // hash password
@@ -31,8 +31,13 @@ router.post('/register', async (req, res, next) => {
     }
 })
 
-router.post('/logout', (req, res) => {
-    res.json({message: 'Logout not yet implemented'})
+router.post('/logout', (req, res, next) => {
+    try {
+        req.logout()
+        res.json({message: 'User logged out.', success: true})
+    } catch (err) {
+        next({message: `An error has occurred during logout: ${err}`})
+    }
 })
 
 module.exports = router

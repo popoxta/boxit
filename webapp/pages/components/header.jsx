@@ -1,5 +1,9 @@
 import {Link} from "react-router-dom";
 
+export function action({request}) {
+
+}
+
 export default function Header() {
     return (
         <div className={'header shadow flex apart'}>
@@ -7,6 +11,7 @@ export default function Header() {
 
             <div className={'flex'}>
                 <Link to={'/boxes'}>boxes</Link>
+                <Link to={'/register'}>login</Link>
                 <Link to={'/login'}>login</Link>
             </div>
 

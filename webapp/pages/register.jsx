@@ -1,11 +1,28 @@
 import {Form} from "react-router-dom";
 
+export async function action({request}) {
+    const data = await request.formData()
+    const res = await fetch(
+        'http://localhost:3000/register',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: data.get('username'),
+                password: data.get('password')
+            })
+        })
+    console.log(res)
+}
+
 export default function Register() {
     return (
         <div className={'flex column'}>
             <h2>Register</h2>
 
-            <Form className={'flex column'}>
+            <Form action={'POST'} className={'flex column'}>
 
                 <label htmlFor={'username'} >Username</label>
                 <input type={'text'} name={'username'} id={'username'}/>
@@ -17,7 +34,6 @@ export default function Register() {
                 <input type={'text'} name={'password-confirm'} id={'password-confirm'}/>
 
                 <button type={'submit'}>Register</button>
-
             </Form>
         </div>
     )

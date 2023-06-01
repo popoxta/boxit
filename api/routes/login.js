@@ -10,6 +10,7 @@ router.post('/login', (req, res) => {
 
 router.post('/register', async (req, res) => {
     try {
+        // hash password
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
             if (err) return res.json({message: 'An unexpected error has occurred.'})
 
@@ -17,13 +18,14 @@ router.post('/register', async (req, res) => {
                 username: req.body.username,
                 hash: hashedPassword
             })
+            
             await newUser.save()
-            res.redirect('/boxes')
+            console.log(`New user: ${newUser} created.`)
+            res.json({message: 'Registration successful.'})
         })
     } catch (err) {
         res.json({message: 'A registration error has occurred.'})
     }
-
 })
 
 router.post('/logout', (req, res) => {

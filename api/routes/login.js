@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 // LOGIN ROUTES
 
@@ -25,6 +26,8 @@ router.post('/register', async (req, res) => {
             res.json({message: 'Registration successful.', success: true})
         })
     } catch (err) {
+        console.log(`An error has occurred during user registration: ${err}`)
+
         res.json({message: 'A registration error has occurred.', success: false})
     }
 })

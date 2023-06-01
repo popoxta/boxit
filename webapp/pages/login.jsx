@@ -8,6 +8,7 @@ export async function action({request}) {
         'http://localhost:3000/login',
         {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

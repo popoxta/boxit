@@ -1,5 +1,5 @@
 const express = require('express')
-const router = require('./routes/login.js');
+const router= require('./routes/login.js');
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
@@ -10,7 +10,11 @@ require('dotenv').config()
 const app = express()
 
 // MIDDLEWARE //
-app.use(cors()) //todo better policies
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}))
+
 app.use(express.json())
 
 // SESSION //
@@ -23,6 +27,7 @@ app.use(session({
     }),
     cookie: {
         maxAge: 86400000,
+        sameSite: 'none',
     }
 }))
 

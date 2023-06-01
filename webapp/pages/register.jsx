@@ -1,7 +1,14 @@
-import {Form} from "react-router-dom";
+import {Form, redirect, useActionData} from "react-router-dom";
 
 export async function action({request}) {
     const data = await request.formData()
+    const password = data.get('password')
+    const passwordConfirm = data.get('password-confirm')
+
+    // client side password verification
+    if (password !== passwordConfirm) return {message: 'Passwords must match.'}
+    if (password.length < 6) return {message: 'Password must be at least 6 characters.'}
+
     const res = await fetch(
         'http://localhost:3000/register',
         {
@@ -11,18 +18,26 @@ export async function action({request}) {
             },
             body: JSON.stringify({
                 username: data.get('username'),
-                password: data.get('password')
+                password,
+                passwordConfirm
             })
         })
-    console.log(res)
+    const result = await res.json()
+
+    if (result.success) return redirect('/login')
+    else return result
 }
 
 export default function Register() {
+    const actionData = useActionData()
+
     return (
         <div className={'flex column'}>
             <h2>Register</h2>
 
-            <Form action={'POST'} className={'flex column'}>
+            {actionData && <h3>{actionData.message}</h3>}
+
+            <Form method={'POST'} className={'flex column'}>
 
                 <label htmlFor={'username'} >Username</label>
                 <input type={'text'} name={'username'} id={'username'}/>

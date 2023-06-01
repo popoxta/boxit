@@ -5,26 +5,27 @@ const User = require('../models/user')
 
 router.post('/login', (req, res) => {
     console.log(req.body)
-    res.json({message: 'Login not yet implemented'})
+    res.json({message: 'Login not yet implemented', success: false})
 })
 
 router.post('/register', async (req, res) => {
+
     try {
         // hash password
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-            if (err) return res.json({message: 'An unexpected error has occurred.'})
+            if (err) return res.json({message: 'An unexpected error has occurred.', success: false})
 
             const newUser = new User({
                 username: req.body.username,
                 hash: hashedPassword
             })
-            
+
             await newUser.save()
             console.log(`New user: ${newUser} created.`)
-            res.json({message: 'Registration successful.'})
+            res.json({message: 'Registration successful.', success: true})
         })
     } catch (err) {
-        res.json({message: 'A registration error has occurred.'})
+        res.json({message: 'A registration error has occurred.', success: false})
     }
 })
 

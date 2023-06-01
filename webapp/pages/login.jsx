@@ -1,4 +1,5 @@
-import {Form} from "react-router-dom";
+import {Form, redirect, useActionData} from "react-router-dom";
+import {act} from "react-dom/test-utils";
 
 export async function action({request}) {
     const data = await request.formData()
@@ -14,13 +15,20 @@ export async function action({request}) {
                 password: data.get('password')
             })
         })
-    console.log(res)
+    const result = await res.json()
+
+    if (result.success) return redirect('/boxes')
+    else return result
 }
 
 export default function Login() {
+    const actionData = useActionData()
+
     return (
         <div className={'flex column'}>
             <h2>Log In</h2>
+
+            {actionData && <h3>{actionData.message}</h3>}
 
             <Form method={'POST'} className={'flex column'}>
 

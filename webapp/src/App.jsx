@@ -7,7 +7,7 @@ import Login, {action as loginAction} from "../pages/login.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>
-        <Route index element={<Home/>}/>
+        <Route index element={<Home/>} />
         <Route path={'/register'} element={<Register/>} action={registerAction}/>
         <Route path={'/login'} element={<Login/>} action={loginAction}/>
     </Route>

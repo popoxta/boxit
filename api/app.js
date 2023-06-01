@@ -1,5 +1,6 @@
 const express = require('express')
 const router = require('./routes/login.js');
+const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
@@ -9,8 +10,8 @@ require('dotenv').config()
 const app = express()
 
 // MIDDLEWARE //
+app.use(cors()) //todo better policies
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
 
 app.use((req, res, next) => {
    console.log(`New request at ${req.path} at ${new Date()}`)
@@ -38,8 +39,6 @@ app.use(passport.session())
 
 // ROUTES
 app.use(router)
-
-app.use((req, res) => res.send('I\'ll end it here.'))
 
 // LAUNCH //
 app.listen(3000)

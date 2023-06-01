@@ -4,7 +4,6 @@ const router = require('express').Router()
 
 router.post('/login', (req, res) => {
     console.log(req.body)
-    res.setHeader()
     res.json({msg: 'Login not yet implemented'})
 })
 

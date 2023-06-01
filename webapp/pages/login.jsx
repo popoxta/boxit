@@ -1,16 +1,20 @@
 import {Form} from "react-router-dom";
 
 export async function action({request}) {
-
+    const data = await request.formData()
     const res = await fetch(
         'http://localhost:3000/login',
         {
             method: 'POST',
-            body: await request.formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: data.get('username'),
+                password: data.get('password')
+            })
         })
-
     console.log(res)
-
 }
 
 export default function Login() {

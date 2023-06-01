@@ -11,7 +11,7 @@ export default function Header() {
 
             <div className={'flex'}>
                 <Link to={'/boxes'}>boxes</Link>
-                <Link to={'/register'}>login</Link>
+                <Link to={'/register'}>register</Link>
                 <Link to={'/login'}>login</Link>
             </div>
 

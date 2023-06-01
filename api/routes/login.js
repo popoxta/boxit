@@ -1,14 +1,18 @@
+const passport = require('passport')
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 
 // LOGIN ROUTES
 
-router.post('/login', (req, res) => {
-    console.log(req.body)
-    res.json({message: 'Login not yet implemented', success: false})
-})
 
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) console.log(`An error has occurred during user login: ${err}`)
+
+        return res.json(info)
+    })(req, res, next)
+})
 router.post('/register', async (req, res) => {
 
     try {

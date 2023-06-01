@@ -13,11 +13,6 @@ const app = express()
 app.use(cors()) //todo better policies
 app.use(express.json())
 
-app.use((req, res, next) => {
-   console.log(`New request at ${req.path} at ${new Date()}`)
-    next()
-})
-
 // SESSION //
 app.use(session({
     secret: process.env.SECRET,
@@ -38,6 +33,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // ROUTES
+app.use((req, res, next) => {
+    console.log(`New request at ${req.path} at ${new Date()}`)
+    next()
+})
+
 app.use(router)
 
 // LAUNCH //

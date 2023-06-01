@@ -2,6 +2,7 @@ import {Form, redirect, useActionData} from "react-router-dom";
 import {act} from "react-dom/test-utils";
 
 export async function action({request}) {
+    console.log('POSTING LOGINNN')
     const data = await request.formData()
     const res = await fetch(
         'http://localhost:3000/login',
@@ -17,7 +18,7 @@ export async function action({request}) {
         })
     const result = await res.json()
 
-    if (result.success) return redirect('/boxes')
+    if (result.success) return redirect('/')
     else return result
 }
 

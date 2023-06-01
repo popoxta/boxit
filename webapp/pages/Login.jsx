@@ -2,8 +2,12 @@ import {Form, redirect, useActionData} from "react-router-dom";
 import {act} from "react-dom/test-utils";
 
 export async function action({request}) {
-    console.log('POSTING LOGINNN')
     const data = await request.formData()
+    const username = data.get('username')
+    const password = data.get('password')
+    if (!username?.length) return ('Please enter a username.')
+    if (!password?.length) return ('Please enter a password.')
+
     const res = await fetch(
         'http://localhost:3000/login',
         {
@@ -13,14 +17,12 @@ export async function action({request}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: data.get('username'),
-                password: data.get('password')
+                username,
+                password
             })
         })
-    const result = await res.json()
-
-    if (result.success) return redirect('/')
-    else return result
+    if (res.status === 200) return redirect('/boxes')
+    else return await res.json()
 }
 
 export default function Login() {

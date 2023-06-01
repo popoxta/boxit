@@ -2,10 +2,12 @@ import {Form, redirect, useActionData} from "react-router-dom";
 
 export async function action({request}) {
     const data = await request.formData()
+    const username = data.get('username')
     const password = data.get('password')
     const passwordConfirm = data.get('password-confirm')
 
     // client side password verification
+    if (username.length < 3) return {message: 'Username must be at least 3 characters.'}
     if (password !== passwordConfirm) return {message: 'Passwords must match.'}
     if (password.length < 6) return {message: 'Password must be at least 6 characters.'}
 
@@ -18,15 +20,13 @@ export async function action({request}) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: data.get('username'),
+                username,
                 password,
                 passwordConfirm
             })
         })
-    const result = await res.json()
-
-    if (result.success) return redirect('/login')
-    else return result
+    if (res.status === 200) return redirect('/login')
+    else return await res.json()
 }
 
 export default function Register() {

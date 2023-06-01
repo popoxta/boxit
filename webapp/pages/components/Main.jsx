@@ -1,5 +1,5 @@
 import {Outlet} from "react-router-dom";
-import Header from "./header.jsx";
+import Header from "./Header.jsx";
 
 export default function MainLayout() {
     return (

@@ -8,7 +8,6 @@
 /* FLEX CLASSES*/
 .flex {
     display: flex;
-    align-items: center;
 }
 
 .column {
@@ -17,4 +16,8 @@
 
 .apart {
     justify-content: space-between;
+}
+
+.gap {
+    gap: 2rem;
 }

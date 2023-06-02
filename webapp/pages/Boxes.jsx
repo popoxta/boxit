@@ -11,9 +11,9 @@ export default function Boxes() {
     const loaderData = useLoaderData()
 
     return (
-        <>
+        <div className={'flex column'}>
             <h2>User boxes go here...</h2>
             {loaderData && <h3>{loaderData.message}</h3>}
-        </>
+        </div>
     )
 }

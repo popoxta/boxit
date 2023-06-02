@@ -29,7 +29,7 @@ export default function Login() {
     const actionData = useActionData()
 
     return (
-        <div className={'flex column'}>
+        <div className={'flex column center'}>
             <h2>Log In</h2>
 
             {actionData && <h3>{actionData.message}</h3>}

@@ -33,7 +33,7 @@ export default function Register() {
     const actionData = useActionData()
 
     return (
-        <div className={'flex column'}>
+        <div className={'flex column center'}>
             <h2>Register</h2>
 
             {actionData && <h3>{actionData.message}</h3>}

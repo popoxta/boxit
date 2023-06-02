@@ -14,10 +14,11 @@ router.post('/login', (req, res, next) => {
 
     passport.authenticate('local', {}, (err, user, info) => {
         if (err) return next({message: `An error has occurred during user login: ${err}`})
+        if (!user) return res.status(401).json(info)
 
         req.logIn(user, function (err) {
-            if (err) next({message: `An error has occurred during user ${user.username} login: ${err}`})
-            else res.json(info)
+            if (err) next(err)
+            else res.end()
         })
     })(req, res, next)
 })

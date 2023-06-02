@@ -1,5 +1,5 @@
 const express = require('express')
-const router= require('./routes/login.js');
+const router= require('./routes');
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')

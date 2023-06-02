@@ -60,7 +60,7 @@ router.get('/boxes', isAuthorized, async (req, res) => {
     const results = await Box.find({user: userID})
     results.forEach(box => console.log(box.name))
 
-    res.json({message: 'Your boxes are here'})
+    res.json({boxes: results})
 })
 
 module.exports = router

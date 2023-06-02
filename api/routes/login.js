@@ -2,26 +2,37 @@ const passport = require('passport')
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const isAuthorized = require("../utils");
+const {clientError} = require('../utils')
+const {isAuthorized} = require('../middleware')
 
 // LOGIN ROUTES
 
 router.post('/login', (req, res, next) => {
+    if (!req.body.password || !req.body.username) return clientError(res, 'All fields must be filled.')
+    if (req.body.password.length < 6) return clientError(res, 'Password must be at least 6 characters.')
+    if (req.body.username.length < 3) return clientError(res, 'Username must be at least 3 characters.')
 
-    passport.authenticate('local', {},(err, user, info) => {
-        if (err) next({message: `An error has occurred during user login: ${err}`})
-
-        console.log(req.headers)
+    passport.authenticate('local', {}, (err, user, info) => {
+        if (err) return next({message: `An error has occurred during user login: ${err}`})
 
         req.logIn(user, function (err) {
-            if (err) return next({message: `An error has occurred during user ${user.username} login: ${err}`})
-            else return res.json(info)
+            if (err) next({message: `An error has occurred during user ${user.username} login: ${err}`})
+            else res.json(info)
         })
     })(req, res, next)
 })
 
-router.post('/register', async (req, res, next) => {
-    try {
+router.post('/register',
+    async (req, res, next) => {
+        if (!req.body.password || !req.body.passwordConfirm || !req.body.username) return clientError(res, 'All fields must be filled.')
+        if (req.body.password.length < 6) return clientError(res, 'Password must be at least 6 characters.')
+        if (req.body.username.length < 3) return clientError(res, 'Username must be at least 3 characters.')
+        if (req.body.password !== req.body.passwordConfirm) return clientError(res, 'Passwords must match.')
+
+        // check if user with username already exists
+        const exists = await User.findOne({username: req.body.username})
+        if (exists) return clientError(res, 'User already exists.')
+
         // hash password
         bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
             const newUser = new User({
@@ -30,21 +41,13 @@ router.post('/register', async (req, res, next) => {
             })
             await newUser.save()
             console.log(`New user: ${newUser} created.`)
-            res.send({message: 'Registration successful.', success: true})
+            res.json({message: 'Registration successful.'})
         })
-    } catch (err) {
-        next({message: `An error has occurred during user registration: ${err}`
     })
-    }
-})
 
 router.post('/logout', (req, res, next) => {
-    try {
-        req.logout()
-        res.json({message: 'User logged out.', success: true})
-    } catch (err) {
-        next({message: `An error has occurred during logout: ${err}`})
-    }
+    req.logout()
+    res.json({message: 'User logged out.'})
 })
 
 // BOX ROUTES
@@ -52,6 +55,5 @@ router.get('/boxes', isAuthorized, (req, res) => {
     console.log(`Boxes request from ${req.user}`)
     res.json({message: 'Your boxes are here'})
 })
-
 
 module.exports = router

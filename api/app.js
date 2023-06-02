@@ -45,5 +45,10 @@ app.use((req, res, next) => {
 
 app.use(router)
 
+app.use((err, req, res, next) => {
+    console.log(`An error has occurred at ${req.path}: ${err}`)
+    res.status(500).json({message: 'An unexpected error has occurred.'})
+})
+
 // LAUNCH //
 app.listen(3000)

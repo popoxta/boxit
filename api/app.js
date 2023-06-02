@@ -1,5 +1,5 @@
 const express = require('express')
-const router= require('./routes');
+const router= require('./routes/index');
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
@@ -27,7 +27,6 @@ app.use(session({
     }),
     cookie: {
         maxAge: 86400000,
-        sameSite: 'none',
     }
 }))
 

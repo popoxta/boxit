@@ -1,6 +1,7 @@
 const passport = require('passport')
 const router = require('express').Router()
 const User = require('../models/user')
+const Box = require('../models/box')
 const bcrypt = require('bcrypt')
 const {clientError} = require('../utils')
 const {isAuthorized} = require('../middleware')
@@ -52,8 +53,13 @@ router.post('/logout', (req, res, next) => {
 })
 
 // BOX ROUTES
-router.get('/boxes', isAuthorized, (req, res) => {
-    console.log(`Boxes request from ${req.user}`)
+router.get('/boxes', isAuthorized, async (req, res) => {
+    const userID = req.session.passport.user // user id
+    console.log(`Boxes request from ${req.user.username}, id: ${userID}`)
+
+    const results = await Box.find({user: userID})
+    results.forEach(box => console.log(box.name))
+
     res.json({message: 'Your boxes are here'})
 })
 

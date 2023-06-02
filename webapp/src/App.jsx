@@ -1,4 +1,4 @@
-import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, createRoutesFromElements, Link, Route, RouterProvider} from "react-router-dom";
 import MainLayout from "../pages/components/MainLayout.jsx";
 import Home from "../pages/Home.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
@@ -15,6 +15,14 @@ const router = createBrowserRouter(createRoutesFromElements(
 
         <Route path={'/boxes'} element={<MenuLayout/>}>
             <Route index element={<Boxes/>} loader={boxesLoader}/>
+
+            <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+
+            <Route path={'items/all'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={'items/new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={'items/:id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
         </Route>
     </Route>
 ))

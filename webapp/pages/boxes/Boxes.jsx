@@ -1,6 +1,7 @@
 import {redirect, useLoaderData} from "react-router-dom";
 
 export async function loader({request}) {
+    // todo MOVE THIS INTO LAYOUT
     const res = await fetch('http://localhost:3000/boxes', {
         credentials: 'include'
     })
@@ -13,9 +14,8 @@ export default function Boxes() {
 
     const boxes = loaderData.boxes.map(box => {
         return(
-            <div className={'box'}>
+            <div className={'box'} key={box._id}>
                 <h3
-                    key={box._id}
                     style={{color: box.hex ?? '#C04790'}}>
                     {box.name}
                 </h3>

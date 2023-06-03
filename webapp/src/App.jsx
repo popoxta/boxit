@@ -2,10 +2,11 @@ import {createBrowserRouter, createRoutesFromElements, Link, Route, RouterProvid
 import MainLayout from "../pages/components/MainLayout.jsx";
 import Home from "../pages/Home.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
-import Register, {action as registerAction} from "../pages/Register.jsx";
-import Login, {action as loginAction} from "../pages/Login.jsx";
-import Boxes, {loader as boxesLoader} from "../pages/Boxes.jsx";
+import Register, {action as registerAction} from "../pages/login/Register.jsx";
+import Login, {action as loginAction} from "../pages/login/Login.jsx";
+import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
 import MenuLayout from "../pages/components/MenuLayout.jsx";
+import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>
@@ -18,6 +19,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 
             <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
             <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
             <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
 
             <Route path={'items/all'} element={<h2>NOT IMPLEMENTED</h2>}/>

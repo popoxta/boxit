@@ -3,8 +3,9 @@ const router = require('express').Router()
 const User = require('../models/user')
 const Box = require('../models/box')
 const bcrypt = require('bcrypt')
-const {clientError} = require('../utils')
+const {clientError, notFoundError} = require('../utils')
 const {isAuthorized} = require('../middleware')
+const mongoose = require('mongoose').default
 
 // LOGIN ROUTES
 
@@ -54,13 +55,32 @@ router.post('/logout', (req, res, next) => {
 
 // BOX ROUTES
 router.get('/boxes', isAuthorized, async (req, res) => {
-    const userID = req.session.passport.user // user id
-    console.log(`Boxes request from ${req.user.username}, id: ${userID}`)
+    const userId = req.session.passport.user // user id
+    console.log(`Boxes request from ${req.user.username}, id: ${userId}`)
 
-    const results = await Box.find({user: userID})
+    const results = await Box.find({user: userId})
     results.forEach(box => console.log(box.name))
 
     res.json({boxes: results})
+})
+
+router.get('/boxes/:id', isAuthorized, async (req, res) =>{
+    const userId = req.session.passport.user
+    const boxId = req.params.id
+
+    console.log(`Boxes request for box: ${boxId} from user ${req.user.username}`)
+
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
+    const currBox = await Box.findOne({_id: boxId, user: userId})
+
+    if (!currBox) return notFoundError(res, 'The requested item does not exist.')
+    else {
+        console.log('user and box authenticated')
+        res.json(currBox)
+    }
 })
 
 module.exports = router

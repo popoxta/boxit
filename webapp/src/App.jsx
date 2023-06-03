@@ -5,7 +5,7 @@ import ErrorPage from "../pages/ErrorPage.jsx";
 import Register, {action as registerAction} from "../pages/login/Register.jsx";
 import Login, {action as loginAction} from "../pages/login/Login.jsx";
 import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
-import MenuLayout from "../pages/components/MenuLayout.jsx";
+import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -14,7 +14,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={'/register'} element={<Register/>} action={registerAction}/>
         <Route path={'/login'} element={<Login/>} action={loginAction}/>
 
-        <Route path={'/boxes'} element={<MenuLayout/>}>
+        <Route path={'/boxes'} element={<BoxLayout/>} loader={boxLayoutLoader}>
             <Route index element={<Boxes/>} loader={boxesLoader}/>
 
             <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>

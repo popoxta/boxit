@@ -44,13 +44,17 @@ router.post('/register',
             })
             await newUser.save()
             console.log(`New user: ${newUser} created.`)
-            res.json({message: 'Registration successful.'})
+            res.end()
         })
     })
 
-router.post('/logout', (req, res, next) => {
+router.post('/logout', (req, res) => {
     req.logout()
-    res.json({message: 'User logged out.'})
+    res.end()
+})
+
+router.get('/profile', isAuthorized, (req, res) => {
+    res.json({username: req.user.username})
 })
 
 // BOX ROUTES

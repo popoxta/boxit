@@ -19,7 +19,7 @@ export default function Box() {
                 <h3>{item.name}</h3>
                 <p>count: {item.count}</p>
                 <p>price: {item.price}</p>
-                <button>view</button>
+                <Link to={`/items/${item._id}`}><button>view</button></Link>
             </div>
         )
     })

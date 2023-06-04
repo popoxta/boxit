@@ -1,4 +1,4 @@
-import {redirect, useLoaderData} from "react-router-dom";
+import {Link, redirect, useLoaderData} from "react-router-dom";
 
 export async function loader({request}) {
     const res = await fetch('http://localhost:3000/boxes', {
@@ -14,10 +14,12 @@ export default function Boxes() {
     const boxes = loaderData.boxes?.map(box => {
         return (
             <div className={'box'} key={box._id}>
-                <h3
-                    style={{color: box.hex ?? '#C04790'}}>
-                    {box.name}
-                </h3>
+                <Link to={`./${box._id}`}>
+                    <h3
+                        style={{color: box.hex ?? '#C04790'}}>
+                        {box.name}
+                    </h3>
+                </Link>
                 <p>{box._id}</p>
             </div>
         )

@@ -14,17 +14,22 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={'/register'} element={<Register/>} action={registerAction}/>
         <Route path={'/login'} element={<Login/>} action={loginAction}/>
 
-        <Route path={'/boxes'} element={<BoxLayout/>} loader={boxLayoutLoader}>
-            <Route index element={<Boxes/>} loader={boxesLoader}/>
+        <Route element={<BoxLayout/>} loader={boxLayoutLoader}>
+            <Route path={'/boxes'}>
+                <Route index element={<Boxes/>} loader={boxesLoader}/>
+                <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
+                <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            </Route>
 
-            <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
-            <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
-            <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
-            <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            <Route path={'/items'}>
+                <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+            </Route>
 
-            <Route path={'items/all'} element={<h2>NOT IMPLEMENTED</h2>}/>
-            <Route path={'items/new'} element={<h2>NOT IMPLEMENTED</h2>}/>
-            <Route path={'items/:id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
         </Route>
     </Route>
 ))

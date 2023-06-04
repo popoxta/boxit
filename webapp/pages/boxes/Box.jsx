@@ -26,7 +26,7 @@ export default function Box() {
         )
     })
 
-    if(errors){
+    if (errors){
       return (
           <div className={'flex column'}>
               <Link to={'..'}>

@@ -1,4 +1,4 @@
-import {useLoaderData} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 
 export async function loader({params}) {
     const itemId = params.id
@@ -11,13 +11,31 @@ export async function loader({params}) {
 export default function Item() {
     const loaderData = useLoaderData()
     const errors = loaderData.message
-
     const item = loaderData.item
 
-    return (
-        <div>
-            <h1>item</h1>
-            <h2>{item.name ?? 'Does not exist'}</h2>
+    if (errors){
+        return (
+            <div className={'flex column'}>
+                <Link to={''}> {/* todo add link w search params*/}
+                    <button>back</button>
+                </Link>
+
+                <h2>Error</h2>
+                <h3>{errors}</h3>
+            </div>
+        )
+    }
+
+    else return (
+        <div className={'flex column'}>
+            <Link to={''}><button>back</button></Link> {/* todo add back link using search params*/}
+            <Link to={'./edit'}><button>edit</button></Link>
+            <Link to={'./delete'}><button>delete</button></Link>
+
+            <h2>{item.name}</h2>
+            <p>count: {item.count}</p>
+            <p>price: {item.price}</p>
+            <p>{item.description}</p>
         </div>
     )
 }

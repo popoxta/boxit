@@ -68,6 +68,7 @@ router.get('/boxes', isAuthorized, async (req, res) => {
     res.json({boxes: results})
 })
 
+// todo dry up these routes
 router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     const userId = req.session.passport.user
     const boxId = req.params.id
@@ -84,6 +85,21 @@ router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     // returns all items for box
     const boxItems = await Item.find({user: userId, box: boxId})
     res.json({box: currBox, items: boxItems})
+})
+
+router.get('/items/:id', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+    const itemId = req.params.id
+
+    console.log(`Item request for item: ${itemId} from user ${req.user.username}`)
+
+    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
+    if (!isValidId) return clientError(res, 'Invalid item ID.')
+
+    const currItem = await Item.findOne({_id: itemId, user: userId})
+    if (!currItem) return notFoundError(res, 'The requested item does not exist.')
+
+    else res.json({item: currItem})
 })
 
 module.exports = router

@@ -8,7 +8,7 @@ export async function loader({params}) {
     return await res.json()
 }
 
-export default function Box() {
+export default function Item() {
     const loaderData = useLoaderData()
     const errors = loaderData.message
 

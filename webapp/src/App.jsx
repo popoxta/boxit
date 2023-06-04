@@ -21,6 +21,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
                 <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/delete'} element={<h2>NOT IMPLEMENTED</h2>}/>
             </Route>
 
             <Route path={'/items'}>
@@ -28,6 +29,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/delete'} element={<h2>NOT IMPLEMENTED</h2>}/>
             </Route>
 
         </Route>

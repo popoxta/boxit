@@ -19,15 +19,33 @@ export default function Box() {
                 <h3>{item.name}</h3>
                 <p>count: {item.count}</p>
                 <p>price: {item.price}</p>
-                <Link to={`/items/${item._id}`}><button>view</button></Link>
+                <Link to={`/items/${item._id}`}>
+                    <button>view</button>
+                </Link>
             </div>
         )
     })
 
-    return (
+    if(errors){
+      return (
+          <div className={'flex column'}>
+              <Link to={'..'}>
+                  <button>back</button>
+              </Link>
+
+              <h2>Error</h2>
+              <h3>{errors}</h3>
+          </div>
+      )
+    }
+
+    else return (
         <div className={'flex column'}>
-            <h2>{box.name ?? 'Error'}</h2>
-            {errors && <h3>{errors}</h3>}
+            <Link to={'..'}><button>back</button></Link>
+            <Link to={'./edit'}><button>edit</button></Link>
+            <Link to={'./delete'}><button>delete</button></Link>
+
+            <h2>{box.name}</h2>
 
             {items.length > 0
                 ?

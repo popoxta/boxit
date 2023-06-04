@@ -2,6 +2,7 @@ const passport = require('passport')
 const router = require('express').Router()
 const User = require('../models/user')
 const Box = require('../models/box')
+const Item = require('../models/item')
 const bcrypt = require('bcrypt')
 const {clientError, notFoundError} = require('../utils')
 const {isAuthorized} = require('../middleware')
@@ -80,8 +81,9 @@ router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     const currBox = await Box.findOne({_id: boxId, user: userId})
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
 
-    res.json(currBox)
-
+    // returns all items for box
+    const boxItems = await Item.find({user: userId, box: boxId})
+    res.json({box: currBox, items: boxItems})
 })
 
 module.exports = router

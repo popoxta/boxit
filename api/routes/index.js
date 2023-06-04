@@ -63,7 +63,6 @@ router.get('/boxes', isAuthorized, async (req, res) => {
     console.log(`Boxes request from ${req.user.username}, id: ${userId}`)
 
     const results = await Box.find({user: userId})
-    results.forEach(box => console.log(box.name))
 
     res.json({boxes: results})
 })
@@ -79,12 +78,10 @@ router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     if (!isValidId) return clientError(res, 'Invalid ID.')
 
     const currBox = await Box.findOne({_id: boxId, user: userId})
-
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
-    else {
-        console.log('user and box authenticated')
-        res.json(currBox)
-    }
+
+    res.json(currBox)
+
 })
 
 module.exports = router

@@ -91,9 +91,20 @@ router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     const currBox = await Box.findOne({_id: boxId, user: userId})
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
 
+    res.json({box: currBox})
+})
+
+router.get('/boxes/:id/items', isAuthorized, async (req, res, next) => {
+    const userId = req.session.passport.user
+    const boxId = req.params.id
+
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
     // returns all items for box
     const boxItems = await Item.find({user: userId, box: boxId})
-    res.json({box: currBox, items: boxItems})
+    res.json({items: boxItems})
 })
 
 router.get('/items/:id', isAuthorized, async (req, res) => {

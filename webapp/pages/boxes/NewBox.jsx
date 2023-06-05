@@ -1,4 +1,4 @@
-import {Form, redirect, useActionData} from "react-router-dom";
+import {Form, Link, redirect, useActionData} from "react-router-dom";
 
 export async function action({request}) {
     const data = await request.formData()
@@ -30,6 +30,10 @@ export default function NewBox() {
 
     return (
         <div className={'flex column center'}>
+            <Link to={'..'}>
+                <button>back</button>
+            </Link>
+            
             <h2>New Box</h2>
 
             {actionData && <h3>{actionData.message}</h3>}

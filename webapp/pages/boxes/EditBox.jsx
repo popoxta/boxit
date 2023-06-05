@@ -1,4 +1,4 @@
-import {Form, redirect, useActionData, useLoaderData} from "react-router-dom";
+import {Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 
 export async function loader({params}) {
     const boxId = params.id
@@ -46,6 +46,10 @@ export default function EditBox() {
 
     return (
         <div className={'flex column center'}>
+            <Link to={'..'}>
+                <button>back</button>
+            </Link>
+
             <h2>Edit Box</h2>
 
             {

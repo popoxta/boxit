@@ -5,8 +5,8 @@ export async function action({request}) {
     const data = await request.formData()
     const username = data.get('username')
     const password = data.get('password')
-    if (!username?.length) return ('Please enter a username.')
-    if (!password?.length) return ('Please enter a password.')
+    if (!username?.length) return {message: 'Please enter a username.'}
+    if (!password?.length) return {message: 'Please enter a password.'}
 
     const res = await fetch(
         'http://localhost:3000/login',

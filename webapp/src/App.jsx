@@ -7,6 +7,7 @@ import Login, {action as loginAction} from "../pages/login/Login.jsx";
 import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
 import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
+import NewBox, {action as newBoxAction} from "../pages/boxes/NewBox.jsx"
 import Item, {loader as itemLoader} from "../pages/items/Item.jsx"
 import Items, {loader as itemsLoader} from "../pages/items/Items.jsx";
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route element={<BoxLayout/>} loader={boxLayoutLoader}>
             <Route path={'/boxes'}>
                 <Route index element={<Boxes/>} loader={boxesLoader}/>
-                <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={'new'} element={<NewBox/>} action={newBoxAction}/>
                 <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
                 <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id/delete'} element={<h2>NOT IMPLEMENTED</h2>}/>

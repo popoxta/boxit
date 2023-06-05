@@ -111,4 +111,23 @@ router.get('/items/:id', isAuthorized, async (req, res) => {
     else res.json({item: currItem})
 })
 
+router.post('/boxes/new', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+
+    if (!req.body.name) return clientError(res, 'Name must be given.')
+    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+
+    const nameIsTaken = await Box.findOne({name: req.body.name, user: userId})
+    if (nameIsTaken) return clientError(res, 'Box with that name already exists.')
+
+    const newBox = new Box({
+        name: req.body.name,
+        hex: req.body.hex,
+        user: userId
+    })
+
+    await newBox.save()
+    res.json({box: newBox})
+})
+
 module.exports = router

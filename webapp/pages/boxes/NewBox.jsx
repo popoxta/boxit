@@ -39,8 +39,8 @@ export default function NewBox() {
                 <label htmlFor={'name'}>Name</label>
                 <input type={'text'} name={'name'} id={'name'} required/>
 
-                <label htmlFor={'Hex'}>Hex</label>
-                <input type={'color'} name={'Hex'} id={'Hex'}/>
+                <label htmlFor={'hex'}>Hex</label>
+                <input type={'color'} name={'hex'} id={'hex'}/>
 
                 <button type={'submit'}>Create</button>
 

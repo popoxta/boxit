@@ -1,4 +1,4 @@
-import {Link, redirect, useLoaderData} from "react-router-dom";
+import {Link, useLoaderData} from "react-router-dom";
 
 export async function loader({request}) {
     const res = await fetch('http://localhost:3000/boxes', {

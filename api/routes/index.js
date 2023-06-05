@@ -68,6 +68,15 @@ router.get('/boxes', isAuthorized, async (req, res) => {
     res.json({boxes: results})
 })
 
+router.get('/items', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+    console.log(`Items request from ${req.user.username}, id: ${userId}`)
+
+    const results = await Item.find({user: userId})
+
+    res.json({items: results})
+})
+
 // todo dry up these routes
 router.get('/boxes/:id', isAuthorized, async (req, res) =>{
     const userId = req.session.passport.user

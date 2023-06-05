@@ -8,6 +8,7 @@ import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
 import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
 import Item, {loader as itemLoader} from "../pages/items/Item.jsx"
+import Items, {loader as itemsLoader} from "../pages/items/Items.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>
@@ -18,7 +19,6 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route element={<BoxLayout/>} loader={boxLayoutLoader}>
             <Route path={'/boxes'}>
                 <Route index element={<Boxes/>} loader={boxesLoader}/>
-                <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
                 <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
@@ -26,7 +26,7 @@ const router = createBrowserRouter(createRoutesFromElements(
             </Route>
 
             <Route path={'/items'}>
-                <Route path={'all'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route index element={<Items/>} loader={itemsLoader}/>
                 <Route path={'new'} element={<h2>NOT IMPLEMENTED</h2>}/>
                 <Route path={':id'} element={<Item/>} loader={itemLoader}/>
                 <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>

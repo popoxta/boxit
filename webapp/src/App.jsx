@@ -7,7 +7,7 @@ import Login, {action as loginAction} from "../pages/login/Login.jsx";
 import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
 import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
-import Item, {loader as itemLoader} from "../pages/items/item.jsx"
+import Item, {loader as itemLoader} from "../pages/items/Item.jsx"
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>

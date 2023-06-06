@@ -17,7 +17,7 @@ export async function action({request}) {
     if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
     if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
 
-    const res = await fetch(
+    const itemRes = await fetch(
         'http://localhost:3000/items/new',
         {
             method: 'POST',
@@ -29,16 +29,34 @@ export async function action({request}) {
                 ...data
             })
         })
+    const itemResult = await itemRes.json()
+    // if post was successful and there is no image, redirect
+    if (itemRes.status === 200 && !img) return redirect(`/items/${itemResult.item._id}`)
+    // return with messages if error occurs
+    else if (itemRes.status !== 200) return itemResult
+
+    if (img) {
+        const imageForm = new FormData()
+        imageForm.append('image', img)
+        const imgRes = await fetch(
+            'http://localhost/3000/items/image',
+            {
+                method: 'POST',
+                credentials: 'include',
+                body: imageForm
+            }
+        )
+        const imageResult = await imgRes.json()
+        // if post was successful, redirect to new item
+        if (imgRes.status === 200) return redirect(`/items/${itemResult.item._id}`)
+        else return imageResult
+    }
 
     // RES.JSON - CHECK RESPONSE OF PREV POST (DATA)
     // IF ERR, EARLY EXIT
     // ELSE POST REQUEST WITH IMAGE HERE
     // IF ERR EXIT
     // ELSE IF ALL SUCCEED, RETURN RES.JSON({RES1, RES2})
-
-    const result = await res.json()
-    if (res.status === 200) return redirect(`/items/${result.item._id}`)
-    else return result
 }
 
 export default function NewItem() {

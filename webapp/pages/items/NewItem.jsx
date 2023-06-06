@@ -7,14 +7,15 @@ export async function loader () {
     return await res.json()
 }
 export async function action({request}) {
-    const data = Object.fromEntries(await request.formData())
+    const {img, ...data} = Object.fromEntries(await request.formData())
     data.count = parseInt(data.count)
     data.price = parseInt(data.price)
 
     if (!data.name?.length || !data.count || !data.price || !data.description || !data.box) return {message: 'Please fill out all required fields.'}
     if (data.name.length < 3) return {message: 'Name must be at least 3 characters.'}
     if (data.description.length < 3) return {message: 'Description must be at least 3 characters.'}
-    if (typeof data.count !== 'number' || typeof data.price != 'number' ) return {message: 'Count and price must be numerical.'}
+    if (typeof data.count !== 'number') return {message: 'Count must be numerical.'}
+    if (typeof data.price !== 'number') return {message: 'Price must be numerical.'}
 
     const res = await fetch(
         'http://localhost:3000/items/new',
@@ -30,7 +31,7 @@ export async function action({request}) {
         })
 
     const result = await res.json()
-    if (res.status === 200) return redirect(`/boxes/${result.item._id}`)
+    if (res.status === 200) return redirect(`/items/${result.item._id}`)
     else return result
 }
 

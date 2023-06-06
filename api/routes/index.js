@@ -97,6 +97,32 @@ router.post('/boxes/new', async (req, res) => {
     await newBox.save()
     res.json({box: newBox})
 })
+
+router.post('/items/new', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+
+    if (!req.body.name || !req.body.count || !req.body.price || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
+    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+    if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
+    if (typeof req.body.count !== 'number') return clientError('Count must be a numerical.')
+    if (typeof req.body.count !== 'number') return clientError('Price must be a numerical.')
+
+    const nameIsTaken = await Item.findOne({user: userId, box: req.body.box, name: req.body.name})
+    if (nameIsTaken) return clientError(res, 'Item with that name already exists.')
+
+    const newItem = new Item({
+        name: req.body.name,
+        count: req.body.count,
+        price: req.body.price,
+        description: req.body.description,
+        box: req.body.box,
+        user: userId
+    })
+
+    await newItem.save()
+    res.json({item: newItem})
+})
+
 router.post('/boxes/:id/edit', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id

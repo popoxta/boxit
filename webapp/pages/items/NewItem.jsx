@@ -8,14 +8,14 @@ export async function loader () {
 }
 export async function action({request}) {
     const {img, ...data} = Object.fromEntries(await request.formData())
-    data.count = parseInt(data.count)
-    data.price = parseInt(data.price)
+    data.count = Number(data.count)
+    data.price = Number(data.price)
 
-    if (!data.name?.length || !data.count || !data.price || !data.description || !data.box) return {message: 'Please fill out all required fields.'}
+    if (!data.name?.length || data.count == null || data.price == null || !data.description || !data.box) return {message: 'Please fill out all required fields.'}
     if (data.name.length < 3) return {message: 'Name must be at least 3 characters.'}
     if (data.description.length < 3) return {message: 'Description must be at least 3 characters.'}
-    if (typeof data.count !== 'number') return {message: 'Count must be numerical.'}
-    if (typeof data.price !== 'number') return {message: 'Price must be numerical.'}
+    if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
+    if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
 
     const res = await fetch(
         'http://localhost:3000/items/new',
@@ -29,6 +29,12 @@ export async function action({request}) {
                 ...data
             })
         })
+
+    // RES.JSON - CHECK RESPONSE OF PREV POST (DATA)
+    // IF ERR, EARLY EXIT
+    // ELSE POST REQUEST WITH IMAGE HERE
+    // IF ERR EXIT
+    // ELSE IF ALL SUCCEED, RETURN RES.JSON({RES1, RES2})
 
     const result = await res.json()
     if (res.status === 200) return redirect(`/items/${result.item._id}`)
@@ -51,7 +57,7 @@ export default function NewItem() {
                 <button>back</button>
             </Link>
 
-            <h2>New Box</h2>
+            <h2>New Item</h2>
 
             {actionData && <h3>{actionData.message}</h3> || !validBoxes && <h3>Please create boxes to continue.</h3>}
 
@@ -66,12 +72,12 @@ export default function NewItem() {
                 <input type={'number'} name={'count'} id={'count'} required/>
 
                 <label htmlFor={'price'}>Price</label>
-                <input type={'number'} name={'price'} id={'price'} required/>
+                <input type={'text'} name={'price'} id={'price'} required/>
 
-                <label htmlFor={'description'}>Price</label>
+                <label htmlFor={'description'}>Description</label>
                 <textarea name={'description'} id={'description'} required/>
 
-                <label htmlFor={'box'}>Price</label>
+                <label htmlFor={'box'}>Box</label>
                 <select name={'box'} id={'box'} required disabled={!validBoxes}>
                     {boxes}
                 </select>

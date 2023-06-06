@@ -101,11 +101,11 @@ router.post('/boxes/new', async (req, res) => {
 router.post('/items/new', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
 
-    if (!req.body.name || !req.body.count || !req.body.price || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
+    if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
     if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
-    if (typeof req.body.count !== 'number') return clientError('Count must be a numerical.')
-    if (typeof req.body.count !== 'number') return clientError('Price must be a numerical.')
+    if (typeof req.body.count !== 'number' || isNaN(req.body.count)) return clientError('Count must be a numerical.')
+    if (typeof req.body.price !== 'number'|| isNaN(req.body.price)) return clientError('Price must be a numerical.')
 
     const nameIsTaken = await Item.findOne({user: userId, box: req.body.box, name: req.body.name})
     if (nameIsTaken) return clientError(res, 'Item with that name already exists.')

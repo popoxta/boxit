@@ -26,7 +26,7 @@ export default function Items() {
 
     return (
         <div className={'flex column'}>
-            <h2>All boxes</h2>
+            <h2>All items</h2>
             {errors
                 ? errors
                 : items.length > 0

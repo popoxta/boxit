@@ -18,7 +18,7 @@ export async function action({request, params}) {
     if (name.length < 3) return {message: 'Name must be at least 3 characters.'}
 
     const res = await fetch(
-        `http://localhost:3000/boxes/edit`,
+        `http://localhost:3000/boxes/${boxId}/edit`,
         {
             method: 'POST',
             credentials: 'include',
@@ -31,7 +31,6 @@ export async function action({request, params}) {
                 hex
             })
         })
-
     const result = await res.json()
     if (res.status === 200) return redirect(`/boxes/${result.box._id}`)
     else return result
@@ -41,7 +40,7 @@ export default function EditBox() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
 
-    const loaderErrors = loaderData.message
+    const loaderErrors = loaderData?.message
     const actionErrors = actionData?.message
 
     return (

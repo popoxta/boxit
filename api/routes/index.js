@@ -78,7 +78,28 @@ router.get('/items', isAuthorized, async (req, res) => {
 })
 
 // todo dry up these routes
-router.get('/boxes/:id', isAuthorized, async (req, res) =>{
+router.post('/boxes/:id/edit', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+    const boxId = req.params.id
+
+    console.log(`Edit request for box: ${boxId} from user ${req.user.username}`)
+
+    if (!req.body.name) return clientError(res, 'Name must be given.')
+    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+
+    const nameIsTaken = await Box.find({_id: {$ne: boxId}, name: req.body.name, user: userId})
+    if (nameIsTaken.length > 0) return clientError(res, 'Box with that name already exists.')
+
+    const updatedBox = new Box({
+        _id: boxId,
+        name: req.body.name,
+        hex: req.body.hex
+    })
+
+    await Box.findByIdAndUpdate(boxId, updatedBox)
+    res.json({box: updatedBox})
+})
+router.get('/boxes/:id', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 

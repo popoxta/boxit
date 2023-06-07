@@ -197,7 +197,6 @@ router.get('/items/:id', isAuthorized, async (req, res) => {
 
     const currItem = await Item.findOne({_id: itemId, user: userId})
     if (!currItem) return notFoundError(res, 'The requested item does not exist.')
-
     else res.json({item: currItem})
 })
 

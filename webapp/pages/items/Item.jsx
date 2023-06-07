@@ -1,4 +1,5 @@
 import {Link, useLoaderData, useLocation, useSearchParams} from "react-router-dom";
+import {Buffer} from "buffer/";
 
 export async function loader({params}) {
     const itemId = params.id
@@ -14,6 +15,8 @@ export default function Item() {
     const prevLocation = location.get('from') ?? '/items'
     const errors = loaderData.message
     const item = loaderData.item
+
+    const image = item.image.data ? Buffer.from(item.image.data.data).toString('base64') : ''
 
     if (errors){
         return (
@@ -33,6 +36,8 @@ export default function Item() {
             <Link to={prevLocation}><button>back</button></Link>
             <Link to={'./edit'}><button>edit</button></Link>
             <Link to={'./delete'}><button>delete</button></Link>
+
+            {image && <img alt={`Photo of ${item.name}`} src={`data:${item.image.contentType.substring(1)};base64, ${image}`}/>}
 
             <h2>{item.name}</h2>
             <p>count: {item.count}</p>

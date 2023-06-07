@@ -16,7 +16,7 @@ export default function Item() {
     const errors = loaderData.message
     const item = loaderData.item
 
-    const image = item.image.data ? Buffer.from(item.image.data.data).toString('base64') : ''
+    const image = item.image?.data ? Buffer.from(item.image.data.data).toString('base64') : ''
 
     if (errors){
         return (
@@ -37,7 +37,7 @@ export default function Item() {
             <Link to={'./edit'}><button>edit</button></Link>
             <Link to={'./delete'}><button>delete</button></Link>
 
-            {image && <img alt={`Photo of ${item.name}`} src={`data:${item.image.contentType.substring(1)};base64, ${image}`}/>}
+            {image && <img alt={`Photo of ${item.name}`} src={`data:${item.image.contentType.substring(1)};base64,${image}`}/>}
 
             <h2>{item.name}</h2>
             <p>count: {item.count}</p>

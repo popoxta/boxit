@@ -10,10 +10,22 @@ export async function loader() {
 export async function action({request}) {
     const form = await request.formData()
 
-    if (form.get('image').size > 10000) return {message: 'File must be under 10MB.'}
+    // check if image exists
+    const image = form.get('image')
+    const imageExists = image.name.length > 0
+
+    // if image is present, validate, if not, delete.
+    if (imageExists){
+        if (image.size > 10000) return {message: 'File must be under 10MB.'}
+        const contentType = "." + image.type.substring(image.type.indexOf('/') + 1)
+        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(contentType)) return {message: 'File type must be of image type.'}
+
+        form.append('contentType', contentType)
+    }
+    else form.delete('image')
 
     // pull apart the rest to check inputs are kosher
-    const {img, ...data} = Object.fromEntries(form)
+    const {...data} = Object.fromEntries(form)
     data.count = Number(data.count)
     data.price = Number(data.price)
 

@@ -106,7 +106,10 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
     const count = Number(req.body.count)
     const price = Number(req.body.price)
 
-    if (req.file?.size > 10000) return clientError(res, 'File must be under 10MB.')
+    if (req.file){
+        if (req.file.size > 10000) return clientError(res, 'File must be under 10MB.')
+        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return {message: 'File type must be of image type.'}
+    }
     if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
     if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
@@ -124,7 +127,10 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
         box: req.body.box,
         user: userId
     })
-    if (req.file) newItem.image = req.file.buffer
+    if (req.file) newItem.image = {
+        data: req.file.buffer,
+        contentType: req.body.contentType
+    }
 
     await newItem.save()
     res.json({item: newItem})

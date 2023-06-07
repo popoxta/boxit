@@ -1,7 +1,7 @@
 const mongoose = require('mongoose').default
 
 const ItemSchema = new mongoose.Schema({
-    image: Buffer,
+    image: {data: Buffer, contentType: String},
     name: {type: String, required: true},
     count: {type: Number, required: true},
     price: {type: Number, required: true},

@@ -6,6 +6,8 @@ const Item = require('../models/item')
 const bcrypt = require('bcrypt')
 const {clientError, notFoundError} = require('../utils')
 const {isAuthorized} = require('../middleware')
+const multerHandleUpload = require('../config/multer')
+const cors = require('cors')
 const mongoose = require('mongoose').default
 
 // LOGIN ROUTES
@@ -98,22 +100,25 @@ router.post('/boxes/new', async (req, res) => {
     res.json({box: newBox})
 })
 
-router.post('/items/new', isAuthorized, async (req, res) => {
+router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
     const userId = req.session.passport.user
+
+    const count = Number(req.body.count)
+    const price = Number(req.body.price)
 
     if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
     if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
-    if (typeof req.body.count !== 'number' || isNaN(req.body.count)) return clientError('Count must be a numerical.')
-    if (typeof req.body.price !== 'number'|| isNaN(req.body.price)) return clientError('Price must be a numerical.')
+    if (typeof count !== 'number' || isNaN(count)) return clientError('Count must be a numerical.')
+    if (typeof price !== 'number'|| isNaN(price)) return clientError('Price must be a numerical.')
 
     const nameIsTaken = await Item.findOne({user: userId, box: req.body.box, name: req.body.name})
     if (nameIsTaken) return clientError(res, 'Item with that name already exists.')
 
     const newItem = new Item({
         name: req.body.name,
-        count: req.body.count,
-        price: req.body.price,
+        count: count,
+        price: price,
         description: req.body.description,
         box: req.body.box,
         user: userId

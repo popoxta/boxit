@@ -9,6 +9,10 @@ export async function loader() {
 
 export async function action({request}) {
     const form = await request.formData()
+
+    if (form.get('image').size > 10000) return {message: 'File must be under 10MB.'}
+
+    // pull apart the rest to check inputs are kosher
     const {img, ...data} = Object.fromEntries(form)
     data.count = Number(data.count)
     data.price = Number(data.price)
@@ -29,7 +33,7 @@ export async function action({request}) {
     )
 
     const result = await res.json()
-    if (res.status === 200) return redirect(`/boxes/${result.item._id}`)
+    if (res.status === 200) return redirect(`/items/${result.item._id}`)
     else return result
 }
 

@@ -24,4 +24,9 @@ const validateItem = async (req, res, next ) => {
     next()
 }
 
-module.exports = {isAuthorized, validateItem}
+const logger = (req, res, next) => {
+    console.log(`New request at ${req.path} at ${new Date()}`)
+    next()
+}
+
+module.exports = {isAuthorized, validateItem, logger}

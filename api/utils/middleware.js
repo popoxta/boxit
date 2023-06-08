@@ -1,10 +1,12 @@
 const {clientError} = require('./utils')
 
+// authorization / session confirmation
 const isAuthorized = (req, res, next) => {
     if (req.isAuthenticated()) return next()
     res.status(401).json({message: 'Please login to view this resource.'})
 }
 
+// validates the fields on req.body and any files present for an item. requires multer
 const validateItem = async (req, res, next ) => {
     const count = Number(req.body.count)
     const price = Number(req.body.price)

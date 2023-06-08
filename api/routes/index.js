@@ -7,16 +7,14 @@ const bcrypt = require('bcrypt')
 const {clientError, notFoundError, isValidId} = require('../utils/utils')
 const {isAuthorized, validateItem} = require('../utils/middleware')
 const multerHandleUpload = require('../config/multer')
-const cors = require('cors')
-const mongoose = require('mongoose').default
 
 // LOGIN ROUTES
-
 router.post('/login', (req, res, next) => {
     if (!req.body.password || !req.body.username) return clientError(res, 'All fields must be filled.')
     if (req.body.password.length < 6) return clientError(res, 'Password must be at least 6 characters.')
     if (req.body.username.length < 3) return clientError(res, 'Username must be at least 3 characters.')
 
+    // attempt to authenticate user
     passport.authenticate('local', {}, (err, user, info) => {
         if (err) return next({message: `An error has occurred during user login: ${err}`})
         if (!user) return res.status(401).json(info)
@@ -63,23 +61,17 @@ router.get('/profile', isAuthorized, (req, res) => {
 // BOX ROUTES
 router.get('/boxes', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user // user id
-    console.log(`Boxes request from ${req.user.username}, id: ${userId}`)
 
     const results = await Box.find({user: userId})
-
     res.json({boxes: results})
 })
 
 router.get('/items', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
-    console.log(`Items request from ${req.user.username}, id: ${userId}`)
 
     const results = await Item.find({user: userId})
-
     res.json({items: results})
 })
-
-// todo dry up these routes
 
 router.post('/boxes/new', async (req, res) => {
     const userId = req.session.passport.user
@@ -127,7 +119,6 @@ router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), 
     const userId = req.session.passport.user
     const itemId = req.params.id
 
-    // check if ID is of valid ObjectId type
     if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const nameIsTaken = await Item.findOne({_id: {$ne: itemId}, user: userId, box: req.body.box, name: req.body.name})
@@ -182,9 +173,6 @@ router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 
-    console.log(`Edit request for box: ${boxId} from user ${req.user.username}`)
-
-    // check if ID is of valid ObjectId type
     if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     if (!req.body.name) return clientError(res, 'Name must be given.')
@@ -208,9 +196,6 @@ router.get('/boxes/:id', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 
-    console.log(`Boxes request for box: ${boxId} from user ${req.user.username}`)
-
-    // check if ID is of valid ObjectId type
     if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     const currBox = await Box.findOne({_id: boxId, user: userId})
@@ -225,10 +210,8 @@ router.get('/boxes/:id/items', isAuthorized, async (req, res, next) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 
-    // check if ID is of valid ObjectId type
     if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
-    // returns all items for box
     const boxItems = await Item.find({user: userId, box: boxId})
     res.json({items: boxItems})
 })
@@ -237,9 +220,6 @@ router.get('/items/:id', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const itemId = req.params.id
 
-    console.log(`Item request for item: ${itemId} from user ${req.user.username}`)
-
-    // check if ID is of valid ObjectId type
     if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const currItem = await Item.findOne({_id: itemId, user: userId})

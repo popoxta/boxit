@@ -1,5 +1,6 @@
 const express = require('express')
-const router= require('./routes/index');
+const router= require('./routes/loginrouter');
+const boxRouter = require('./routes/boxrouter')
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 })
 
 app.use(router)
+app.use(boxRouter)
 
 app.use((err, req, res, next) => {
     if (!err) return

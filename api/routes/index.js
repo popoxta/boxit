@@ -5,7 +5,7 @@ const Box = require('../models/box')
 const Item = require('../models/item')
 const bcrypt = require('bcrypt')
 const {clientError, notFoundError, isValidId} = require('../utils/utils')
-const {isAuthorized} = require('../utils/middleware')
+const {isAuthorized, validateItem} = require('../utils/middleware')
 const multerHandleUpload = require('../config/multer')
 const cors = require('cors')
 const mongoose = require('mongoose').default
@@ -100,29 +100,16 @@ router.post('/boxes/new', async (req, res) => {
     res.json({box: result})
 })
 
-router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
+router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), validateItem , async (req, res) => {
     const userId = req.session.passport.user
-
-    const count = Number(req.body.count)
-    const price = Number(req.body.price)
-
-    if (req.file){
-        if (req.file.size > 10000) return clientError(res, 'File must be under 10MB.')
-        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return {message: 'File type must be of image type.'}
-    }
-    if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
-    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
-    if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
-    if (typeof count !== 'number' || isNaN(count)) return clientError('Count must be a numerical.')
-    if (typeof price !== 'number'|| isNaN(price)) return clientError('Price must be a numerical.')
 
     const nameIsTaken = await Item.findOne({user: userId, box: req.body.box, name: req.body.name})
     if (nameIsTaken) return clientError(res, 'Item with that name already exists.')
 
     const newItem = new Item({
         name: req.body.name,
-        count: count,
-        price: price,
+        count: Number(req.body.count),
+        price: Number(req.body.price),
         description: req.body.description,
         box: req.body.box,
         user: userId
@@ -136,25 +123,12 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
     res.json({item: result})
 })
 
-router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
+router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), validateItem ,async (req, res) => {
     const userId = req.session.passport.user
     const itemId = req.params.id
 
     // check if ID is of valid ObjectId type
-    if (!isValidId(id)) return clientError(res, 'Invalid ID.')
-
-    const count = Number(req.body.count)
-    const price = Number(req.body.price)
-
-    if (req.file){
-        if (req.file.size > 10000) return clientError(res, 'File must be under 10MB.')
-        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return {message: 'File type must be of image type.'}
-    }
-    if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
-    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
-    if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
-    if (typeof count !== 'number' || isNaN(count)) return clientError('Count must be a numerical.')
-    if (typeof price !== 'number'|| isNaN(price)) return clientError('Price must be a numerical.')
+    if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const nameIsTaken = await Item.findOne({_id: {$ne: itemId}, user: userId, box: req.body.box, name: req.body.name})
     if (nameIsTaken) return clientError(res, 'Item with that name already exists.')
@@ -162,8 +136,8 @@ router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), 
     const updatedItem = new Item({
         _id: itemId,
         name: req.body.name,
-        count: count,
-        price: price,
+        count: Number(req.body.count),
+        price: Number(req.body.price),
         description: req.body.description,
         box: req.body.box,
     })

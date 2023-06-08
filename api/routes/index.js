@@ -191,6 +191,22 @@ router.delete('/items/:id/delete', isAuthorized, async (req, res) => {
     else res.json({item: result})
 })
 
+router.delete('/boxes/:id/delete', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+    const boxId = req.params.id
+
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
+    const hasItems = await Item.find({user: userId, box: boxId}, {_id: 1})
+    if (hasItems.length > 0) return clientError(res, `Items must be deleted or moved to delete Box.`)
+
+    const result = await Box.findOneAndRemove({_id: boxId, user: userId})
+    if (!result) return notFoundError(res, {message: 'Box could not be found.'})
+    else res.json({box: result})
+})
+
 router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
@@ -231,7 +247,9 @@ router.get('/boxes/:id', isAuthorized, async (req, res) => {
     const currBox = await Box.findOne({_id: boxId, user: userId})
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
 
-    res.json({box: currBox})
+    const itemCount = await Item.count({box: boxId, user: userId})
+
+    res.json({box: currBox, itemCount})
 })
 
 router.get('/boxes/:id/items', isAuthorized, async (req, res, next) => {

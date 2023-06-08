@@ -14,7 +14,7 @@ import EditBox, {loader as editBoxLoader, action as editBoxAction} from "../page
 import NewItem, {action as newItemAction, loader as newItemLoader} from "../pages/items/NewItem.jsx"
 import EditItem, {action as editItemAction, loader as editItemLoader} from "../pages/items/EditItem.jsx";
 import DeleteItem, {loader as deleteItemLoader} from "../pages/items/DeleteItem.jsx";
-
+import DeleteBox, {loader as deleteBoxLoader} from "../pages/boxes/DeleteBox.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>
@@ -28,7 +28,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <Route path={'new'} element={<NewBox/>} action={newBoxAction}/>
                 <Route path={':id/'} element={<Box/>} loader={boxLoader}/>
                 <Route path={':id/edit'} element={<EditBox/>} loader={editBoxLoader} action={editBoxAction}/>
-                <Route path={':id/delete'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/delete'} element={<DeleteBox/>} loader={deleteBoxLoader}/>
             </Route>
 
             <Route path={'/items'}>

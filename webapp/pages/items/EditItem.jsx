@@ -1,5 +1,6 @@
 import {Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
-import {Buffer} from "buffer";
+import {Buffer} from "buffer/";
+import {useState} from "react";
 
 export async function loader({params}) {
     const itemId = params.id
@@ -68,7 +69,6 @@ export async function action({request, params}) {
 export default function EditItem() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
-
     const loaderErrors = loaderData?.message
     const actionErrors = actionData?.message
 
@@ -82,7 +82,16 @@ export default function EditItem() {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
 
-    const image = item.image?.data ? Buffer.from(item.image.data.data).toString('base64') : ''
+    // set preview image
+    const [previewImage, setPreviewImage] = useState({
+        src: item.image
+            ? `data:${item.image.contentType.substring(1)};base64,${Buffer.from(item.image.data.data).toString('base64')}`
+            : '',
+    })
+
+    function handleImageUpload(e) {
+        setPreviewImage({src: URL.createObjectURL(e.target.files[0])})
+    }
 
     return (
         <div className={'flex column center'}>
@@ -102,10 +111,12 @@ export default function EditItem() {
 
             {showForm &&
                 <>
-                {image && <img alt={`Photo of ${item.name}`} src={`data:${item.image.contentType.substring(1)};base64,${image}`}/>}
+                    {/*Render image, or prev image if it exists*/}
+                    {previewImage && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>}
+
                     <Form method={'PUT'} className={'flex column'} encType={'multipart/form-data'}>
 
-                        <input type={'file'} name={'image'} accept={'image/*'}/>
+                        <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
                         <label htmlFor={'name'}>Name</label>
                         <input type={'text'} name={'name'} id={'name'} defaultValue={item.name} required/>

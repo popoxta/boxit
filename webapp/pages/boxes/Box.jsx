@@ -21,7 +21,7 @@ export default function Box() {
     const loaderData = useLoaderData()
     const errors = loaderData.message
 
-    const box = loaderData.box.box
+    const box = loaderData.box?.box
     const items = loaderData.items?.items?.map(item => {
         return (
             <div className={'box'} key={item._id}>

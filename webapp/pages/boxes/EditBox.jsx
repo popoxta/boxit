@@ -20,7 +20,7 @@ export async function action({request, params}) {
     const res = await fetch(
         `http://localhost:3000/boxes/${boxId}/edit`,
         {
-            method: 'POST',
+            method: 'PUT',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,6 +43,8 @@ export default function EditBox() {
     const loaderErrors = loaderData?.message
     const actionErrors = actionData?.message
 
+    const showForm = loaderData.box ?? ''
+
     return (
         <div className={'flex column center'}>
             <Link to={'..'}>
@@ -57,17 +59,19 @@ export default function EditBox() {
                 actionErrors && <h3>{actionErrors}</h3>
             }
 
-            <Form method={'POST'} className={'flex column'}>
+            {showForm &&
+                <Form method={'POST'} className={'flex column'}>
 
-                <label htmlFor={'name'}>Name</label>
-                <input type={'text'} name={'name'} id={'name'} defaultValue={loaderData.box.name ?? ''} required/>
+                    <label htmlFor={'name'}>Name</label>
+                    <input type={'text'} name={'name'} id={'name'} defaultValue={loaderData.box?.name ?? '' } required/>
 
-                <label htmlFor={'hex'}>Hex</label>
-                <input type={'color'} name={'hex'} id={'hex'} defaultValue={loaderData.box.hex ?? '#C04790'}/>
+                    <label htmlFor={'hex'}>Hex</label>
+                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={loaderData.box?.hex ?? '#C04790'}/>
 
-                <button type={'submit'}>Update</button>
+                    <button type={'submit'}>Update</button>
 
-            </Form>
+                </Form>
+            }
         </div>
     )
 }

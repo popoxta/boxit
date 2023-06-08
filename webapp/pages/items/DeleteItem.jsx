@@ -1,4 +1,4 @@
-import {Link, useLoaderData, useSearchParams} from "react-router-dom";
+import {Link, redirect, useLoaderData, useSearchParams} from "react-router-dom";
 export async function loader({params}) {
     const itemId = params.id
     const res = await fetch(`http://localhost:3000/items/${itemId}`, {
@@ -7,8 +7,20 @@ export async function loader({params}) {
     return await res.json()
 }
 
-async function deleteItem(item){
-    console.log(item._id)
+async function deleteItem(item, redirectLocation){
+    const itemId = item._id
+
+    const res = await fetch(`http://localhost:3000/items/${itemId}/delete`, {
+        method: 'DELETE',
+        credentials: 'include',
+        body: JSON.stringify({
+            id: itemId
+        })
+    })
+    
+    const result = await res.json()
+    if (res.status === 200) return redirect(redirectLocation)
+    else return result
 }
 
 export default function DeleteItem() {
@@ -32,7 +44,7 @@ export default function DeleteItem() {
                 : <>
                     <h2>{item.name}</h2>
                     <h3>Are you sure you want to delete {item.name}?</h3>
-                    <button onClick={()=>deleteItem(item)}>Delete</button>
+                    <button onClick={()=>deleteItem(item, prevLocation)}>Delete</button>
                 </>
             }
         </div>

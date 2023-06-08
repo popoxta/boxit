@@ -12,6 +12,8 @@ import Item, {loader as itemLoader} from "../pages/items/Item.jsx"
 import Items, {loader as itemsLoader} from "../pages/items/Items.jsx";
 import EditBox, {loader as editBoxLoader, action as editBoxAction} from "../pages/boxes/EditBox.jsx";
 import NewItem, {action as newItemAction, loader as newItemLoader} from "../pages/items/NewItem.jsx"
+import EditItem, {action as editItemAction, loader as editItemLoader} from "../pages/items/EditItem.jsx";
+
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} id={'root'} errorElement={<ErrorPage/>}>
@@ -32,7 +34,7 @@ const router = createBrowserRouter(createRoutesFromElements(
                 <Route index element={<Items/>} loader={itemsLoader}/>
                 <Route path={'new'} element={<NewItem/>} action={newItemAction} loader={newItemLoader}/>
                 <Route path={':id'} element={<Item/>} loader={itemLoader}/>
-                <Route path={':id/edit'} element={<h2>NOT IMPLEMENTED</h2>}/>
+                <Route path={':id/edit'} element={<EditItem/>} action={editItemAction} loader={editItemLoader}/>
                 <Route path={':id/delete'} element={<h2>NOT IMPLEMENTED</h2>}/>
             </Route>
 

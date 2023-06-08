@@ -4,8 +4,8 @@ const User = require('../models/user')
 const Box = require('../models/box')
 const Item = require('../models/item')
 const bcrypt = require('bcrypt')
-const {clientError, notFoundError} = require('../utils')
-const {isAuthorized} = require('../middleware')
+const {clientError, notFoundError, isValidId} = require('../utils/utils')
+const {isAuthorized} = require('../utils/middleware')
 const multerHandleUpload = require('../config/multer')
 const cors = require('cors')
 const mongoose = require('mongoose').default
@@ -141,8 +141,7 @@ router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), 
     const itemId = req.params.id
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(id)) return clientError(res, 'Invalid ID.')
 
     const count = Number(req.body.count)
     const price = Number(req.body.price)
@@ -183,8 +182,7 @@ router.delete('/items/:id/delete', isAuthorized, async (req, res) => {
     const itemId = req.params.id
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const result = await Item.findOneAndRemove({_id: itemId, user: userId})
     if (!result) return notFoundError(res, {message: 'Item could not be found.'})
@@ -196,8 +194,7 @@ router.delete('/boxes/:id/delete', isAuthorized, async (req, res) => {
     const boxId = req.params.id
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     const hasItems = await Item.find({user: userId, box: boxId}, {_id: 1})
     if (hasItems.length > 0) return clientError(res, `Items must be deleted or moved to delete Box.`)
@@ -214,8 +211,7 @@ router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
     console.log(`Edit request for box: ${boxId} from user ${req.user.username}`)
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     if (!req.body.name) return clientError(res, 'Name must be given.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
@@ -241,8 +237,7 @@ router.get('/boxes/:id', isAuthorized, async (req, res) => {
     console.log(`Boxes request for box: ${boxId} from user ${req.user.username}`)
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     const currBox = await Box.findOne({_id: boxId, user: userId})
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
@@ -257,8 +252,7 @@ router.get('/boxes/:id/items', isAuthorized, async (req, res, next) => {
     const boxId = req.params.id
 
     // check if ID is of valid ObjectId type
-    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
-    if (!isValidId) return clientError(res, 'Invalid ID.')
+    if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
     // returns all items for box
     const boxItems = await Item.find({user: userId, box: boxId})
@@ -271,8 +265,8 @@ router.get('/items/:id', isAuthorized, async (req, res) => {
 
     console.log(`Item request for item: ${itemId} from user ${req.user.username}`)
 
-    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
-    if (!isValidId) return clientError(res, 'Invalid item ID.')
+    // check if ID is of valid ObjectId type
+    if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const currItem = await Item.findOne({_id: itemId, user: userId})
     if (!currItem) return notFoundError(res, 'The requested item does not exist.')

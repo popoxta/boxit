@@ -173,8 +173,22 @@ router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), 
         contentType: req.body.contentType
     }
 
-    const result = await Item.findByIdAndUpdate(itemId, updatedItem)
+    const result = await Item.findOneAndUpdate({_id: itemId, user: userId}, updatedItem, {new: true})
+    if (!result) return notFoundError({message: 'Item could not be found.'})
     return res.json({item: result})
+})
+
+router.delete('/items/:id/delete', isAuthorized, async (req, res) => {
+    const userId = req.session.passport.user
+    const itemId = req.params.id
+
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
+    const result = await Item.findOneAndRemove({_id: itemId, user: userId})
+    if (!result) return notFoundError(res, {message: 'Item could not be found.'})
+    else res.json({item: result})
 })
 
 router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
@@ -199,8 +213,9 @@ router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
         hex: req.body.hex
     })
 
-    const result = await Box.findByIdAndUpdate(boxId, updatedBox)
-    res.json({box: result})
+    const result = await Box.findOneAndUpdate({_id: boxId, user: userId}, updatedBox, {new: true})
+    if (!result) return notFoundError({message: 'Box could not be found.'})
+    else res.json({box: result})
 })
 
 router.get('/boxes/:id', isAuthorized, async (req, res) => {

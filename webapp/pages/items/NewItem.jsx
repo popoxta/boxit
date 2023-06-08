@@ -1,4 +1,6 @@
 import {Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
+import {useState} from "react";
+import {Buffer} from "buffer";
 
 export async function loader() {
     const res = await fetch('http://localhost:3000/boxes', {
@@ -62,6 +64,13 @@ export default function NewItem() {
 
     const validBoxes = boxes.length > 0
 
+    // set preview image
+    const [previewImage, setPreviewImage] = useState({src: ''})
+
+    function handleImageUpload(e) {
+        setPreviewImage({src: URL.createObjectURL(e.target.files[0])})
+    }
+
     return (
         <div className={'flex column center'}>
             <Link to={'..'}>
@@ -78,9 +87,11 @@ export default function NewItem() {
                 !validBoxes && <h3>Please create boxes to continue.</h3>
             }
 
+            {previewImage.src && <img alt={`Photo of new item`} src={previewImage.src}/>}
+
             <Form method={'POST'} className={'flex column'} encType={'multipart/form-data'}>
 
-                <input type={'file'} name={'image'} accept={'image/*'}/>
+                <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
                 <label htmlFor={'name'}>Name</label>
                 <input type={'text'} name={'name'} id={'name'} required/>

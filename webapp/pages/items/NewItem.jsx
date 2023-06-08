@@ -53,6 +53,9 @@ export default function NewItem() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
 
+    const loaderErrors = loaderData?.message
+    const actionErrors = actionData?.message
+
     const boxes = loaderData.boxes?.map(box => {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
@@ -67,7 +70,13 @@ export default function NewItem() {
 
             <h2>New Item</h2>
 
-            {actionData && <h3>{actionData.message}</h3> || !validBoxes && <h3>Please create boxes to continue.</h3>}
+            {
+                loaderErrors && <h3>{loaderErrors}</h3>
+                ||
+                actionErrors && <h3>{actionErrors}</h3>
+                ||
+                !validBoxes && <h3>Please create boxes to continue.</h3>
+            }
 
             <Form method={'POST'} className={'flex column'} encType={'multipart/form-data'}>
 
@@ -90,7 +99,7 @@ export default function NewItem() {
                     {boxes}
                 </select>
 
-                <button type={'submit'}>Create</button>
+                <button type={'submit'} disabled={!validBoxes}>Create</button>
 
             </Form>
         </div>

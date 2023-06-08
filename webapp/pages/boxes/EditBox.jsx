@@ -60,13 +60,13 @@ export default function EditBox() {
             }
 
             {showForm &&
-                <Form method={'POST'} className={'flex column'}>
+                <Form method={'PUT'} className={'flex column'}>
 
                     <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} id={'name'} defaultValue={loaderData.box?.name ?? '' } required/>
+                    <input type={'text'} name={'name'} id={'name'} defaultValue={loaderData.box.name ?? '' } required/>
 
                     <label htmlFor={'hex'}>Hex</label>
-                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={loaderData.box?.hex ?? '#C04790'}/>
+                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={loaderData.box.hex ?? '#C04790'}/>
 
                     <button type={'submit'}>Update</button>
 

@@ -136,7 +136,7 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
     res.json({item: newItem})
 })
 
-router.post('/boxes/:id/edit', isAuthorized, async (req, res) => {
+router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 
@@ -154,7 +154,7 @@ router.post('/boxes/:id/edit', isAuthorized, async (req, res) => {
         hex: req.body.hex
     })
 
-    await Box.findByIdAndUpdate(boxId, updatedBox)
+    const update = await Box.findByIdAndUpdate(boxId, updatedBox)
     res.json({box: updatedBox})
 })
 router.get('/boxes/:id', isAuthorized, async (req, res) => {

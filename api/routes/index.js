@@ -96,8 +96,8 @@ router.post('/boxes/new', async (req, res) => {
         user: userId
     })
 
-    await newBox.save()
-    res.json({box: newBox})
+    const result = await newBox.save()
+    res.json({box: result})
 })
 
 router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
@@ -132,15 +132,13 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
         contentType: req.body.contentType
     }
 
-    await newItem.save()
-    res.json({item: newItem})
+    const result = await newItem.save()
+    res.json({item: result})
 })
 
 router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
     const userId = req.session.passport.user
     const itemId = req.params.id
-
-    console.log(req.body)
 
     // check if ID is of valid ObjectId type
     const isValidId = mongoose.Types.ObjectId.isValid(itemId)
@@ -175,8 +173,8 @@ router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), 
         contentType: req.body.contentType
     }
 
-    await Item.findByIdAndUpdate(itemId, updatedItem)
-    return res.json({item: updatedItem})
+    const result = await Item.findByIdAndUpdate(itemId, updatedItem)
+    return res.json({item: result})
 })
 
 router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
@@ -201,8 +199,8 @@ router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
         hex: req.body.hex
     })
 
-    await Box.findByIdAndUpdate(boxId, updatedBox)
-    res.json({box: updatedBox})
+    const result = await Box.findByIdAndUpdate(boxId, updatedBox)
+    res.json({box: result})
 })
 
 router.get('/boxes/:id', isAuthorized, async (req, res) => {

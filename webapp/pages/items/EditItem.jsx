@@ -27,8 +27,6 @@ export async function action({request, params}) {
     const image = form.get('image')
     const imageExists = image.name.length > 0
 
-    console.log(imageExists)
-
     // if image is present, validate, if not, delete.
     if (imageExists) {
         if (image.size > 10000) return {message: 'File must be under 10MB.'}
@@ -49,16 +47,16 @@ export async function action({request, params}) {
     if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
     if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
 
-    // const res = await fetch(
-    //     `http://localhost:3000/items/${itemId}/edit`,
-    //     {
-    //         method: 'PUT',
-    //         credentials: 'include',
-    //         body: form
-    //     })
-    // const result = await res.json()
-    // if (res.status === 200) return redirect(`/items/${result.item._id}`)
-    // else return result
+    const res = await fetch(
+        `http://localhost:3000/items/${itemId}/edit`,
+        {
+            method: 'PUT',
+            credentials: 'include',
+            body: form
+        })
+    const result = await res.json()
+    if (res.status === 200) return redirect(`/items/${result.item._id}`)
+    else return result
 }
 
 export default function EditItem() {
@@ -81,11 +79,15 @@ export default function EditItem() {
     const [previewImage, setPreviewImage] = useState({src: ''})
 
     useEffect(() => {
-        if (item.image)
+        if (item.image){
+            const contentType = item.image.contentType.substring(1)
+            const base64 = Buffer.from(item.image.data.data).toString('base64')
+
             setPreviewImage({
-                src:
-                    `data:${item.image.contentType.substring(1)};base64,${Buffer.from(item.image.data.data).toString('base64')}`
+                src: `data:${contentType};base64,${base64}`
             })
+        }
+
     }, [])
 
     function handleImageUpload(e) {
@@ -112,8 +114,6 @@ export default function EditItem() {
                 <>
                     {/*Render image, or prev image if it exists*/}
                     {previewImage.src && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>}
-
-                    <button>Remove image</button>
 
                     <Form method={'PUT'} className={'flex column'} encType={'multipart/form-data'}>
 

@@ -136,17 +136,64 @@ router.post('/items/new', isAuthorized, multerHandleUpload.single('image'), asyn
     res.json({item: newItem})
 })
 
+router.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), async (req, res) => {
+    const userId = req.session.passport.user
+    const itemId = req.params.id
+
+    console.log(req.body)
+
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(itemId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
+    const count = Number(req.body.count)
+    const price = Number(req.body.price)
+
+    if (req.file){
+        if (req.file.size > 10000) return clientError(res, 'File must be under 10MB.')
+        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return {message: 'File type must be of image type.'}
+    }
+    if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
+    if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+    if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
+    if (typeof count !== 'number' || isNaN(count)) return clientError('Count must be a numerical.')
+    if (typeof price !== 'number'|| isNaN(price)) return clientError('Price must be a numerical.')
+
+    const nameIsTaken = await Item.findOne({_id: {$ne: itemId}, user: userId, box: req.body.box, name: req.body.name})
+    if (nameIsTaken) return clientError(res, 'Item with that name already exists.')
+
+    const updatedItem = new Item({
+        _id: itemId,
+        name: req.body.name,
+        count: count,
+        price: price,
+        description: req.body.description,
+        box: req.body.box,
+    })
+    if (req.file) updatedItem.image = {
+        data: req.file.buffer,
+        contentType: req.body.contentType
+    }
+
+    await Item.findByIdAndUpdate(itemId, updatedItem)
+    return res.json({item: updatedItem})
+})
+
 router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id
 
     console.log(`Edit request for box: ${boxId} from user ${req.user.username}`)
 
+    // check if ID is of valid ObjectId type
+    const isValidId = mongoose.Types.ObjectId.isValid(boxId)
+    if (!isValidId) return clientError(res, 'Invalid ID.')
+
     if (!req.body.name) return clientError(res, 'Name must be given.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
 
-    const nameIsTaken = await Box.find({_id: {$ne: boxId}, name: req.body.name, user: userId})
-    if (nameIsTaken.length > 0) return clientError(res, 'Box with that name already exists.')
+    const nameIsTaken = await Box.findOne({_id: {$ne: boxId}, name: req.body.name, user: userId})
+    if (nameIsTaken) return clientError(res, 'Box with that name already exists.')
 
     const updatedBox = new Box({
         _id: boxId,
@@ -154,9 +201,10 @@ router.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
         hex: req.body.hex
     })
 
-    const update = await Box.findByIdAndUpdate(boxId, updatedBox)
+    await Box.findByIdAndUpdate(boxId, updatedBox)
     res.json({box: updatedBox})
 })
+
 router.get('/boxes/:id', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const boxId = req.params.id

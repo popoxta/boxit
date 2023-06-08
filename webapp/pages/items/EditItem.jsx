@@ -22,7 +22,6 @@ export async function loader({params}) {
 export async function action({request, params}) {
     const form = await request.formData()
     const itemId = params.id
-    form.append('id', itemId)
 
     // check if image exists
     const image = form.get('image')
@@ -48,22 +47,16 @@ export async function action({request, params}) {
     if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
     if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
 
-
-    // const res = await fetch(
-    //     `http://localhost:3000/items/${itemId}/edit`,
-    //     {
-    //         method: 'PUT',
-    //         credentials: 'include',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             body: form
-    //         })
-    //     })
-    // const result = await res.json()
-    // if (res.status === 200) return redirect(`/item/${result.item._id}`)
-    // else return result
+    const res = await fetch(
+        `http://localhost:3000/items/${itemId}/edit`,
+        {
+            method: 'PUT',
+            credentials: 'include',
+            body: form
+        })
+    const result = await res.json()
+    if (res.status === 200) return redirect(`/items/${result.item._id}`)
+    else return result
 }
 
 export default function EditItem() {
@@ -112,7 +105,7 @@ export default function EditItem() {
             {showForm &&
                 <>
                     {/*Render image, or prev image if it exists*/}
-                    {previewImage && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>}
+                    {previewImage.src && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>}
 
                     <Form method={'PUT'} className={'flex column'} encType={'multipart/form-data'}>
 

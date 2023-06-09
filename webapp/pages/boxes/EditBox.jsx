@@ -46,13 +46,12 @@ export async function action({request, params}) {
 export default function EditBox() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
-    const [hexValue, setHexValue] = useState('#CB1C85')
-
+    const [hexValue, setHexValue] = useState('')
 
     const conditionalRender = (data) => {
         const errors = data.message
         if (errors) return renderError(errors)
-        else return renderForm(data)
+        return renderForm(data)
     }
     const renderError = (errors) => {
         return (
@@ -69,14 +68,14 @@ export default function EditBox() {
     const renderForm = (data) => {
         const box = data.box
 
-        if (box.hex) setHexValue(box.hex)
+        const color = hexValue.length <= 0 ? box.hex : hexValue
 
         return (
             <>
                 <Form method={'PUT'} className={'flex column center'}>
 
                     <svg className={'cube-box extra-margin'} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill={hexValue}
+                        <path fill={color}
                               d="M2 18.66l10.5 4.313L23 18.661V6.444L12.5 2.13 2 6.444zm20-.67l-9 3.697V11.102l9-3.68zM12.5 3.213l8.557 3.514-8.557 3.5-8.557-3.5zM3 7.422l9 3.68v10.585L3 17.99z"/>
                         <path fill={'none'} d="M0 0h24v24H0z"/>
                     </svg>
@@ -88,9 +87,9 @@ export default function EditBox() {
                            required/>
 
                     <label htmlFor={'hex'}>Hex</label>
-                    <input type={'color'} name={'hex'} id={'hex'} value={hexValue}/>
+                    <input type={'color'} name={'hex'} id={'hex'} onChange={handleHexChange} value={color}/>
 
-                    <button type={'submit'} style={{backgroundColor: hexValue}} className={'button'}>Update</button>
+                    <button type={'submit'} style={{backgroundColor: color}} className={'button'}>Update</button>
                 </Form>
             </>
         )

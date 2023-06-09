@@ -1,8 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo:wght@200;400&display=swap');
 
-.header {}
+:root {
+    --boxit-black: #3C3C3C;
+    --boxit-pink: #CB1C85;
+}
+
+
+#root {
+    height: 100vh;
+}
+
+* {
+    color: var(--boxit-black);
+    font-family: 'Chivo', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.cube-logo {
+    width: 4rem;
+    margin-right: 1rem;
+}
+
+.pink-hover {
+    transition: color ease-in-out 0.2s;
+}
+
+.pink-hover:hover {
+    color: var(--boxit-pink);
+}
 
 .shadow {
-    box-shadow: 0 1px 0 ;
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.08);
 }
 
 /* FLEX CLASSES*/

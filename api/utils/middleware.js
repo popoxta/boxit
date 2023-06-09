@@ -13,7 +13,7 @@ const validateItem = async (req, res, next ) => {
 
     if (req.file){
         if (req.file.size > 10000000) return clientError(res, 'File must be under 10MB.')
-        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return {message: 'File type must be of image type.'}
+        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(req.body.contentType)) return clientError(res, {message: 'File type must be of image type.'})
     }
     if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')

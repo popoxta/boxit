@@ -1,42 +1,45 @@
-import {Link, useLoaderData, useLocation, useSearchParams} from "react-router-dom";
+import {Await, defer, Link, useLoaderData, useLocation, useSearchParams} from "react-router-dom";
 import {Buffer} from "buffer/";
+import {Suspense} from "react";
 
-export async function loader({params}) {
+export function loader({params}) {
     const itemId = params.id
-    const res = await fetch(`http://localhost:3000/items/${itemId}`, {
+    const item = fetch(`http://localhost:3000/items/${itemId}`, {
         credentials: 'include'
-    })
-    return await res.json()
+    }).then(res => res.json())
+    return defer({data: item})
 }
 
 export default function Item() {
     const loaderData = useLoaderData()
     const [location] = useSearchParams()
     const prevLocation = location.get('from') ?? '/items'
-    const errors = loaderData.message
-    const item = loaderData.item
 
-    if (errors){
+    const renderBufferImage = (image, alt) => {
+        const contentType = image.contentType.substring(1)
+        const base64 = Buffer.from(image.data.data).toString('base64')
+        return <img alt={`Photo of ${alt}`} src={`data:${contentType};base64,${base64}`}/>
+    }
+
+    const renderConditional = (data) => {
+        const errors = data.message
+        if (errors) return renderErrors(errors)
+        else return renderItem(data.item)
+    }
+
+    const renderErrors = (errors) => {
         return (
-            <div className={'flex column'}>
-                <Link to={prevLocation}>
-                    <button>back</button>
-                </Link>
-
+            <>
                 <h2>Error</h2>
                 <h3>{errors}</h3>
-            </div>
+            </>
         )
     }
 
-    else {
-        const image = item.image?.data ? Buffer.from(item.image.data.data).toString('base64') : ''
-
+    const renderItem = (item) => {
+        const image = item.image
         return (
-            <div className={'flex column'}>
-                <Link to={prevLocation}>
-                    <button>back</button>
-                </Link>
+            <>
                 <Link to={'./edit'}>
                     <button>edit</button>
                 </Link>
@@ -44,14 +47,27 @@ export default function Item() {
                     <button>delete</button>
                 </Link>
 
-                {image && <img alt={`Photo of ${item.name}`}
-                               src={`data:${item.image.contentType.substring(1)};base64,${image}`}/>}
+                {image && renderBufferImage(image, item.name)}
 
                 <h2>{item.name}</h2>
                 <p>count: {item.count}</p>
                 <p>price: {item.price}</p>
                 <p>{item.description}</p>
-            </div>
+            </>
         )
     }
+
+    return (
+        <div className={'flex column'}>
+            <Link to={prevLocation}>
+                <button>back</button>
+            </Link>
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={loaderData.data}>
+                    {renderConditional}
+                </Await>
+            </Suspense>
+        </div>
+    )
+
 }

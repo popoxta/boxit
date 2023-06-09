@@ -20,7 +20,7 @@ export default function Logout() {
 
     async function handleLogout(){
         const result = await logout()
-        if (result.status === 200) return navigate('/')
+        if (result.status === 200) return navigate('/boxes')
         else setErrors(result.message)
     }
 

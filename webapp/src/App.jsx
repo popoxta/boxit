@@ -5,7 +5,7 @@ import ErrorPage from "../pages/ErrorPage.jsx";
 import Register, {action as registerAction} from "../pages/login/Register.jsx";
 import Login, {action as loginAction} from "../pages/login/Login.jsx";
 import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
-import BoxLayout from "../pages/components/BoxLayout.jsx";
+import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
 import NewBox, {action as newBoxAction} from "../pages/boxes/NewBox.jsx"
 import Item, {loader as itemLoader} from "../pages/items/Item.jsx"
@@ -24,7 +24,7 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path={'/login'} element={<Login/>} action={loginAction}/>
         <Route path={'/logout'} element={<Logout/>}/>
 
-        <Route element={<BoxLayout/>}>
+        <Route element={<BoxLayout/>} loader={boxLayoutLoader}>
             <Route path={'/boxes'}>
                 <Route index element={<Boxes/>} loader={boxesLoader}/>
                 <Route path={'new'} element={<NewBox/>} action={newBoxAction}/>

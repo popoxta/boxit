@@ -49,9 +49,11 @@ router.post('/register',
         })
     })
 
-router.post('/logout', (req, res) => {
-    req.logout()
-    res.end()
+router.post('/logout', (req, res, next) => {
+    req.logout(function (err) {
+        if (err) return next(err)
+        else res.end()
+    })
 })
 
 router.get('/profile', isAuthorized, (req, res) => {

@@ -9,9 +9,9 @@ export async function logout(){
             credentials: 'include'
         }
     )
-    const result = await res.json()
+    console.log(res)
     if (res.status === 200) return res
-    else return result
+    else return {message: 'Log out failed'}
 }
 
 export default function Logout() {
@@ -21,7 +21,7 @@ export default function Logout() {
     async function handleLogout(){
         const result = await logout()
         if (result.status === 200) return navigate('/')
-        else setErrors('Log out failed.')
+        else setErrors(result.message)
     }
 
     return (

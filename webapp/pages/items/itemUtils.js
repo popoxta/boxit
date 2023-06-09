@@ -1,7 +1,7 @@
 import {Buffer} from "buffer/";
 
 export function validateItemImage(image) {
-    if (image.size > 10000) return {message: 'File must be under 10MB.'}
+    if (image.size > 10000000) return {message: 'File must be under 10MB.'}
     const contentType = "." + image.type.substring(image.type.indexOf('/') + 1)
     if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(contentType)) return {message: 'File type must be of image type.'}
     return contentType

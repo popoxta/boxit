@@ -48,7 +48,7 @@ export default function NewItem() {
     const [previewError, setPreviewError] = useState('')
 
     const handleImageUpload = (e) => {
-        if(e.target.files[0].size > 10000) {
+        if(e.target.files[0].size > 10000000) {
             setPreviewError('Image file must be under 10MB.')
             return
         }
@@ -72,7 +72,7 @@ export default function NewItem() {
 
         return (
             <>
-                {previewImage.src && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>}
+                {previewImage.src && <img alt={`Preview image`} src={previewImage.src}/>}
 
                 {
                     !validBoxes && renderErrors('Please create boxes to continue.')

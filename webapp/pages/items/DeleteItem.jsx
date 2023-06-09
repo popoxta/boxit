@@ -1,5 +1,6 @@
 import {Await, defer, Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
 import {Suspense, useState} from "react";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -62,7 +63,7 @@ export default function DeleteItem() {
             </Link>
 
             <h2>Delete Item</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

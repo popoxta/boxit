@@ -2,6 +2,7 @@ import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "
 import {Buffer} from "buffer/";
 import {Suspense, useState} from "react";
 import validateItemForm, {bufferImgToBase64, validateItemImage} from "./itemUtils.js";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -137,7 +138,7 @@ export default function EditItem() {
             </Link>
 
             <h2>Edit Item</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
             <Await resolve={loaderData.data}>
                 {renderConditional}
             </Await>

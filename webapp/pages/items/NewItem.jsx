@@ -1,6 +1,7 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Suspense, useState} from "react";
 import validateItemForm, {validateItemImage} from "./itemUtils.js";
+import Loading from "../components/Loading.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {
@@ -120,7 +121,7 @@ export default function NewItem() {
 
             <h2>New Item</h2>
 
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
             <Await resolve={loaderData.data}>
                 {renderConditional}
             </Await>

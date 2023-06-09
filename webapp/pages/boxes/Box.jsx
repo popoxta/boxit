@@ -1,5 +1,6 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -62,7 +63,7 @@ export default function Box() {
             <Link to={'..'}>
                 <button>back</button>
             </Link>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

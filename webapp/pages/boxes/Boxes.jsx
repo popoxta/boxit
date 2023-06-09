@@ -1,6 +1,7 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
 import {BoxComponent} from "../components/BoxComponent.jsx";
+import Loading from "../components/Loading.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {
@@ -22,15 +23,19 @@ export default function Boxes() {
     const renderBoxes = (boxes) => {
         if (boxes.length > 0) {
             return (
-                <div className={'flex gap wrap center-justify'}>
+                <div className={'flex wrap center-justify'}>
                     {boxes.map(box => BoxComponent({box}))}
                 </div>
             )
         } else return (
-            <>
+            <div className={'loading flex column center'}>
                 <h3>No boxes yet.</h3>
-                <Link to={'./new'}>Create your first box</Link>
-            </>
+                <Link to={'./new'}>
+                    <button style={{backgroundColor: '#CB1C85'}} className={'button'}>
+                        Create your first box
+                    </button>
+                </Link>
+            </div>
         )
     }
 
@@ -38,10 +43,13 @@ export default function Boxes() {
 
     return (
         <div className={'flex column'}>
-            <h2>All boxes</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <div className={'text-center box-header'}>
+                <h2>All boxes</h2>
+            </div>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
+
                 </Await>
             </Suspense>
         </div>

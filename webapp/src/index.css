@@ -8,11 +8,12 @@
 }
 
 #root {
-    min-height: 100%;
+    height: 100%;
     background-color: var(--boxit-white);
 }
 
 body {
+    height: 100vh;
     margin: 0;
 }
 
@@ -69,15 +70,17 @@ header {
     background-color: white;
     border: 2px solid var(--boxit-light-grey);
     border-radius: 0.8rem;
-    width: 100%;
-    padding: 0 1rem;
+    flex-grow: 1;
+    min-height: 40rem;
+    max-width: 75rem;
 }
 
 /* BOX */
 
 .cube-box {
+    flex-shrink: 0;
     width: 4rem;
-    margin: 1rem 0;
+    margin-bottom: 1rem;
 }
 
 .box {
@@ -85,8 +88,24 @@ header {
     border: 2px solid var(--boxit-light-grey);
     border-radius: 0.8rem;
     padding: 1rem;
-    min-width: 13rem;
+    width: 13rem;
     height: 15rem;
+    margin: 1rem;
+}
+
+.box h3 {
+    margin: 1rem 0;
+    line-break: anywhere;
+}
+
+.box-header {
+    border-bottom: 2px solid var(--boxit-light-grey);
+    margin-bottom: 1rem;
+}
+
+/* LOADING */
+.loading {
+    margin-top: 2rem;
 }
 
 /* DECORATIVE CLASSES*/
@@ -111,6 +130,23 @@ header {
     margin-bottom: 0;
 }
 
+.button {
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    padding: 0.3rem 1.8rem;
+    transition: scale ease-in-out 0.1s;
+    cursor: pointer;
+}
+
+.button:hover {
+    scale: 0.95;
+}
+
+.text-center {
+    text-align: center;
+}
+
 /* FLEX CLASSES*/
 .flex {
     display: flex;
@@ -118,6 +154,10 @@ header {
 
 .center {
     align-items: center;
+}
+
+.grow {
+    flex-grow: 1;
 }
 
 .center-justify {

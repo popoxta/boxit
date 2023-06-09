@@ -3,7 +3,7 @@ import {Form, Link, redirect, useActionData} from "react-router-dom";
 export async function action({request}) {
     const data = await request.formData()
     const name = data.get('name')
-    const hex = data.get('hex') ?? '#C04790'
+    const hex = data.get('hex') ?? '#CB1C85'
 
     const hexRegex = new RegExp(/^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i)
 

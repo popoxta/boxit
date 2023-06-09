@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 export const BoxComponent = (box) => {
     const currBox = box.box
 
-    const color = currBox.hex ?? '#C04790'
+    const color = currBox.hex ?? '#CB1C85'
 
     return (
         <div className={'box flex column center'} key={currBox._id}>
@@ -12,9 +12,9 @@ export const BoxComponent = (box) => {
                 <path fill={'none'} d="M0 0h24v24H0z"/>
             </svg>
             <hr/>
-            <Link to={`./${currBox._id}`}>
+            <Link to={`./${currBox._id}`} className={'flex column center grow apart'}>
                 <h3 style={{color: color}}>{currBox.name}</h3>
-                <button style={{backgroundColor: color}} className={'button'}>View</button>
+                <button style={{backgroundColor: color}} className={'button'}>view</button>
             </Link>
         </div>
     )

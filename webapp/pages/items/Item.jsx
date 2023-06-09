@@ -2,6 +2,7 @@ import {Await, defer, Link, useLoaderData, useLocation, useSearchParams} from "r
 import {Buffer} from "buffer/";
 import {Suspense} from "react";
 import {bufferImgToBase64} from "./itemUtils.js";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -62,7 +63,7 @@ export default function Item() {
             <Link to={prevLocation}>
                 <button>back</button>
             </Link>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

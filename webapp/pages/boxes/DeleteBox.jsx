@@ -1,5 +1,6 @@
 import {Await, defer, Link, useLoaderData, useNavigate} from "react-router-dom";
 import {Suspense, useState} from "react";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -70,7 +71,7 @@ export default function DeleteBox() {
                 <button>back</button>
             </Link>
             <h2>Delete Box</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

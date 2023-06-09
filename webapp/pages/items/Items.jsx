@@ -2,6 +2,7 @@ import {Await, defer, Link, useLoaderData} from "react-router-dom";
 
 import {bufferImgToBase64} from "./itemUtils.js";
 import {Suspense} from "react";
+import Loading from "../components/Loading.jsx";
 
 export function loader() {
     const items = fetch('http://localhost:3000/items', {
@@ -54,7 +55,7 @@ export default function Items() {
     return (
         <div className={'flex column'}>
             <h2>All items</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

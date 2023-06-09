@@ -1,5 +1,6 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
+import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -13,7 +14,7 @@ export async function action({request, params}) {
     const data = await request.formData()
     const boxId = params.id
 
-    const hex = data.get('hex') ?? '#C04790'
+    const hex = data.get('hex') ?? '#CB1C85'
     const name = data.get('name')
 
     const hexRegex = new RegExp(/^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i)
@@ -64,7 +65,7 @@ export default function EditBox() {
                     <input type={'text'} name={'name'} maxLength={25} id={'name'} defaultValue={box.name ?? ''} required/>
 
                     <label htmlFor={'hex'}>Hex</label>
-                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#C04790'}/>
+                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#CB1C85'}/>
 
                     <button type={'submit'}>Update</button>
                 </Form>
@@ -78,7 +79,7 @@ export default function EditBox() {
                 <button>back</button>
             </Link>
             <h2>Edit Box</h2>
-            <Suspense fallback={<h3>Loading...</h3>}>
+            <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

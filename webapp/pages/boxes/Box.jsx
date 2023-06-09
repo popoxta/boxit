@@ -62,7 +62,7 @@ export default function Box() {
             <Link to={'..'}>
                 <button>back</button>
             </Link>
-            <Suspense fallback={<h2>Loading...</h2>}>
+            <Suspense fallback={<h3>Loading...</h3>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

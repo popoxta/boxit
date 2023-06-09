@@ -1,6 +1,8 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
 import Loading from "../components/Loading.jsx";
+import Item from "../items/Item.jsx";
+import ItemComponent from "../components/ItemComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -58,16 +60,7 @@ export default function Box() {
         </>
     }
 
-    const renderItems = (items, id) => items.map(item =>
-        <div className={'box'} key={item._id}>
-            <h3>{item.name}</h3>
-            <p>count: {item.count}</p>
-            <p>price: {item.price}</p>
-            <Link to={`/items/${item._id}?from=/boxes/${id}`}>
-                <button>view</button>
-            </Link>
-        </div>
-    )
+    const renderItems = (items, id) => items.map(item => <ItemComponent item={item} from={`/boxes/${id}`}/>)
 
     const renderErrors = (errors) =>
         <>

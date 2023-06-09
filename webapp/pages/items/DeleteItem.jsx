@@ -1,20 +1,23 @@
-import {Link, redirect, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
-export async function loader({params}) {
+import {Await, defer, Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
+import {Suspense, useState} from "react";
+
+export function loader({params}) {
     const itemId = params.id
-    const res = await fetch(`http://localhost:3000/items/${itemId}`, {
+    const item = fetch(`http://localhost:3000/items/${itemId}`, {
         credentials: 'include'
-    })
-    return await res.json()
+    }).then(res => res.json())
+
+    return defer({data: item})
 }
 
-async function deleteItem(item){
+async function deleteItem(item) {
     const itemId = item._id
 
     const res = await fetch(`http://localhost:3000/items/${itemId}/delete`, {
         method: 'DELETE',
         credentials: 'include',
     })
-    
+
     const result = await res.json()
     if (res.status === 200) return res
     else return result
@@ -25,16 +28,32 @@ export default function DeleteItem() {
     const [location] = useSearchParams()
     const navigate = useNavigate()
 
+    const [responseErrors, setResponseErrors] = useState({message: ''})
     const prevLocation = location.get('from') ?? '/items'
 
-    let errors = loaderData.message
-    const item = loaderData.item
-
-    async function handleDelete() {
+    async function handleDelete(item) {
         const deletion = await deleteItem(item)
         if (deletion.status === 200) return navigate(prevLocation)
-        else errors = deletion.message
+        else setResponseErrors({message: deletion.message})
     }
+
+    const conditionalRender = (data) => {
+        const errors = data.message || responseErrors.message
+        if (errors) return renderErrors(errors)
+        else return renderView(data)
+    }
+
+    const renderView = (data) => {
+        const item = data.item
+        return (
+            <>
+                <h3>Are you sure you want to delete {item.name}?</h3>
+                <button onClick={() => handleDelete(item)}>Delete</button>
+            </>
+        )
+    }
+
+    const renderErrors = (errors) => <h3>{errors}</h3>
 
     return (
         <div className={'flex column'}>
@@ -42,17 +61,13 @@ export default function DeleteItem() {
                 <button>back</button>
             </Link>
 
-            {errors
-                ? <>
-                    <h2>Error</h2>
-                    <h3>{errors}</h3>
-                </>
-                : <>
-                    <h2>{item.name}</h2>
-                    <h3>Are you sure you want to delete {item.name}?</h3>
-                    <button onClick={handleDelete}>Delete</button>
-                </>
-            }
+            <h2>Delete Item</h2>
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={loaderData.data}>
+                    {renderView}
+                </Await>
+            </Suspense>
         </div>
     )
 }
+

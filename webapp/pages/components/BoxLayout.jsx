@@ -1,14 +1,9 @@
-import {Link, Outlet, redirect} from "react-router-dom";
-
-export async function loader({request}) {
-    const res = await fetch('http://localhost:3000/profile', {
-        credentials: 'include'
-    })
-    if (res.status !== 200) return redirect('/login') // todo add a nice msg for the user
-    return null
-}
+import {Link, Outlet, redirect, useOutletContext} from "react-router-dom";
 
 export default function BoxLayout(){
+    const isLoggedIn = useOutletContext()
+    if (!isLoggedIn) redirect('/login')
+
     return(
         <div className={'main flex gap'}>
             <div className={'menu flex column gap'}>

@@ -32,7 +32,6 @@ export async function action({request, params}) {
         else form.append('contentType', validatedImage.contentType)
     } else form.delete('image')
 
-    console.log('validated img')
     const validatedForm = validateItemForm(form)
     if (validatedForm.message) return validatedForm
 

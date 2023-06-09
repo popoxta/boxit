@@ -48,7 +48,7 @@ export default function DeleteBox() {
 
         if (itemCount > 0) {
             return (
-                <>
+                <> className={'loading flex column center'}>
                     <h3>{box.name} has {itemCount} items, please delete or move them to continue.</h3>
                     <Link to={`../${box._id}`}>Go to items</Link>
                 </>
@@ -57,7 +57,7 @@ export default function DeleteBox() {
             return (
                 <>
                     <h3>Are you sure you want to delete {box.name}?</h3>
-                    <button onClick={() => handleDelete(box)}>Delete</button>
+                    <button className={'button'} style={{backgroundColor: box.hex}} onClick={() => handleDelete(box)}>Delete</button>
                 </>
             )
         }
@@ -67,16 +67,19 @@ export default function DeleteBox() {
 
     return (
         <div className={'flex column'}>
-            <Link to={'/boxes'}>
-                <button>back</button>
-            </Link>
-            <h2>Delete Box</h2>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'/boxes'}>
+                    <button className={'back-button'}>{'<'}</button>
+                </Link>
+                <h2>Delete Box</h2>
+            </div>
+            <div className={'loading flex column center'}>
             <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>
             </Suspense>
-
+            </div>
         </div>
     )
 }

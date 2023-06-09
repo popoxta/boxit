@@ -77,7 +77,6 @@ export default function Box() {
             <div className={'loading flex column center'}>
                 <h3>{errors}</h3>
             </div>
-
         </>
 
     return (

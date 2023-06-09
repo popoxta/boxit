@@ -42,7 +42,8 @@ export default function EditBox() {
     const actionData = useActionData()
 
     const conditionalRender = (data) => {
-        const errors = data.message || actionData?.message
+        const errors = data.message
+
         if (errors) return renderError(errors)
         else return renderForm(data)
     }
@@ -51,15 +52,18 @@ export default function EditBox() {
     const renderForm = (data) => {
         const box = data.box
         return (
-            <Form method={'PUT'} className={'flex column'}>
-                <label htmlFor={'name'}>Name</label>
-                <input type={'text'} name={'name'} id={'name'} defaultValue={box.name ?? ''} required/>
+            <>
+                {actionData?.message && renderError(actionData.message)}
+                <Form method={'PUT'} className={'flex column'}>
+                    <label htmlFor={'name'}>Name</label>
+                    <input type={'text'} name={'name'} id={'name'} defaultValue={box.name ?? ''} required/>
 
-                <label htmlFor={'hex'}>Hex</label>
-                <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#C04790'}/>
+                    <label htmlFor={'hex'}>Hex</label>
+                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#C04790'}/>
 
-                <button type={'submit'}>Update</button>
-            </Form>
+                    <button type={'submit'}>Update</button>
+                </Form>
+            </>
         )
     }
 

@@ -64,7 +64,7 @@ export default function DeleteItem() {
             <h2>Delete Item</h2>
             <Suspense fallback={<h3>Loading...</h3>}>
                 <Await resolve={loaderData.data}>
-                    {renderView}
+                    {conditionalRender}
                 </Await>
             </Suspense>
         </div>

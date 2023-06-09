@@ -18,7 +18,7 @@ export async function action({request}) {
     if (imageExists) {
        const validatedImage = validateItemImage(image)
 
-        if (validatedImage.message) return validatedImage.message
+        if (validatedImage.message) return validatedImage
         else form.append('contentType', validatedImage.contentType)
     } else form.delete('image')
 

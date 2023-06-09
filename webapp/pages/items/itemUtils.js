@@ -15,6 +15,7 @@ export default function validateItemForm(formData){
 
     if (!data.name?.length || data.count == null || data.price == null || !data.description || !data.box) return {message: 'Please fill out all required fields.'}
     if (data.name.length < 3) return {message: 'Name must be at least 3 characters.'}
+    if (data.name.length > 15) return {message: 'Name cannot be more than 15 characters.'}
     if (data.description.length < 3) return {message: 'Description must be at least 3 characters.'}
     if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
     if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}

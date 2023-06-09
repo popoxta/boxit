@@ -17,6 +17,7 @@ const validateItem = async (req, res, next ) => {
     }
     if (!req.body.name || req.body.count == null || req.body.price == null || !req.body.description || !req.body.box) return clientError(res, 'All fields must be filled out.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+    if (req.body.name.length > 15) return clientError(res, 'Name cannot be more than 15 characters.')
     if (req.body.description.length < 3) return clientError(res, 'Description must be at least 3 characters.')
     if (typeof count !== 'number' || isNaN(count)) return clientError(res, 'Count must be a numerical.')
     if (typeof price !== 'number'|| isNaN(price)) return clientError(res, 'Price must be a numerical.')

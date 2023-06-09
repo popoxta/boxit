@@ -66,7 +66,7 @@ export default function NewItem() {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
 
-    const renderErrors = (errors) => <h3>{errors}</h3>
+    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     const renderForm = (boxes) => {
         const validBoxes = boxes.length > 0
@@ -78,17 +78,17 @@ export default function NewItem() {
                     {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>}
 
                     {
-                        !validBoxes && <h6>Please create boxes to continue.</h6>
+                        !validBoxes && <h6 className={'error'}>Please create boxes to continue.</h6>
                         ||
-                        actionData?.message && <h6>{actionData.message}</h6>
+                        actionData?.message && <h6 className={'error'}>{actionData.message}</h6>
                         ||
-                        previewError && <h6>{previewError}</h6>
+                        previewError && <h6 className={'error'}>{previewError}</h6>
                     }
 
                     <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
                     <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} id={'name'} minLength={3} required/>
+                    <input type={'text'} name={'name'} id={'name'} maxLength={15} minLength={3} required/>
 
                     <label htmlFor={'count'}>Count</label>
                     <input type={'number'} name={'count'} id={'count'} required/>

@@ -75,7 +75,7 @@ export default function EditItem() {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
 
-    const renderErrors = (errors) => <h6>{errors}</h6>
+    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     const renderForm = (item, boxes) => {
         const validBoxes = boxes.length > 0
@@ -83,31 +83,29 @@ export default function EditItem() {
         let image = ''
         if (item.image){
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
-            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+            image = <img alt={`Photo of ${item.name}`} className={'preview-img'} src={`data:${contentType};base64,${base64}`}/>
         }
 
         return (
             <>
-                {
-                    previewImage.src && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>
-                    ||
-                    item.image && image
-                }
+                <Form method={'PUT'} className={'flex column center'} encType={'multipart/form-data'}>
 
-                {
-                    !validBoxes && <h6>Please create boxes to continue.</h6>
+                    {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>
                     ||
-                    actionData?.message && <h6>{actionData.message}</h6>
-                    ||
-                    previewError && <h6>{previewError}</h6>
-                }
+                    item.image && image}
 
-                <Form method={'PUT'} className={'flex column'} encType={'multipart/form-data'}>
+                    {
+                        !validBoxes && <h6 className={'error'}>Please create boxes to continue.</h6>
+                        ||
+                        actionData?.message && <h6 className={'error'}>{actionData.message}</h6>
+                        ||
+                        previewError && <h6 className={'error'}>{previewError}</h6>
+                    }
 
                     <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
                     <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} id={'name'} defaultValue={item.name} minLength={3} required/>
+                    <input type={'text'} name={'name'} id={'name'} defaultValue={item.name} maxLength={15} minLength={3} required/>
 
                     <label htmlFor={'count'}>Count</label>
                     <input type={'number'} name={'count'} id={'count'} defaultValue={item.count} required/>
@@ -124,7 +122,7 @@ export default function EditItem() {
                         {renderBoxOptions(boxes)}
                     </select>
 
-                    <button type={'submit'} disabled={!validBoxes}>Update</button>
+                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}} disabled={!validBoxes}>Update</button>
 
                 </Form>
             </>
@@ -132,18 +130,19 @@ export default function EditItem() {
     }
 
     return (
-        <div className={'flex column center'}>
-            <Link to={'..'}>
-                <button>back</button>
-            </Link>
+        <div className={'flex column'}>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <button className={'back-button'}>{'<'}</button>
+                </Link>
+                <h2>Edit Item</h2>
+            </div>
 
-            <h2>Edit Item</h2>
             <Suspense fallback={<Loading/>}>
             <Await resolve={loaderData.data}>
                 {renderConditional}
             </Await>
             </Suspense>
-
         </div>
     )
 }

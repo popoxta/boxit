@@ -1,11 +1,12 @@
-import {Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
+import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
+import {Suspense} from "react";
 
-export async function loader({params}) {
+export function loader({params}) {
     const boxId = params.id
-    const res = await fetch(`http://localhost:3000/boxes/${boxId}`, {
+    const box = fetch(`http://localhost:3000/boxes/${boxId}`, {
         credentials: 'include'
-    })
-    return await res.json()
+    }).then(res => res.json())
+    return defer({data: box})
 }
 
 export async function action({request, params}) {
@@ -40,38 +41,39 @@ export default function EditBox() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
 
-    const loaderErrors = loaderData?.message
-    const actionErrors = actionData?.message
+    const conditionalRender = (data) => {
+        const errors = data.message || actionData?.message
+        if (errors) return renderError(errors)
+        else return renderForm(data)
+    }
+    const renderError = (errors) => <h3>{errors}</h3>
 
-    const showForm = loaderData.box ?? ''
+    const renderForm = (data) => {
+        const box = data.box
+        return (
+            <Form method={'PUT'} className={'flex column'}>
+                <label htmlFor={'name'}>Name</label>
+                <input type={'text'} name={'name'} id={'name'} defaultValue={box.name ?? ''} required/>
+
+                <label htmlFor={'hex'}>Hex</label>
+                <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#C04790'}/>
+
+                <button type={'submit'}>Update</button>
+            </Form>
+        )
+    }
 
     return (
         <div className={'flex column center'}>
             <Link to={'..'}>
                 <button>back</button>
             </Link>
-
             <h2>Edit Box</h2>
-
-            {
-                loaderErrors && <h3>{loaderErrors}</h3>
-                ||
-                actionErrors && <h3>{actionErrors}</h3>
-            }
-
-            {showForm &&
-                <Form method={'PUT'} className={'flex column'}>
-
-                    <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} id={'name'} defaultValue={loaderData.box.name ?? '' } required/>
-
-                    <label htmlFor={'hex'}>Hex</label>
-                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={loaderData.box.hex ?? '#C04790'}/>
-
-                    <button type={'submit'}>Update</button>
-
-                </Form>
-            }
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={loaderData.data}>
+                    {conditionalRender}
+                </Await>
+            </Suspense>
         </div>
     )
 }

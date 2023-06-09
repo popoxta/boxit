@@ -75,7 +75,7 @@ export default function EditItem() {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
 
-    const renderErrors = (errors) => <h3>{errors}</h3>
+    const renderErrors = (errors) => <h6>{errors}</h6>
 
     const renderForm = (item, boxes) => {
         const validBoxes = boxes.length > 0
@@ -95,11 +95,11 @@ export default function EditItem() {
                 }
 
                 {
-                    !validBoxes && renderErrors('Please create boxes to continue.')
+                    !validBoxes && <h6>Please create boxes to continue.</h6>
                     ||
-                    actionData?.message && renderErrors(actionData.message)
+                    actionData?.message && <h6>{actionData.message}</h6>
                     ||
-                    previewError && renderErrors(previewError)
+                    previewError && <h6>{previewError}</h6>
                 }
 
                 <Form method={'PUT'} className={'flex column'} encType={'multipart/form-data'}>

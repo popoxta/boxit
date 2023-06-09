@@ -136,6 +136,11 @@ header {
     margin: 1rem 0 2rem;
 }
 
+.error {
+    color: var(--boxit-pink);
+    margin-top: 0;
+}
+
 .button {
     border: none;
     border-radius: 1rem;
@@ -149,6 +154,19 @@ header {
     scale: 0.95;
 }
 
+.button-small {
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    padding: 0.1rem 0.5rem;
+    transition: scale ease-in-out 0.1s;
+    cursor: pointer;
+}
+
+.button-small:hover {
+    scale: 0.95;
+}
+
 .back-button {
     border: none;
     background-color: transparent;
@@ -156,9 +174,16 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
     position: absolute;
-    left: 2rem;
-    top: 1.2rem;
+    left: 1rem;
+    top: 1.1rem;
     cursor: pointer;
+}
+
+.buttons-right {
+    font-size: 0.8rem;
+    position: absolute;
+    right: 1rem;
+    top: 1.6rem;
 }
 
 .text-center {
@@ -181,6 +206,7 @@ input:focus {
 
 input[type=color] {
     background-color: white;
+    cursor: pointer;
 }
 
 /* FLEX CLASSES*/
@@ -214,4 +240,8 @@ input[type=color] {
 
 .gap {
     gap: 2rem;
+}
+
+.gap-small {
+    gap: 0.8rem;
 }

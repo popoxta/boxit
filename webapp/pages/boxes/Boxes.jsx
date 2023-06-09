@@ -39,7 +39,7 @@ export default function Boxes() {
         )
     }
 
-    const renderError = (errors) => <h3>{errors}</h3>
+    const renderError = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     return (
         <div className={'flex column'}>

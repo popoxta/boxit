@@ -56,7 +56,7 @@ export default function NewBox() {
                     <path fill={'none'} d="M0 0h24v24H0z"/>
                 </svg>
 
-                {actionData && <h3>{actionData.message}</h3>}
+                {actionData && <h6 className={'error'}>{actionData.message}</h6>}
 
                 <label htmlFor={'name'}>Name</label>
                 <input type={'text'} maxLength={25} name={'name'} id={'name'} required/>

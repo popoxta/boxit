@@ -76,11 +76,11 @@ export default function NewItem() {
                 {previewImage.src && <img alt={`Preview image`} src={previewImage.src}/>}
 
                 {
-                    !validBoxes && renderErrors('Please create boxes to continue.')
+                    !validBoxes && <h6>Please create boxes to continue.</h6>
                     ||
-                    actionData?.message && renderErrors(actionData.message)
+                    actionData?.message && <h6>{actionData.message}</h6>
                     ||
-                    previewError && renderErrors(previewError)
+                    previewError && <h6>{previewError}</h6>
                 }
 
                 <Form method={'POST'} className={'flex column'} encType={'multipart/form-data'}>

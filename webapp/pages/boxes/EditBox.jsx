@@ -1,5 +1,5 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
-import {Suspense} from "react";
+import {Suspense, useState} from "react";
 import Loading from "../components/Loading.jsx";
 
 export function loader({params}) {
@@ -46,39 +46,64 @@ export async function action({request, params}) {
 export default function EditBox() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
+    const [hexValue, setHexValue] = useState('#CB1C85')
+
 
     const conditionalRender = (data) => {
         const errors = data.message
-
         if (errors) return renderError(errors)
         else return renderForm(data)
     }
-    const renderError = (errors) => <h3>{errors}</h3>
+    const renderError = (errors) => {
+        return (
+            <div className={'loading flex column center'}>
+                <h3>{errors}</h3>
+            </div>
+        )
+    }
+
+    function handleHexChange(e) {
+        setHexValue(e.target.value)
+    }
 
     const renderForm = (data) => {
         const box = data.box
+
+        if (box.hex) setHexValue(box.hex)
+
         return (
             <>
-                {actionData?.message && renderError(actionData.message)}
-                <Form method={'PUT'} className={'flex column'}>
+                <Form method={'PUT'} className={'flex column center'}>
+
+                    <svg className={'cube-box extra-margin'} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path fill={hexValue}
+                              d="M2 18.66l10.5 4.313L23 18.661V6.444L12.5 2.13 2 6.444zm20-.67l-9 3.697V11.102l9-3.68zM12.5 3.213l8.557 3.514-8.557 3.5-8.557-3.5zM3 7.422l9 3.68v10.585L3 17.99z"/>
+                        <path fill={'none'} d="M0 0h24v24H0z"/>
+                    </svg>
+
+                    {actionData?.message && <h6 className={'error'}>{actionData.message}</h6>}
+
                     <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} maxLength={25} id={'name'} defaultValue={box.name ?? ''} required/>
+                    <input type={'text'} name={'name'} maxLength={25} id={'name'} defaultValue={box.name ?? ''}
+                           required/>
 
                     <label htmlFor={'hex'}>Hex</label>
-                    <input type={'color'} name={'hex'} id={'hex'} defaultValue={box.hex ?? '#CB1C85'}/>
+                    <input type={'color'} name={'hex'} id={'hex'} value={hexValue}/>
 
-                    <button type={'submit'}>Update</button>
+                    <button type={'submit'} style={{backgroundColor: hexValue}} className={'button'}>Update</button>
                 </Form>
             </>
         )
     }
 
     return (
-        <div className={'flex column center'}>
-            <Link to={'..'}>
-                <button>back</button>
-            </Link>
-            <h2>Edit Box</h2>
+        <div className={'flex column'}>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <button className={'back-button'}>{'<'}</button>
+                </Link>
+                <h2>Edit Box</h2>
+            </div>
             <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}

@@ -27,16 +27,33 @@ export default function Box() {
 
     const renderBoxContents = (box, items) => {
         return <>
-            <Link to={'./edit'}>
-                <button>edit</button>
-            </Link>
-            <Link to={'./delete'}>
-                <button>delete</button>
-            </Link>
-            <h2>{box.name}</h2>
+            <div className={'text-center box-header text-center'}>
+                <h2>{box.name}</h2>
+                <div className={'flex gap-small buttons-right'}>
+                    <Link to={'./edit'}>
+                        <button
+                            style={{backgroundColor: box.hex}}
+                            className={'button-small'}>edit
+                        </button>
+                    </Link>
+                    <Link to={'./delete'}>
+                        <button
+                            style={{backgroundColor: box.hex}}
+                            className={'button-small'}>delete
+                        </button>
+                    </Link>
+                </div>
+            </div>
             {items.length > 0
                 ? renderItems(items, box._id)
-                : <h3>No items yet</h3>
+                : <div className={'loading flex column center'}>
+                    <h3>No items yet.</h3>
+                    <Link to={'/items/new'}>
+                        <button style={{backgroundColor: box.hex}} className={'button'}>
+                            Create your first item
+                        </button>
+                    </Link>
+                </div>
             }
         </>
     }
@@ -53,17 +70,29 @@ export default function Box() {
     )
 
     const renderErrors = (errors) =>
-        <div className={'flex column'}>
-            <h2>Error</h2>
-            <h3>{errors}</h3>
-        </div>
+        <>
+            <div className={'text-center box-header text-center'}>
+                <h2>Error</h2>
+            </div>
+            <div className={'loading flex column center'}>
+                <h3>{errors}</h3>
+            </div>
+
+        </>
 
     return (
         <div className={'flex column'}>
             <Link to={'..'}>
-                <button>back</button>
+                <button className={'back-button'}>{'<'}</button>
             </Link>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={
+                <>
+                    <div className={'text-center box-header text-center'}>
+                        <h2>Loading Box...</h2>
+                    </div>
+                    <Loading/>
+                </>
+            }>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

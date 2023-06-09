@@ -1,3 +1,4 @@
+import {Buffer} from "buffer/";
 
 export function validateItemImage(image) {
     if (image.size > 10000) return {message: 'File must be under 10MB.'}
@@ -19,4 +20,10 @@ export default function validateItemForm(formData){
     if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
 
     else return formData
+}
+
+export const bufferImgToBase64 = (image, alt) => {
+    const contentType = image.contentType.substring(1)
+    const base64 = Buffer.from(image.data.data).toString('base64')
+    return ({base64, contentType})
 }

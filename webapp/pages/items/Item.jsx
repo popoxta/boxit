@@ -1,6 +1,7 @@
 import {Await, defer, Link, useLoaderData, useLocation, useSearchParams} from "react-router-dom";
 import {Buffer} from "buffer/";
 import {Suspense} from "react";
+import {bufferImgToBase64} from "./itemUtils.js";
 
 export function loader({params}) {
     const itemId = params.id
@@ -14,12 +15,6 @@ export default function Item() {
     const loaderData = useLoaderData()
     const [location] = useSearchParams()
     const prevLocation = location.get('from') ?? '/items'
-
-    const renderBufferImage = (image, alt) => {
-        const contentType = image.contentType.substring(1)
-        const base64 = Buffer.from(image.data.data).toString('base64')
-        return <img alt={`Photo of ${alt}`} src={`data:${contentType};base64,${base64}`}/>
-    }
 
     const renderConditional = (data) => {
         const errors = data.message
@@ -37,7 +32,12 @@ export default function Item() {
     }
 
     const renderItem = (item) => {
-        const image = item.image
+        let image = ''
+        if (item.image){
+            const {contentType, base64} = bufferImgToBase64(item.image, item.name)
+            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+        }
+
         return (
             <>
                 <Link to={'./edit'}>
@@ -47,7 +47,7 @@ export default function Item() {
                     <button>delete</button>
                 </Link>
 
-                {image && renderBufferImage(image, item.name)}
+                {item.image && image}
 
                 <h2>{item.name}</h2>
                 <p>count: {item.count}</p>

@@ -1,7 +1,7 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Buffer} from "buffer/";
 import {Suspense, useState} from "react";
-import validateItemForm, {validateItemImage} from "./itemUtils.js";
+import validateItemForm, {bufferImgToBase64, validateItemImage} from "./itemUtils.js";
 
 export function loader({params}) {
     const itemId = params.id
@@ -57,12 +57,6 @@ export default function EditItem() {
     const [previewImage, setPreviewImage] = useState({src: ''})
     const [previewError, setPreviewError] = useState('')
 
-    const renderBufferImage = (image, alt) => {
-        const contentType = image.contentType.substring(1)
-        const base64 = Buffer.from(image.data.data).toString('base64')
-        return <img alt={`Photo of ${alt}`} src={`data:${contentType};base64,${base64}`}/>
-    }
-
     const handleImageUpload = (e) => {
         if(e.target.files[0].size > 10000) {
             setPreviewError('Image file must be under 10MB.')
@@ -86,12 +80,18 @@ export default function EditItem() {
     const renderForm = (item, boxes) => {
         const validBoxes = boxes.length > 0
 
+        let image = ''
+        if (item.image){
+            const {contentType, base64} = bufferImgToBase64(item.image, item.name)
+            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+        }
+
         return (
             <>
                 {
                     previewImage.src && <img alt={`Photo of ${item.name}`} src={previewImage.src}/>
                     ||
-                    item.image && renderBufferImage(item.image, item.name)
+                    item.image && image
                 }
 
                 {

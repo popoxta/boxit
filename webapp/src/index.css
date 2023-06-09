@@ -3,11 +3,17 @@
 :root {
     --boxit-black: #3C3C3C;
     --boxit-pink: #CB1C85;
+    --boxit-light-grey: #F0F0F0;
+    --boxit-white: #FFFEFE;
 }
 
-
 #root {
-    height: 100vh;
+    min-height: 100%;
+    background-color: var(--boxit-white);
+}
+
+body {
+    margin: 0;
 }
 
 * {
@@ -19,14 +25,74 @@ a {
     text-decoration: none;
 }
 
+h3 {
+    font-size: 1.2rem;
+}
+
+hr {
+    border: none;
+    border-top: 2px var(--boxit-light-grey) solid;
+    width: 100%;
+    margin: 0;
+}
+
+/* HEADER */
+
 header {
+    background-color: white;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0.5rem 2rem;
 }
 
 .cube-logo {
-    width: 4rem;
+    width: 4.5rem;
     margin-right: 1rem;
+}
+
+/* BODY */
+
+.body {
+    margin: 2.5rem 2rem 0;
+    height: 100%;
+}
+
+/* MENU */
+.menu {
+    width: fit-content;
+    white-space: nowrap;
+    margin: 0 2rem 0 1rem;
+}
+
+/* CONTENT */
+
+.content {
+    background-color: white;
+    border: 2px solid var(--boxit-light-grey);
+    border-radius: 0.8rem;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+/* BOX */
+
+.cube-box {
+    width: 4rem;
+    margin: 1rem 0;
+}
+
+.box {
+    background-color: white;
+    border: 2px solid var(--boxit-light-grey);
+    border-radius: 0.8rem;
+    padding: 1rem;
+    min-width: 13rem;
+    height: 15rem;
+}
+
+/* DECORATIVE CLASSES*/
+
+.spaced {
+    letter-spacing: 3px;
 }
 
 .pink-hover {
@@ -41,6 +107,10 @@ header {
     box-shadow: 0 5px 10px 0 rgba(0,0,0,0.08);
 }
 
+.no-margin-btm {
+    margin-bottom: 0;
+}
+
 /* FLEX CLASSES*/
 .flex {
     display: flex;
@@ -50,12 +120,20 @@ header {
     align-items: center;
 }
 
+.center-justify {
+    justify-content: center;
+}
+
 .column {
     flex-direction: column;
 }
 
 .apart {
     justify-content: space-between;
+}
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 .gap {

@@ -1,5 +1,6 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
+import {BoxComponent} from "../components/BoxComponent.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {
@@ -21,13 +22,10 @@ export default function Boxes() {
     const renderBoxes = (boxes) => {
         if (boxes.length > 0) {
             return (
-                boxes.map(box => <div className={'box'} key={box._id}>
-                        <Link to={`./${box._id}`}>
-                            <h3 style={{color: box.hex ?? '#C04790'}}>{box.name}</h3>
-                        </Link>
-                        <p>{box._id}</p>
-                    </div>
-                ))
+                <div className={'flex gap wrap center-justify'}>
+                    {boxes.map(box => BoxComponent({box}))}
+                </div>
+            )
         } else return (
             <>
                 <h3>No boxes yet.</h3>

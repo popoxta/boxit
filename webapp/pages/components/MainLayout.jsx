@@ -15,8 +15,9 @@ export default function MainLayout() {
     return (
         <>
             <Header isLoggedIn={isLoggedIn}/>
-            <h1>Main Layout</h1>
-            <Outlet context={isLoggedIn}/>
+            <div className={'body'}>
+                <Outlet context={isLoggedIn}/>
+            </div>
         </>
     )
 }

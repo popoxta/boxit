@@ -6,7 +6,7 @@ export function loader() {
         credentials: 'include'
     }).then(res => res.json())
 
-    return defer({boxes: boxes})
+    return defer({data: boxes})
 }
 
 export default function Boxes() {
@@ -42,7 +42,7 @@ export default function Boxes() {
         <div className={'flex column'}>
             <h2>All boxes</h2>
             <Suspense fallback={<h3>Loading...</h3>}>
-                <Await resolve={loaderData.boxes}>
+                <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>
             </Suspense>

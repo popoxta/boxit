@@ -1,12 +1,13 @@
-import {Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {Await, defer, Link, useLoaderData, useNavigate} from "react-router-dom";
+import {Suspense, useState} from "react";
 
-export async function loader({params}) {
+export function loader({params}) {
     const boxId = params.id
-    const res = await fetch(`http://localhost:3000/boxes/${boxId}`, {
+    const box = fetch(`http://localhost:3000/boxes/${boxId}`, {
         credentials: 'include'
-    })
-    return await res.json()
+    }).then(res => res.json())
+
+    return defer({data: box})
 }
 
 async function deleteBox(box) {
@@ -26,43 +27,55 @@ export default function DeleteBox() {
     const loaderData = useLoaderData()
     const navigate = useNavigate()
 
-    const [errors, setErrors] = useState(loaderData.message?.toString() ?? '')
+    const [responseErrors, setResponseErrors] = useState({message: ''})
 
-    const box = loaderData.box
-    const itemCount = Number(loaderData.itemCount)
-
-
-    async function handleDelete() {
-
+    async function handleDelete(box) {
         const deletion = await deleteBox(box)
-        console.log(deletion)
         if (deletion.status === 200) return navigate('/boxes')
-        else setErrors(deletion.message)
+        else setResponseErrors({message: deletion.message})
     }
+
+    const conditionalRender = (data) => {
+        const errors = data.message || responseErrors.message
+        if (errors) return renderErrors(errors)
+        else return renderView(data)
+    }
+
+    const renderView = (data) => {
+        const itemCount = Number(data.itemCount)
+        const box = data.box
+
+        if (itemCount > 0) {
+            return (
+                <>
+                    <h3>{box.name} has {itemCount} items, please delete or move them to continue.</h3>
+                    <Link to={`../${box._id}`}>Go to items</Link>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <h3>Are you sure you want to delete {box.name}?</h3>
+                    <button onClick={() => handleDelete(box)}>Delete</button>
+                </>
+            )
+        }
+    }
+
+    const renderErrors = (errors) => <h3>{errors}</h3>
 
     return (
         <div className={'flex column'}>
             <Link to={'/boxes'}>
                 <button>back</button>
             </Link>
+            <h2>Delete Box</h2>
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={loaderData.data}>
+                    {conditionalRender}
+                </Await>
+            </Suspense>
 
-            {errors
-                ? <>
-                    <h2>Error</h2>
-                    <h3>{errors}</h3>
-                </>
-                : <>
-                    <h2>{box.name}</h2>
-                    {itemCount > 0
-                        ? <>
-                            <h3>This box has {itemCount} items, please delete or move them to continue.</h3>
-                            <Link to={`../${box._id}`} >Go to items</Link>
-                            </>
-                        : <h3>Are you sure you want to delete {box.name}?</h3>
-                    }
-                    <button onClick={handleDelete} disabled={itemCount > 0}>Delete</button>
-                </>
-            }
         </div>
     )
 }

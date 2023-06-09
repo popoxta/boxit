@@ -1,24 +1,37 @@
-import {Link, useLoaderData} from "react-router-dom";
-import {Buffer} from "buffer/";
+import {Await, defer, Link, useLoaderData} from "react-router-dom";
 
-export async function loader({request}) {
-    const res = await fetch('http://localhost:3000/items', {
+import {bufferImgToBase64} from "./itemUtils.js";
+import {Suspense} from "react";
+
+export function loader() {
+    const items = fetch('http://localhost:3000/items', {
         credentials: 'include'
-    })
-    return await res.json()
+    }).then(res => res.json())
+    return defer({data: items})
 }
 
 export default function Items() {
     const loaderData = useLoaderData()
-    const errors = loaderData.message
 
-    const items = loaderData.items?.map(item => {
+    const renderConditional = (data) => {
+        const errors = data.message
+        if (errors) return renderErrors(errors)
 
-        const image = item.image?.data ? Buffer.from(item.image.data.data).toString('base64') : ''
+        if (data.items.length > 0) return renderItems(data.items)
+        else return renderNoItems
+    }
+
+    const renderItems = (items) => items.map(item => {
+
+        let image = ''
+        if (item.image) {
+            const {contentType, base64} = bufferImgToBase64(item.image, item.name)
+            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+        }
 
         return (
             <div className={'box'} key={item._id}>
-                {image && <img alt={`Photo of ${item.name}`} src={`data:${item.image.contentType.substring(1)};base64,${image}`}/>}
+                {item.image && image}
                 <h3>{item.name}</h3>
                 <p>count: {item.count}</p>
                 <p>price: {item.price}</p>
@@ -29,14 +42,23 @@ export default function Items() {
         )
     })
 
+    const renderNoItems = (
+        <>
+            <h3>No items yet.</h3>
+            <Link to={'./new'}>Create your first item</Link>
+        </>
+    )
+
+    const renderErrors = (errors) => <h3>{errors}</h3>
+
     return (
         <div className={'flex column'}>
             <h2>All items</h2>
-            {errors
-                ? errors
-                : items.length > 0
-                    ? <div className={'flex gap'}>{items}</div>
-                    : <h3>No items yet</h3>}
+            <Suspense fallback={<h3>Loading...</h3>}>
+                <Await resolve={loaderData.data}>
+                    {renderConditional}
+                </Await>
+            </Suspense>
         </div>
     )
 }

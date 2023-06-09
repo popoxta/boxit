@@ -49,7 +49,7 @@ export default function NewItem() {
     const [previewError, setPreviewError] = useState('')
 
     const handleImageUpload = (e) => {
-        if(e.target.files[0].size > 10000000) {
+        if (e.target.files[0].size > 10000000) {
             setPreviewError('Image file must be under 10MB.')
             return
         }
@@ -73,17 +73,17 @@ export default function NewItem() {
 
         return (
             <>
-                {previewImage.src && <img alt={`Preview image`} src={previewImage.src}/>}
+                <Form method={'POST'} className={'flex column center'} encType={'multipart/form-data'}>
 
-                {
-                    !validBoxes && <h6>Please create boxes to continue.</h6>
-                    ||
-                    actionData?.message && <h6>{actionData.message}</h6>
-                    ||
-                    previewError && <h6>{previewError}</h6>
-                }
+                    {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>}
 
-                <Form method={'POST'} className={'flex column'} encType={'multipart/form-data'}>
+                    {
+                        !validBoxes && <h6>Please create boxes to continue.</h6>
+                        ||
+                        actionData?.message && <h6>{actionData.message}</h6>
+                        ||
+                        previewError && <h6>{previewError}</h6>
+                    }
 
                     <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
@@ -105,7 +105,7 @@ export default function NewItem() {
                         {renderBoxOptions(boxes)}
                     </select>
 
-                    <button type={'submit'} disabled={!validBoxes}>Create</button>
+                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}} disabled={!validBoxes}>Create</button>
 
                 </Form>
             </>
@@ -114,19 +114,19 @@ export default function NewItem() {
 
 
     return (
-        <div className={'flex column center'}>
-            <Link to={'..'}>
-                <button>back</button>
-            </Link>
-
-            <h2>New Item</h2>
+        <div className={'flex column'}>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <button className={'back-button'}>{'<'}</button>
+                </Link>
+                <h2>New Item</h2>
+            </div>
 
             <Suspense fallback={<Loading/>}>
-            <Await resolve={loaderData.data}>
-                {renderConditional}
-            </Await>
+                <Await resolve={loaderData.data}>
+                    {renderConditional}
+                </Await>
             </Suspense>
-
         </div>
     )
 }

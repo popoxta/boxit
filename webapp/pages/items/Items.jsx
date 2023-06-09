@@ -27,34 +27,46 @@ export default function Items() {
         let image = ''
         if (item.image) {
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
-            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+            image =
+                <img className={'item-img'} alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
         }
 
         return (
-            <div className={'box'} key={item._id}>
-                {item.image && image}
-                <h3>{item.name}</h3>
-                <p>count: {item.count}</p>
-                <p>price: {item.price}</p>
-                <Link to={`/items/${item._id}?from=/items`}>
-                    <button>view</button>
-                </Link>
+            <div className={'box flex column center no-padding'} key={item._id}>
+                {item.image ? image : <div className={'placeholder'}></div>}
+                <div className={'item-info flex center column'}>
+                    <Link to={`/items/${item._id}?from=/items`}>
+                        <h3>{item.name}</h3>
+                    </Link>
+                    <hr/>
+                    <p>count: {item.count}</p>
+                    <p>price: {item.price}</p>
+                    <Link to={`/items/${item._id}?from=/items`}>
+                        <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>view</button>
+                    </Link>
+                </div>
             </div>
         )
     })
 
     const renderNoItems = (
-        <>
+        <div className={'loading flex column center'}>
             <h3>No items yet.</h3>
-            <Link to={'./new'}>Create your first item</Link>
-        </>
+            <Link to={'./new'}>
+                <button style={{backgroundColor: '#CB1C85'}} className={'button'}>
+                    Create your first item
+                </button>
+            </Link>
+        </div>
     )
 
-    const renderErrors = (errors) => <h3>{errors}</h3>
+    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     return (
         <div className={'flex column'}>
-            <h2>All items</h2>
+            <div className={'text-center box-header'}>
+                <h2>All items</h2>
+            </div>
             <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}

@@ -49,7 +49,6 @@ export default function Boxes() {
             <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
-
                 </Await>
             </Suspense>
         </div>

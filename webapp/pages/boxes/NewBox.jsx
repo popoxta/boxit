@@ -4,8 +4,13 @@ export async function action({request}) {
     const data = await request.formData()
     const name = data.get('name')
     const hex = data.get('hex') ?? '#C04790'
+
+    const hexRegex = new RegExp(/^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i)
+
     if (!name?.length) return {message: 'Please enter a name.'}
     if (name.length < 3) return {message: 'Name must be at least 3 characters.'}
+    if (name.length > 25) return {message: 'Name cannot be longer than 25 characters.'}
+    if (!hexRegex.test(hex)) return {message: 'Hex code is invalid.'}
 
     const res = await fetch(
         'http://localhost:3000/boxes/new',
@@ -41,7 +46,7 @@ export default function NewBox() {
             <Form method={'POST'} className={'flex column'}>
 
                 <label htmlFor={'name'}>Name</label>
-                <input type={'text'} name={'name'} id={'name'} required/>
+                <input type={'text'} maxLength={25} name={'name'} id={'name'} required/>
 
                 <label htmlFor={'hex'}>Hex</label>
                 <input type={'color'} name={'hex'} id={'hex'}/>

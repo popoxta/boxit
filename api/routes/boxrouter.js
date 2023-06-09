@@ -14,8 +14,12 @@ boxRouter.get('/boxes', isAuthorized, async (req, res) => {
 boxRouter.post('/boxes/new', async (req, res) => {
     const userId = req.session.passport.user
 
+    const hexRegex = new RegExp(/^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i)
+
     if (!req.body.name) return clientError(res, 'Name must be given.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+    if (req.body.name.length > 25) return clientError(res, 'Name cannot be longer than 25 characters.')
+    if (!hexRegex.test(req.body.hex)) return clientError(res, 'Hex code is invalid.')
 
     const nameIsTaken = await Box.findOne({name: req.body.name, user: userId})
     if (nameIsTaken) return clientError(res, 'Box with that name already exists.')
@@ -46,8 +50,12 @@ boxRouter.put('/boxes/:id/edit', isAuthorized, async (req, res) => {
 
     if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
+    const hexRegex = new RegExp(/^#(?:(?:[\da-f]{3}){1,2}|(?:[\da-f]{4}){1,2})$/i)
+
     if (!req.body.name) return clientError(res, 'Name must be given.')
     if (req.body.name.length < 3) return clientError(res, 'Name must be at least 3 characters.')
+    if (req.body.name.length > 25) return clientError(res, 'Name cannot be longer than 25 characters.')
+    if (!hexRegex.test(req.body.hex)) return clientError(res, 'Hex code is invalid.')
 
     const nameIsTaken = await Box.findOne({_id: {$ne: boxId}, name: req.body.name, user: userId})
     if (nameIsTaken) return clientError(res, 'Box with that name already exists.')

@@ -1,6 +1,6 @@
 import {Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {useState} from "react";
-import {Buffer} from "buffer";
+import validateItemForm, {validateItemImage} from "./itemUtils.js";
 
 export async function loader() {
     const res = await fetch('http://localhost:3000/boxes', {
@@ -11,38 +11,26 @@ export async function loader() {
 
 export async function action({request}) {
     const form = await request.formData()
-
-    // check if image exists
     const image = form.get('image')
     const imageExists = image.name.length > 0
 
     // if image is present, validate, if not, delete.
-    if (imageExists){
-        if (image.size > 10000) return {message: 'File must be under 10MB.'}
-        const contentType = "." + image.type.substring(image.type.indexOf('/') + 1)
-        if (!(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(contentType)) return {message: 'File type must be of image type.'}
+    if (imageExists) {
+       const validatedImage = validateItemImage(image)
 
-        form.append('contentType', contentType)
-    }
-    else form.delete('image')
+        if (validatedImage.message) return validatedImage.message
+        else form.append('contentType', validatedImage.contentType)
+    } else form.delete('image')
 
-    // pull apart the rest to check inputs are kosher
-    const {...data} = Object.fromEntries(form)
-    data.count = Number(data.count)
-    data.price = Number(data.price)
-
-    if (!data.name?.length || data.count == null || data.price == null || !data.description || !data.box) return {message: 'Please fill out all required fields.'}
-    if (data.name.length < 3) return {message: 'Name must be at least 3 characters.'}
-    if (data.description.length < 3) return {message: 'Description must be at least 3 characters.'}
-    if (typeof data.count !== 'number' || isNaN(data.count)) return {message: 'Count must be numerical.'}
-    if (typeof data.price !== 'number' || isNaN(data.price)) return {message: 'Price must be numerical.'}
+    const validatedForm = validateItemForm(form)
+    if (validatedForm.message) return validatedForm
 
     const res = await fetch(
         'http://localhost:3000/items/new',
         {
             method: 'POST',
             credentials: 'include',
-            body: form
+            body: validatedForm
         }
     )
 

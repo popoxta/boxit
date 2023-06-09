@@ -3,6 +3,7 @@
 :root {
     --boxit-black: #3C3C3C;
     --boxit-pink: #CB1C85;
+    --boxit-light-pink: #efe2e5;
     --boxit-light-grey: #F0F0F0;
     --boxit-white: #FFFEFE;
 }
@@ -73,6 +74,7 @@ header {
     flex-grow: 1;
     min-height: 40rem;
     max-width: 75rem;
+    position: relative;
 }
 
 /* BOX */
@@ -104,6 +106,7 @@ header {
 }
 
 /* LOADING */
+
 .loading {
     margin-top: 2rem;
 }
@@ -129,6 +132,9 @@ header {
 .no-margin-btm {
     margin-bottom: 0;
 }
+.extra-margin {
+    margin: 1rem 0 2rem;
+}
 
 .button {
     border: none;
@@ -143,8 +149,38 @@ header {
     scale: 0.95;
 }
 
+.back-button {
+    border: none;
+    background-color: transparent;
+    color: var(--boxit-pink);
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    left: 2rem;
+    top: 1.2rem;
+    cursor: pointer;
+}
+
 .text-center {
     text-align: center;
+}
+
+/* FORM */
+input {
+    border: 2px solid var(--boxit-light-grey);
+    border-radius: 0.4rem;
+    height: 2rem;
+    margin: 0.5rem 0 1rem;
+    transition: border-color ease-in-out 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--boxit-light-pink);
+}
+
+input[type=color] {
+    background-color: white;
 }
 
 /* FLEX CLASSES*/

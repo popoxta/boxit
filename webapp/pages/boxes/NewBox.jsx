@@ -1,4 +1,5 @@
 import {Form, Link, redirect, useActionData} from "react-router-dom";
+import {useState} from "react";
 
 export async function action({request}) {
     const data = await request.formData()
@@ -31,27 +32,39 @@ export async function action({request}) {
 }
 
 export default function NewBox() {
+    const [hexValue, setHexValue] = useState('#CB1C85')
     const actionData = useActionData()
 
+    function handleHexChange(e) {
+        setHexValue(e.target.value)
+    }
+
     return (
-        <div className={'flex column center'}>
-            <Link to={'..'}>
-                <button>back</button>
-            </Link>
-            
-            <h2>New Box</h2>
+        <div className={'flex column'}>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <button className={'back-button'}>{'<'}</button>
+                </Link>
 
-            {actionData && <h3>{actionData.message}</h3>}
+                <h2>New Box</h2>
+            </div>
 
-            <Form method={'POST'} className={'flex column'}>
+            <Form method={'POST'} className={'flex column center'}>
+
+                <svg className={'cube-box extra-margin'} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill={hexValue} d="M2 18.66l10.5 4.313L23 18.661V6.444L12.5 2.13 2 6.444zm20-.67l-9 3.697V11.102l9-3.68zM12.5 3.213l8.557 3.514-8.557 3.5-8.557-3.5zM3 7.422l9 3.68v10.585L3 17.99z"/>
+                    <path fill={'none'} d="M0 0h24v24H0z"/>
+                </svg>
+
+                {actionData && <h3>{actionData.message}</h3>}
 
                 <label htmlFor={'name'}>Name</label>
                 <input type={'text'} maxLength={25} name={'name'} id={'name'} required/>
 
                 <label htmlFor={'hex'}>Hex</label>
-                <input type={'color'} name={'hex'} id={'hex'}/>
+                <input onChange={handleHexChange} value={hexValue} type={'color'} name={'hex'} id={'hex'}/>
 
-                <button type={'submit'}>Create</button>
+                <button type={'submit'} style={{backgroundColor: hexValue}} className={'button'}>Create</button>
 
             </Form>
         </div>

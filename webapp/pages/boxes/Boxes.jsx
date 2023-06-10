@@ -2,6 +2,7 @@ import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
 import {BoxComponent} from "../components/BoxComponent.jsx";
 import Loading from "../components/Loading.jsx";
+import BoxComponentPlus from "../components/BoxComponentPlus.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {
@@ -26,6 +27,7 @@ export default function Boxes() {
             return (
                 <div className={'flex wrap center-justify'}>
                     {boxes.map(box => BoxComponent({box}))}
+                    {<BoxComponentPlus/>}
                 </div>
             )
         } else return (

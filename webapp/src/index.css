@@ -4,7 +4,8 @@
     --boxit-black: #3C3C3C;
     --boxit-pink: #CB1C85;
     --boxit-light-pink: #efe2e5;
-    --boxit-light-grey: #F0F0F0;
+    --boxit-light-grey: #c7b8c0;
+    --boxit-footer: #FAF7F7;
     --boxit-white: #FFFEFE;
 }
 
@@ -63,6 +64,23 @@ header {
     width: fit-content;
     white-space: nowrap;
     margin: 0 2rem 0 1rem;
+}
+
+/* FOOTER */
+
+footer {
+    background-color: var(--boxit-footer);
+    position: fixed;
+    bottom: 0;
+    padding: 0.6rem;
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+footer p {
+    color: var(--boxit-light-grey);
+    font-size: 0.8rem;
 }
 
 /* CONTENT */

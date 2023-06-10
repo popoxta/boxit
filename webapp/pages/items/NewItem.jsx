@@ -1,4 +1,14 @@
-import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
+import {
+    Await,
+    defer,
+    Form,
+    Link,
+    redirect,
+    useActionData,
+    useLoaderData,
+    useLocation,
+    useSearchParams
+} from "react-router-dom";
 import {Suspense, useState} from "react";
 import validateItemForm, {validateItemImage} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
@@ -43,6 +53,8 @@ export async function action({request}) {
 export default function NewItem() {
     const loaderData = useLoaderData()
     const actionData = useActionData()
+    const [location] = useSearchParams()
+    const boxQuery = location.get('box')
 
     // set preview image
     const [previewImage, setPreviewImage] = useState({src: ''})
@@ -70,6 +82,8 @@ export default function NewItem() {
 
     const renderForm = (boxes) => {
         const validBoxes = boxes.length > 0
+        const fromBoxExists = boxes.filter(box => box._id === boxQuery)[0] ?? false
+        const fromBox = fromBoxExists ? fromBoxExists._id : null
 
         return (
             <>
@@ -101,7 +115,7 @@ export default function NewItem() {
                               required/>
 
                     <label htmlFor={'box'}>Box</label>
-                    <select name={'box'} id={'box'} required disabled={!validBoxes}>
+                    <select name={'box'} id={'box'} defaultValue={fromBox} required disabled={!validBoxes}>
                         {renderBoxOptions(boxes)}
                     </select>
 

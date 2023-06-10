@@ -2,6 +2,7 @@ import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
 import Loading from "../components/Loading.jsx";
 import ItemComponent from "../components/ItemComponent.jsx";
+import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
 
 export function loader() {
     const items = fetch('http://localhost:3000/items', {
@@ -24,6 +25,7 @@ export default function Items() {
     const renderItems = (items) =>
         <div className={'flex wrap center-justify'}>
             {items.map(item => <ItemComponent key={item._id} item={item} from={'/items'}/>)}
+            {<ItemComponentPlus/>}
         </div>
 
     const renderNoItems = (

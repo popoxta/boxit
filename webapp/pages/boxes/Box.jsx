@@ -1,8 +1,8 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
 import Loading from "../components/Loading.jsx";
-import Item from "../items/Item.jsx";
 import ItemComponent from "../components/ItemComponent.jsx";
+import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -52,7 +52,7 @@ export default function Box() {
                 ? renderItems(items, box._id)
                 : <div className={'loading flex column center'}>
                     <h3>No items yet.</h3>
-                    <Link to={'/items/new'}>
+                    <Link to={`/items/new?box=${box._id}`}>
                         <button style={{backgroundColor: box.hex}} className={'button'}>
                             Create your first item
                         </button>
@@ -65,6 +65,7 @@ export default function Box() {
     const renderItems = (items, id) =>
         <div className={'flex wrap center-justify'}>
             {items.map(item => <ItemComponent key={item._id} item={item} from={`/boxes/${id}`}/>)}
+            {<ItemComponentPlus box={id}/>}
         </div>
 
     const renderErrors = (errors) =>

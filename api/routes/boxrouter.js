@@ -40,7 +40,7 @@ boxRouter.get('/boxes/:id/items', isAuthorized, async (req, res, next) => {
 
     if (!isValidId(boxId)) return clientError(res, 'Invalid ID.')
 
-    const boxItems = await Item.find({user: userId, box: boxId})
+    const boxItems = await Item.find({user: userId, box: boxId}).populate('box').exec()
     res.json({items: boxItems})
 })
 

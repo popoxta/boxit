@@ -8,7 +8,7 @@ const itemRouter = require('express').Router()
 itemRouter.get('/items', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
 
-    const results = await Item.find({user: userId})
+    const results = await Item.find({user: userId}).populate('box').exec()
     res.json({items: results})
 })
 
@@ -57,7 +57,7 @@ itemRouter.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image
         contentType: req.body.contentType
     }
 
-    const result = await Item.findOneAndUpdate({_id: itemId, user: userId}, updatedItem, {new: true})
+    const result = await Item.findOneAndUpdate({_id: itemId, user: userId}, updatedItem, {new: true}).populate('box').exec()
     if (!result) return notFoundError({message: 'Item could not be found.'})
     return res.json({item: result})
 })
@@ -66,7 +66,6 @@ itemRouter.delete('/items/:id/delete', isAuthorized, async (req, res) => {
     const userId = req.session.passport.user
     const itemId = req.params.id
 
-    // check if ID is of valid ObjectId type
     if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
     const result = await Item.findOneAndRemove({_id: itemId, user: userId})
@@ -80,7 +79,7 @@ itemRouter.get('/items/:id', isAuthorized, async (req, res) => {
 
     if (!isValidId(itemId)) return clientError(res, 'Invalid ID.')
 
-    const currItem = await Item.findOne({_id: itemId, user: userId})
+    const currItem = await Item.findOne({_id: itemId, user: userId}).populate('box').exec()
     if (!currItem) return notFoundError(res, 'The requested item does not exist.')
     else res.json({item: currItem})
 })

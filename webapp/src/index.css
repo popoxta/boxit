@@ -4,7 +4,7 @@
     --boxit-black: #3C3C3C;
     --boxit-pink: #CB1C85;
     --boxit-light-pink: #efe2e5;
-    --boxit-light-grey: #c7b8c0;
+    --boxit-light-grey: #F0F0F0;
     --boxit-footer: #FAF7F7;
     --boxit-white: #FFFEFE;
 }
@@ -57,6 +57,11 @@ header {
     flex-grow: 1;
 }
 
+.main {
+    display: flex;
+    justify-content: center;
+}
+
 /* MENU */
 .menu {
     width: fit-content;
@@ -76,7 +81,7 @@ footer {
 }
 
 footer p {
-    color: var(--boxit-light-grey);
+    color: #cec4c7;
     font-size: 0.8rem;
 }
 
@@ -256,7 +261,6 @@ footer p {
 }
 
 .item-view span {
-    color: var(--boxit-pink);
     font-weight: bold;
 }
 

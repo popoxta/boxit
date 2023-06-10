@@ -28,19 +28,21 @@ export default function Box() {
     }
 
     const renderBoxContents = (box, items) => {
+        const hex = box.hex ?? '#CB1C85'
+
         return <>
             <div className={'text-center box-header text-center'}>
                 <h2>{box.name}</h2>
                 <div className={'flex gap-small buttons-right'}>
                     <Link to={'./edit'}>
                         <button
-                            style={{backgroundColor: box.hex}}
+                            style={{backgroundColor: hex}}
                             className={'button-small'}>edit
                         </button>
                     </Link>
                     <Link to={'./delete'}>
                         <button
-                            style={{backgroundColor: box.hex}}
+                            style={{backgroundColor: hex}}
                             className={'button-small'}>delete
                         </button>
                     </Link>
@@ -62,7 +64,7 @@ export default function Box() {
 
     const renderItems = (items, id) =>
         <div className={'flex wrap center-justify'}>
-            {items.map(item => <ItemComponent item={item} from={`/boxes/${id}`}/>)}
+            {items.map(item => <ItemComponent key={item._id} item={item} from={`/boxes/${id}`}/>)}
         </div>
 
     const renderErrors = (errors) =>

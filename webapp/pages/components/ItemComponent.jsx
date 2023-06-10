@@ -2,6 +2,8 @@ import {bufferImgToBase64} from "../items/itemUtils.js";
 import {Link} from "react-router-dom";
 
 export default function ItemComponent({item, from}){
+    const hex = item.box.hex ?? '#CB1C85'
+
     let image = ''
     if (item.image) {
         const {contentType, base64} = bufferImgToBase64(item.image, item.name)
@@ -20,7 +22,7 @@ export default function ItemComponent({item, from}){
                 <p>count: {item.count}</p>
                 <p>price: {item.price}</p>
                 <Link to={`/items/${item._id}?from=${from}`}>
-                    <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>view</button>
+                    <button style={{backgroundColor: hex}} className={'button-small'}>view</button>
                 </Link>
             </div>
         </div>

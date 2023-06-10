@@ -38,6 +38,7 @@ export default function Item() {
     }
 
     const renderItem = (item) => {
+        const hex = item.box.hex ?? '#CB1C85'
         let image = ''
         if (item.image) {
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
@@ -52,10 +53,10 @@ export default function Item() {
                     </Link>
                     <div className={'buttons-right flex gap-small'}>
                         <Link to={'./edit'}>
-                            <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>edit</button>
+                            <button style={{backgroundColor: hex}} className={'button-small'}>edit</button>
                         </Link>
                         <Link to={'./delete'}>
-                            <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>delete</button>
+                            <button style={{backgroundColor: hex}} className={'button-small'}>delete</button>
                         </Link>
                     </div>
                     <h2>{item.name}</h2>
@@ -66,8 +67,8 @@ export default function Item() {
                     <div className={'grow'}>
                         <h3>{item.name}</h3>
                         <hr/>
-                        <p><span>count:</span> {item.count}</p>
-                        <p><span>price:</span> {item.price}</p>
+                        <p><span style={{color: hex}}>count:</span> {item.count}</p>
+                        <p><span style={{color: hex}}>price:</span> {item.price}</p>
                         <p>{item.description}</p>
                     </div>
                 </div>

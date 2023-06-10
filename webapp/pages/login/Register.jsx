@@ -38,7 +38,7 @@ export default function Register() {
 
             <hr className={'margin-bottom max-25'}/>
 
-            {actionData && <h3>{actionData.message}</h3>}
+            {actionData && <h6 className={'error'}>{actionData.message}</h6>}
 
             <Form method={'POST'} className={'flex column'}>
 

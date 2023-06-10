@@ -25,44 +25,58 @@ export default function Item() {
 
     const renderErrors = (errors) => {
         return (
-            <>
-                <h2>Error</h2>
-                <h3>{errors}</h3>
-            </>
+            <div className={'flex column'}>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={prevLocation}>
+                        <button className={'back-button'}>{'<'}</button>
+                    </Link>
+                    <h2>Error</h2>
+                </div>
+                <h3 className={'loading flex column center'}>{errors}</h3>
+            </div>
         )
     }
 
     const renderItem = (item) => {
         let image = ''
-        if (item.image){
+        if (item.image) {
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
-            image = <img alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+            image = <img className={'preview-img'} alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
         }
 
         return (
-            <>
-                <Link to={'./edit'}>
-                    <button>edit</button>
-                </Link>
-                <Link to={'./delete'}>
-                    <button>delete</button>
-                </Link>
+            <div className={'flex column'}>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={prevLocation}>
+                        <button className={'back-button'}>{'<'}</button>
+                    </Link>
+                    <div className={'buttons-right flex gap-small'}>
+                        <Link to={'./edit'}>
+                            <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>edit</button>
+                        </Link>
+                        <Link to={'./delete'}>
+                            <button style={{backgroundColor: '#CB1C85'}} className={'button-small'}>delete</button>
+                        </Link>
+                    </div>
+                    <h2>{item.name}</h2>
+                </div>
 
-                {item.image && image}
-
-                <h2>{item.name}</h2>
-                <p>count: {item.count}</p>
-                <p>price: {item.price}</p>
-                <p>{item.description}</p>
-            </>
+                <div className={'item-view flex center gap'}>
+                    {item.image && image}
+                    <div className={'grow'}>
+                        <h3>{item.name}</h3>
+                        <hr/>
+                        <p><span>count:</span> {item.count}</p>
+                        <p><span>price:</span> {item.price}</p>
+                        <p>{item.description}</p>
+                    </div>
+                </div>
+            </div>
         )
     }
 
     return (
         <div className={'flex column'}>
-            <Link to={prevLocation}>
-                <button>back</button>
-            </Link>
             <Suspense fallback={<Loading/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}

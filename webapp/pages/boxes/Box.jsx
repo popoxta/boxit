@@ -60,7 +60,10 @@ export default function Box() {
         </>
     }
 
-    const renderItems = (items, id) => items.map(item => <ItemComponent item={item} from={`/boxes/${id}`}/>)
+    const renderItems = (items, id) =>
+        <div className={'flex wrap center-justify'}>
+            {items.map(item => <ItemComponent item={item} from={`/boxes/${id}`}/>)}
+        </div>
 
     const renderErrors = (errors) =>
         <>

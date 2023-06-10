@@ -21,7 +21,10 @@ export default function Items() {
         else return renderNoItems
     }
 
-    const renderItems = (items) => items.map(item => <ItemComponent item={item} from={'/items'}/>)
+    const renderItems = (items) =>
+        <div className={'flex wrap center-justify'}>
+            {items.map(item => <ItemComponent item={item} from={'/items'}/>)}
+        </div>
 
     const renderNoItems = (
         <div className={'loading flex column center'}>

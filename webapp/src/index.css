@@ -227,6 +227,24 @@ header {
     margin-bottom: 0.5rem;
 }
 
+.item-view {
+    margin: 1rem auto;
+    padding: 0 1rem;
+}
+
+.item-view hr {
+    max-width: 25rem;
+}
+
+.item-view p {
+    font-size: 0.8rem;
+}
+
+.item-view span {
+    color: var(--boxit-pink);
+    font-weight: bold;
+}
+
 /* FORM */
 input, textarea, select {
     border: 2px solid var(--boxit-light-grey);

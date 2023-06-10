@@ -27,8 +27,9 @@ export default function Logout() {
     return (
         <div className={'flex column center'}>
             <h2>See you again!</h2>
+            <hr className={'margin-bottom max-25'}/>
             {errors && <h3>{errors}</h3>}
-            <button onClick={handleLogout}>Log out</button>
+            <button className={'button extra-margin'} style={{backgroundColor: '#CB1C85'}} onClick={handleLogout}>Log out</button>
         </div>
     )
 }

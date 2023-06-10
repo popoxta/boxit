@@ -314,3 +314,11 @@ form {
 .no-padding {
     padding: 0;
 }
+
+.max-25 {
+    max-width: 25rem;
+}
+
+.margin-bottom {
+    margin-bottom: 2rem;
+}

@@ -31,6 +31,7 @@ export default function Login() {
     return (
         <div className={'flex column center'}>
             <h2>Log In</h2>
+            <hr className={'margin-bottom max-25'}/>
 
             {actionData && <h3>{actionData.message}</h3>}
 
@@ -42,7 +43,7 @@ export default function Login() {
                 <label htmlFor={'password'}>Password</label>
                 <input type={'text'} name={'password'} id={'password'}/>
 
-                <button type={'submit'}>Log in</button>
+                <button className={'button extra-margin'} style={{backgroundColor: '#CB1C85'}} type={'submit'}>Log in</button>
 
             </Form>
         </div>

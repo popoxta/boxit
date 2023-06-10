@@ -36,6 +36,8 @@ export default function Register() {
         <div className={'flex column center'}>
             <h2>Register</h2>
 
+            <hr className={'margin-bottom max-25'}/>
+
             {actionData && <h3>{actionData.message}</h3>}
 
             <Form method={'POST'} className={'flex column'}>
@@ -49,7 +51,7 @@ export default function Register() {
                 <label htmlFor={'password-confirm'}>Confirm Password</label>
                 <input type={'text'} name={'password-confirm'} id={'password-confirm'}/>
 
-                <button type={'submit'}>Register</button>
+                <button className={'button extra-margin'} style={{backgroundColor: '#CB1C85'}} type={'submit'}>Register</button>
             </Form>
         </div>
     )

@@ -12,11 +12,8 @@
 #root {
     min-height: 100vh;
     background-color: var(--boxit-white);
-}
-
-body {
-    height: 100%;
-    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 * {
@@ -56,7 +53,8 @@ header {
 
 .body {
     margin: 2.5rem 2rem 0;
-    height: 100%;
+    min-height: 100%;
+    flex-grow: 1;
 }
 
 /* MENU */
@@ -70,8 +68,7 @@ header {
 
 footer {
     background-color: var(--boxit-footer);
-    position: fixed;
-    bottom: 0;
+
     padding: 0.6rem;
     margin-top: 2rem;
     width: 100%;
@@ -224,7 +221,7 @@ footer p {
     border-radius: 0.7rem 0.7rem 0 0;
     object-fit: cover;
     width: 100%;
-    min-height: 7rem;
+    min-height: 6rem;
 }
 
 .item-info {
@@ -232,7 +229,7 @@ footer p {
     padding: 0.5rem;
 }
 
-.item-info h3 {
+.item-info h4 {
     margin: 0 0 0.5rem;
 }
 
@@ -261,6 +258,10 @@ footer p {
 .item-view span {
     color: var(--boxit-pink);
     font-weight: bold;
+}
+
+.placeholder {
+    height: 7.5rem;
 }
 
 /* FORM */

@@ -10,11 +10,11 @@ export default function ItemComponent({item, from}){
     }
 
     return (
-        <div className={'box flex column center no-padding'} key={item._id}>
+        <div className={'box flex column center no-padding'}>
             {item.image ? image : <div className={'placeholder'}></div>}
             <div className={'item-info flex center column'}>
                 <Link to={`/items/${item._id}?from=/items`}>
-                    <h3>{item.name}</h3>
+                    <h4>{item.name}</h4>
                 </Link>
                 <hr/>
                 <p>count: {item.count}</p>

@@ -95,9 +95,7 @@ boxRouter.get('/boxes/:id', isAuthorized, async (req, res) => {
     const currBox = await Box.findOne({_id: boxId, user: userId})
     if (!currBox) return notFoundError(res, 'The requested item does not exist.')
 
-    const itemCount = await Item.count({box: boxId, user: userId})
-
-    res.json({box: currBox, itemCount})
+    res.json({box: currBox})
 })
 
 module.exports = boxRouter

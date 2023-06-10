@@ -1,5 +1,4 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
-import {Buffer} from "buffer/";
 import {Suspense, useState} from "react";
 import validateItemForm, {bufferImgToBase64, validateItemImage} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
@@ -58,7 +57,7 @@ export default function EditItem() {
     const [previewError, setPreviewError] = useState('')
 
     const handleImageUpload = (e) => {
-        if(e.target.files[0].size > 10000) {
+        if (e.target.files[0].size > 10000) {
             setPreviewError('Image file must be under 10MB.')
             return
         }
@@ -81,9 +80,10 @@ export default function EditItem() {
         const validBoxes = boxes.length > 0
 
         let image = ''
-        if (item.image){
+        if (item.image) {
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
-            image = <img alt={`Photo of ${item.name}`} className={'preview-img'} src={`data:${contentType};base64,${base64}`}/>
+            image = <img alt={`Photo of ${item.name}`} className={'preview-img'}
+                         src={`data:${contentType};base64,${base64}`}/>
         }
 
         return (
@@ -91,8 +91,8 @@ export default function EditItem() {
                 <Form method={'PUT'} className={'flex column center'} encType={'multipart/form-data'}>
 
                     {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>
-                    ||
-                    item.image && image}
+                        ||
+                        item.image && image}
 
                     {
                         !validBoxes && <h6 className={'error'}>Please create boxes to continue.</h6>
@@ -105,7 +105,8 @@ export default function EditItem() {
                     <input type={'file'} name={'image'} accept={'image/*'} onChange={handleImageUpload}/>
 
                     <label htmlFor={'name'}>Name</label>
-                    <input type={'text'} name={'name'} id={'name'} defaultValue={item.name} maxLength={15} minLength={3} required/>
+                    <input type={'text'} name={'name'} id={'name'} defaultValue={item.name} maxLength={15} minLength={3}
+                           required/>
 
                     <label htmlFor={'count'}>Count</label>
                     <input type={'number'} name={'count'} id={'count'} defaultValue={item.count} required/>
@@ -122,7 +123,9 @@ export default function EditItem() {
                         {renderBoxOptions(boxes)}
                     </select>
 
-                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}} disabled={!validBoxes}>Update</button>
+                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}}
+                            disabled={!validBoxes}>Update
+                    </button>
 
                 </Form>
             </>
@@ -139,9 +142,9 @@ export default function EditItem() {
             </div>
 
             <Suspense fallback={<Loading/>}>
-            <Await resolve={loaderData.data}>
-                {renderConditional}
-            </Await>
+                <Await resolve={loaderData.data}>
+                    {renderConditional}
+                </Await>
             </Suspense>
         </div>
     )

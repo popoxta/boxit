@@ -7,7 +7,7 @@ export function validateItemImage(image) {
     return contentType
 }
 
-export default function validateItemForm(formData){
+export default function validateItemForm(formData) {
     // pull apart the rest to check inputs are kosher
     const {...data} = Object.fromEntries(formData)
     data.count = Number(data.count)

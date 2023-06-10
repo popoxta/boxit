@@ -57,7 +57,9 @@ export default function DeleteBox() {
             return (
                 <div className={'loading flex column center'}>
                     <h3>Are you sure you want to delete {box.name}?</h3>
-                    <button className={'button'} style={{backgroundColor: box.hex}} onClick={() => handleDelete(box)}>Delete</button>
+                    <button className={'button'} style={{backgroundColor: box.hex}}
+                            onClick={() => handleDelete(box)}>Delete
+                    </button>
                 </div>
             )
         }

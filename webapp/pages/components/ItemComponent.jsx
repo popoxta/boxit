@@ -1,7 +1,7 @@
 import {bufferImgToBase64} from "../items/itemUtils.js";
 import {Link} from "react-router-dom";
 
-export default function ItemComponent({item, from}){
+export default function ItemComponent({item, from}) {
     const hex = item.box.hex ?? '#CB1C85'
 
     let image = ''

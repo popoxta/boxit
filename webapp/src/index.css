@@ -146,7 +146,7 @@ footer p {
 }
 
 .shadow {
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.08);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.08);
 }
 
 .no-margin-btm {
@@ -284,7 +284,7 @@ footer p {
     border-color: var(--boxit-light-pink);
 }
 
-.add-item:hover > span{
+.add-item:hover > span {
     color: var(--boxit-light-pink);
 }
 

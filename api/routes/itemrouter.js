@@ -12,7 +12,7 @@ itemRouter.get('/items', isAuthorized, async (req, res) => {
     res.json({items: results})
 })
 
-itemRouter.post('/items/new', isAuthorized, multerHandleUpload.single('image'), validateItem , async (req, res) => {
+itemRouter.post('/items/new', isAuthorized, multerHandleUpload.single('image'), validateItem, async (req, res) => {
     const userId = req.session.passport.user
 
     const nameIsTaken = await Item.findOne({user: userId, box: req.body.box, name: req.body.name})
@@ -35,7 +35,7 @@ itemRouter.post('/items/new', isAuthorized, multerHandleUpload.single('image'), 
     res.json({item: result})
 })
 
-itemRouter.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), validateItem ,async (req, res) => {
+itemRouter.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image'), validateItem, async (req, res) => {
     const userId = req.session.passport.user
     const itemId = req.params.id
 
@@ -57,7 +57,10 @@ itemRouter.put('/items/:id/edit', isAuthorized, multerHandleUpload.single('image
         contentType: req.body.contentType
     }
 
-    const result = await Item.findOneAndUpdate({_id: itemId, user: userId}, updatedItem, {new: true}).populate('box').exec()
+    const result = await Item.findOneAndUpdate({
+        _id: itemId,
+        user: userId
+    }, updatedItem, {new: true}).populate('box').exec()
     if (!result) return notFoundError({message: 'Item could not be found.'})
     return res.json({item: result})
 })

@@ -1,5 +1,4 @@
-import {Await, defer, Link, useLoaderData, useLocation, useSearchParams} from "react-router-dom";
-import {Buffer} from "buffer/";
+import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-dom";
 import {Suspense} from "react";
 import {bufferImgToBase64} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
@@ -42,7 +41,8 @@ export default function Item() {
         let image = ''
         if (item.image) {
             const {contentType, base64} = bufferImgToBase64(item.image, item.name)
-            image = <img className={'preview-img'} alt={`Photo of ${item.name}`} src={`data:${contentType};base64,${base64}`}/>
+            image = <img className={'preview-img'} alt={`Photo of ${item.name}`}
+                         src={`data:${contentType};base64,${base64}`}/>
         }
 
         return (

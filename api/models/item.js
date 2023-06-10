@@ -7,7 +7,7 @@ const ItemSchema = new mongoose.Schema({
     price: {type: Number, required: true},
     description: {type: String, required: true},
     box: {type: mongoose.Types.ObjectId, ref: 'Box', required: true},
-    user: {type: mongoose.Types.ObjectId, ref: 'User' ,required: true},
+    user: {type: mongoose.Types.ObjectId, ref: 'User', required: true},
 })
 
 const Item = mongoose.model('Item', ItemSchema)

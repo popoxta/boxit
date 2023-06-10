@@ -8,8 +8,8 @@ export async function loader({request}) {
     return null
 }
 
-export default function BoxLayout(){
-    return(
+export default function BoxLayout() {
+    return (
         <div className={'main flex gap'}>
             <div className={'menu flex column gap'}>
                 <Link to={'/boxes'}>

@@ -1,12 +1,9 @@
 const passport = require('passport')
 const router = require('express').Router()
 const User = require('../models/user')
-const Box = require('../models/box')
-const Item = require('../models/item')
 const bcrypt = require('bcrypt')
-const {clientError, notFoundError, isValidId} = require('../utils/utils')
-const {isAuthorized, validateItem} = require('../utils/middleware')
-const multerHandleUpload = require('../config/multer')
+const {clientError} = require('../utils/utils')
+const {isAuthorized} = require('../utils/middleware')
 
 // LOGIN ROUTES
 router.post('/login', (req, res, next) => {

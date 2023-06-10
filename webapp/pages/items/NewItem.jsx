@@ -6,7 +6,6 @@ import {
     redirect,
     useActionData,
     useLoaderData,
-    useLocation,
     useSearchParams
 } from "react-router-dom";
 import {Suspense, useState} from "react";
@@ -119,7 +118,9 @@ export default function NewItem() {
                         {renderBoxOptions(boxes)}
                     </select>
 
-                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}} disabled={!validBoxes}>Create</button>
+                    <button type={'submit'} className={'button'} style={{backgroundColor: '#CB1C85'}}
+                            disabled={!validBoxes}>Create
+                    </button>
 
                 </Form>
             </>

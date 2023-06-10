@@ -19,7 +19,7 @@ import Logout from "../pages/login/Logout.jsx";
 
 const router = createBrowserRouter(createRoutesFromElements(
     <Route path={'/'} element={<MainLayout/>} loader={mainLoader} id={'root'} errorElement={<ErrorPage/>}>
-        <Route index element={<Home/>} />
+        <Route index element={<Home/>}/>
         <Route path={'/register'} element={<Register/>} action={registerAction}/>
         <Route path={'/login'} element={<Login/>} action={loginAction}/>
         <Route path={'/logout'} element={<Logout/>}/>
@@ -46,6 +46,6 @@ const router = createBrowserRouter(createRoutesFromElements(
 ))
 
 export default function App() {
-  return <RouterProvider router={router}/>
+    return <RouterProvider router={router}/>
 }
 

@@ -41,7 +41,7 @@ export default function Login() {
                 <input type={'text'} name={'username'} id={'username'}/>
 
                 <label htmlFor={'password'}>Password</label>
-                <input type={'text'} name={'password'} id={'password'}/>
+                <input type={'password'} name={'password'} id={'password'}/>
 
                 <button className={'button extra-margin'} style={{backgroundColor: '#CB1C85'}} type={'submit'}>Log in</button>
 

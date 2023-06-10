@@ -46,10 +46,10 @@ export default function Register() {
                 <input type={'text'} name={'username'} id={'username'}/>
 
                 <label htmlFor={'password'}>Password</label>
-                <input type={'text'} name={'password'} id={'password'}/>
+                <input type={'password'} name={'password'} id={'password'}/>
 
                 <label htmlFor={'password-confirm'}>Confirm Password</label>
-                <input type={'text'} name={'password-confirm'} id={'password-confirm'}/>
+                <input type={'password'} name={'password-confirm'} id={'password-confirm'}/>
 
                 <button className={'button extra-margin'} style={{backgroundColor: '#CB1C85'}} type={'submit'}>Register</button>
             </Form>

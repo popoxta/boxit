@@ -9,12 +9,12 @@
 }
 
 #root {
-    height: 100%;
+    min-height: 100vh;
     background-color: var(--boxit-white);
 }
 
 body {
-    height: 100vh;
+    height: 100%;
     margin: 0;
 }
 

@@ -6,8 +6,10 @@ export default function ErrorPage() {
     return (
         <>
             <Header/>
-            <h2>OOPS! An error has occurred...</h2>
-            <h3>{error.message}</h3>
+            <div className={'flex column center'}>
+                <h2>OOPS! An error has occurred...</h2>
+                <h3>{error.message}</h3>
+            </div>
         </>
     )
 }

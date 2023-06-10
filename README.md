@@ -35,6 +35,6 @@ Feel free to check out my design file in FIGMA linked below - I've even kept in 
 
 ### More Screenshots
 ![image](./preview/register.png)
-![image](./preview/new box.png)
+![image](./preview/new-box.png)
 ![image](./preview/boxes.png)
 ![image](./preview/item.png)

@@ -92,7 +92,7 @@ footer p {
     border: 2px solid var(--boxit-light-grey);
     border-radius: 0.8rem;
     flex-grow: 1;
-    min-height: 40rem;
+    min-height: 38rem;
     max-width: 75rem;
     position: relative;
 }

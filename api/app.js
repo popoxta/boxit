@@ -33,6 +33,7 @@ app.use(session({
     }),
     cookie: {
         maxAge: 86400000,
+        sameSite: 'lax'
     }
 }))
 
@@ -55,3 +56,4 @@ app.use((err, req, res, next) => {
 
 // LAUNCH //
 app.listen(3000)
+

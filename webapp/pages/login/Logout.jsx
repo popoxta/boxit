@@ -9,7 +9,6 @@ export async function logout(){
             credentials: 'include'
         }
     )
-    console.log(res)
     if (res.status === 200) return res
     else return {message: 'Log out failed'}
 }

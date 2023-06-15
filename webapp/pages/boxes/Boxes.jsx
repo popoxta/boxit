@@ -22,7 +22,6 @@ export default function Boxes() {
     }
 
     const renderBoxes = (boxes) => {
-        console.log(boxes)
         if (boxes.length > 0) {
             return (
                 <div className={'flex wrap center-justify'}>

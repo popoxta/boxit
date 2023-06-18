@@ -10,7 +10,7 @@ export default function ErrorComponent({errors, link}){
             <div className={'text-center box-header text-center'}>
                 <h2>Error</h2>
             </div>
-            <div className={'loading flex column center'}>
+            <div className={'margin-top flex column center'}>
                 <h3>{errors}</h3>
             </div>
         </>

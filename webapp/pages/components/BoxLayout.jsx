@@ -16,11 +16,15 @@ export default function BoxLayout() {
                     <h2 className={'no-btm-margin spaced pink-hover'}>MY BOXIT</h2>
                 </Link>
                 <hr/>
-                <Link className={'pink-hover'} to={'/boxes'}>All boxes</Link>
-                <Link className={'pink-hover'} to={'/items'}>All items</Link>
+                <div className={'links flex column gap'}>
+                    <Link className={'pink-hover'} to={'/boxes'}>All boxes</Link>
+                    <Link className={'pink-hover'} to={'/items'}>All items</Link>
+                </div>
                 <hr/>
-                <Link className={'pink-hover'} to={'/boxes/new'}>New box</Link>
-                <Link className={'pink-hover'} to={'/items/new'}>New item</Link>
+                <div className={'links flex column gap'}>
+                    <Link className={'pink-hover'} to={'/boxes/new'}>New box</Link>
+                    <Link className={'pink-hover'} to={'/items/new'}>New item</Link>
+                </div>
             </div>
             <div className={'content'}>
                 <Outlet/>

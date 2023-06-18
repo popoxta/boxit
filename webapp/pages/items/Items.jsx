@@ -3,6 +3,8 @@ import {Suspense} from "react";
 import Loading from "../components/Loading.jsx";
 import ItemComponent from "../components/ItemComponent.jsx";
 import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export function loader() {
     const items = fetch('http://localhost:3000/items', {
@@ -16,37 +18,46 @@ export default function Items() {
 
     const renderConditional = (data) => {
         const errors = data.message
-        if (errors) return renderErrors(errors)
-
+        if (errors) return <ErrorComponent errors={errors}/>
         if (data.items.length > 0) return renderItems(data.items)
         else return renderNoItems
     }
 
     const renderItems = (items) =>
-        <div className={'flex wrap center-justify'}>
-            {items.map(item => <ItemComponent key={item._id} item={item} from={'/items'}/>)}
-            {<ItemComponentPlus/>}
-        </div>
+        <>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <BackButton hex={'#CB1C85'}/>
+                </Link>
+                <h2>All items</h2>
+            </div>
+            <div className={'flex wrap center-justify'}>
+                {items.map(item => <ItemComponent key={item._id} item={item} from={'/items'}/>)}
+                {<ItemComponentPlus/>}
+            </div>
+        </>
 
     const renderNoItems = (
-        <div className={'loading flex column center'}>
-            <h3>No items yet.</h3>
-            <Link to={'./new'}>
-                <button style={{backgroundColor: '#CB1C85'}} className={'button'}>
-                    Create your first item
-                </button>
-            </Link>
-        </div>
+        <>
+            <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <BackButton hex={'#CB1C85'}/>
+                </Link>
+                <h2>All items</h2>
+            </div>
+            <div className={'margin-top flex column center'}>
+                <Link to={'./new'}>
+                    <button style={{backgroundColor: '#CB1C85'}} className={'button'}>
+                        Create your first item
+                    </button>
+                </Link>
+            </div>
+        </>
     )
-
-    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     return (
         <div className={'flex column'}>
-            <div className={'text-center box-header'}>
-                <h2>All items</h2>
-            </div>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading items...'}/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

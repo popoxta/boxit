@@ -2,6 +2,8 @@ import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "
 import {Suspense, useState} from "react";
 import validateItemForm, {bufferImgToBase64, validateItemImage} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -66,15 +68,13 @@ export default function EditItem() {
 
     const renderConditional = (data) => {
         const errors = data[0].message || data[1].message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         else return renderForm(data[0].item, data[1].boxes)
     }
 
     const renderBoxOptions = (boxes) => boxes.map(box => {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
-
-    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     const renderForm = (item, boxes) => {
         const validBoxes = boxes.length > 0
@@ -88,6 +88,12 @@ export default function EditItem() {
 
         return (
             <>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={'..'}>
+                        <BackButton hex={'#CB1C85'}/>
+                    </Link>
+                    <h2>Edit Item</h2>
+                </div>
                 <Form method={'PUT'} className={'flex column center'} encType={'multipart/form-data'}>
 
                     {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>
@@ -134,14 +140,7 @@ export default function EditItem() {
 
     return (
         <div className={'flex column'}>
-            <div className={'text-center box-header text-center'}>
-                <Link to={'..'}>
-                    <button className={'back-button'}>{'<'}</button>
-                </Link>
-                <h2>Edit Item</h2>
-            </div>
-
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading item...'}/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

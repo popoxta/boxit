@@ -2,6 +2,10 @@ import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-d
 import {Suspense} from "react";
 import {bufferImgToBase64} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
+import EditButton from "../components/EditButton.jsx";
+import DeleteButton from "../components/DeleteButton.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -18,22 +22,8 @@ export default function Item() {
 
     const renderConditional = (data) => {
         const errors = data.message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors} link={prevLocation}/>
         else return renderItem(data.item)
-    }
-
-    const renderErrors = (errors) => {
-        return (
-            <div className={'flex column'}>
-                <div className={'text-center box-header text-center'}>
-                    <Link to={prevLocation}>
-                        <button className={'back-button'}>{'<'}</button>
-                    </Link>
-                    <h2>Error</h2>
-                </div>
-                <h3 className={'loading flex column center'}>{errors}</h3>
-            </div>
-        )
     }
 
     const renderItem = (item) => {
@@ -49,14 +39,14 @@ export default function Item() {
             <div className={'flex column'}>
                 <div className={'text-center box-header text-center'}>
                     <Link to={prevLocation}>
-                        <button className={'back-button'}>{'<'}</button>
+                        <BackButton hex={hex}/>
                     </Link>
                     <div className={'buttons-right flex gap-small'}>
                         <Link to={'./edit'}>
-                            <button style={{backgroundColor: hex}} className={'button-small'}>edit</button>
+                            <EditButton hex={hex}/>
                         </Link>
                         <Link to={'./delete'}>
-                            <button style={{backgroundColor: hex}} className={'button-small'}>delete</button>
+                            <DeleteButton hex={hex}/>
                         </Link>
                     </div>
                     <h2>{item.name}</h2>
@@ -78,7 +68,7 @@ export default function Item() {
 
     return (
         <div className={'flex column'}>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading item...'}/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

@@ -11,6 +11,8 @@ import {
 import {Suspense, useState} from "react";
 import validateItemForm, {validateItemImage} from "./itemUtils.js";
 import Loading from "../components/Loading.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {
@@ -69,15 +71,13 @@ export default function NewItem() {
 
     const renderConditional = (data) => {
         const errors = data.message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         else return renderForm(data.boxes)
     }
 
     const renderBoxOptions = (boxes) => boxes.map(box => {
         return (<option value={box._id} key={box._id}>{box.name}</option>)
     })
-
-    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
 
     const renderForm = (boxes) => {
         const validBoxes = boxes.length > 0
@@ -86,6 +86,12 @@ export default function NewItem() {
 
         return (
             <>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={'..'}>
+                        <BackButton hex={'#CB1C85'}/>
+                    </Link>
+                    <h2>New item</h2>
+                </div>
                 <Form method={'POST'} className={'flex column center'} encType={'multipart/form-data'}>
 
                     {previewImage.src && <img className={'preview-img'} alt={`Preview image`} src={previewImage.src}/>}
@@ -130,14 +136,7 @@ export default function NewItem() {
 
     return (
         <div className={'flex column'}>
-            <div className={'text-center box-header text-center'}>
-                <Link to={'..'}>
-                    <button className={'back-button'}>{'<'}</button>
-                </Link>
-                <h2>New Item</h2>
-            </div>
-
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading...'}/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

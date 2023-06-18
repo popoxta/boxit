@@ -1,6 +1,8 @@
 import {Await, defer, Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
 import {Suspense, useState} from "react";
 import Loading from "../components/Loading.jsx";
+import BackButton from "../components/BackButton.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const itemId = params.id
@@ -40,7 +42,7 @@ export default function DeleteItem() {
 
     const conditionalRender = (data) => {
         const errors = data.message || responseErrors.message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         else return renderView(data)
     }
 
@@ -48,22 +50,27 @@ export default function DeleteItem() {
         const item = data.item
         return (
             <>
-                <h3>Are you sure you want to delete {item.name}?</h3>
-                <button onClick={() => handleDelete(item)}>Delete</button>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={'..'}>
+                        <BackButton hex={'#CB1C85'}/>
+                    </Link>
+                    <h2>{item.name}</h2>
+                </div>
+                <div className={'margin-top flex column center'}>
+                    <h3>Are you sure you want to delete {item.name}?</h3>
+                    <button className={'button'} style={{backgroundColor: '#CB1C85'}}
+                            onClick={() => handleDelete(item)}>Delete
+                    </button>
+                </div>
             </>
         )
     }
 
-    const renderErrors = (errors) => <h3>{errors}</h3>
 
     return (
         <div className={'flex column'}>
-            <Link to={prevLocation}>
-                <button>back</button>
-            </Link>
 
-            <h2>Delete Item</h2>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading item...'}/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

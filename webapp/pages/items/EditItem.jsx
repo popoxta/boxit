@@ -1,9 +1,9 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Suspense, useState} from "react";
 import validateItemForm, {bufferImgToBase64, validateItemImage} from "./itemUtils.js";
-import Loading from "../components/Loading.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
-import BackButton from "../components/BackButton.jsx";
+import Loading from "../../components/Loading.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader({params}) {
     const itemId = params.id

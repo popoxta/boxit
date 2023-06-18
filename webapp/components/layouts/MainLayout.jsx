@@ -1,6 +1,6 @@
 import {Outlet, useLoaderData} from "react-router-dom";
-import Header from "./Header.jsx";
-import Footer from "./Footer.jsx";
+import Header from "../Header.jsx";
+import Footer from "../Footer.jsx";
 
 export async function loader() {
     const res = await fetch('http://localhost:3000/profile', {

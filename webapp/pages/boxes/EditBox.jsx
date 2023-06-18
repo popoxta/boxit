@@ -1,8 +1,8 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Suspense, useState} from "react";
-import Loading from "../components/Loading.jsx";
-import BackButton from "../components/BackButton.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
+import Loading from "../../components/Loading.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id

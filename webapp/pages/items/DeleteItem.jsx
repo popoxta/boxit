@@ -1,8 +1,8 @@
 import {Await, defer, Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
 import {Suspense, useState} from "react";
-import Loading from "../components/Loading.jsx";
-import BackButton from "../components/BackButton.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
+import Loading from "../../components/Loading.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const itemId = params.id

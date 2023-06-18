@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import BackButton from "./BackButton.jsx";
+import BackButton from "./buttons/BackButton.jsx";
 
 export default function ErrorComponent({errors, link}){
     return(

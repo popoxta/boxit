@@ -1,4 +1,4 @@
-import Header from "./components/Header.jsx";
+import Header from "../components/Header.jsx";
 import {useRouteError} from "react-router-dom";
 
 export default function ErrorPage() {

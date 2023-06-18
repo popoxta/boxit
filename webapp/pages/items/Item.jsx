@@ -1,11 +1,11 @@
 import {Await, defer, Link, useLoaderData, useSearchParams} from "react-router-dom";
 import {Suspense} from "react";
 import {bufferImgToBase64} from "./itemUtils.js";
-import Loading from "../components/Loading.jsx";
-import EditButton from "../components/EditButton.jsx";
-import DeleteButton from "../components/DeleteButton.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
-import BackButton from "../components/BackButton.jsx";
+import Loading from "../../components/Loading.jsx";
+import EditButton from "../../components/buttons/EditButton.jsx";
+import DeleteButton from "../../components/buttons/DeleteButton.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader({params}) {
     const itemId = params.id

@@ -1,11 +1,11 @@
 import {createBrowserRouter, createRoutesFromElements, Link, Route, RouterProvider} from "react-router-dom";
-import MainLayout, {loader as mainLoader} from "../pages/components/MainLayout.jsx";
+import MainLayout, {loader as mainLoader} from "../components/layouts/MainLayout.jsx";
 import Home from "../pages/Home.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 import Register, {action as registerAction} from "../pages/login/Register.jsx";
 import Login, {action as loginAction} from "../pages/login/Login.jsx";
 import Boxes, {loader as boxesLoader} from "../pages/boxes/Boxes.jsx";
-import BoxLayout, {loader as boxLayoutLoader} from "../pages/components/BoxLayout.jsx";
+import BoxLayout, {loader as boxLayoutLoader} from "../components/layouts/BoxLayout.jsx";
 import Box, {loader as boxLoader} from "../pages/boxes/Box.jsx";
 import NewBox, {action as newBoxAction} from "../pages/boxes/NewBox.jsx"
 import Item, {loader as itemLoader} from "../pages/items/Item.jsx"

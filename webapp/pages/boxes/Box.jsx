@@ -1,12 +1,12 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
-import Loading from "../components/Loading.jsx";
-import ItemComponent from "../components/ItemComponent.jsx";
-import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
-import EditButton from "../components/EditButton.jsx";
-import DeleteButton from "../components/DeleteButton.jsx";
-import BackButton from "../components/BackButton.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
+import Loading from "../../components/Loading.jsx";
+import ItemComponent from "../../components/items/ItemComponent.jsx";
+import ItemComponentPlus from "../../components/items/ItemComponentPlus.jsx";
+import EditButton from "../../components/buttons/EditButton.jsx";
+import DeleteButton from "../../components/buttons/DeleteButton.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id

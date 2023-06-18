@@ -1,4 +1,4 @@
-import {bufferImgToBase64} from "../items/itemUtils.js";
+import {bufferImgToBase64} from "../../pages/items/itemUtils.js";
 import {Link} from "react-router-dom";
 
 export default function ItemComponent({item, from}) {

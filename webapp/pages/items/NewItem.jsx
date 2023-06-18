@@ -10,9 +10,9 @@ import {
 } from "react-router-dom";
 import {Suspense, useState} from "react";
 import validateItemForm, {validateItemImage} from "./itemUtils.js";
-import Loading from "../components/Loading.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
-import BackButton from "../components/BackButton.jsx";
+import Loading from "../../components/Loading.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {

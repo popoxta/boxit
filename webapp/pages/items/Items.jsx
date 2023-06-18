@@ -1,10 +1,10 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
-import Loading from "../components/Loading.jsx";
-import ItemComponent from "../components/ItemComponent.jsx";
-import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
-import BackButton from "../components/BackButton.jsx";
+import Loading from "../../components/Loading.jsx";
+import ItemComponent from "../../components/items/ItemComponent.jsx";
+import ItemComponentPlus from "../../components/items/ItemComponentPlus.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader() {
     const items = fetch('http://localhost:3000/items', {

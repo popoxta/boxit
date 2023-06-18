@@ -1,6 +1,6 @@
 import {Form, Link, redirect, useActionData} from "react-router-dom";
 import {useState} from "react";
-import BackButton from "../components/BackButton.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
 
 export async function action({request}) {
     const data = await request.formData()

@@ -1,10 +1,10 @@
 import {Await, defer, Link, useLoaderData} from "react-router-dom";
 import {Suspense} from "react";
-import {BoxComponent} from "../components/BoxComponent.jsx";
-import Loading from "../components/Loading.jsx";
-import BoxComponentPlus from "../components/BoxComponentPlus.jsx";
-import BackButton from "../components/BackButton.jsx";
-import ErrorComponent from "../components/ErrorComponent.jsx";
+import {BoxComponent} from "../../components/boxes/BoxComponent.jsx";
+import Loading from "../../components/Loading.jsx";
+import BoxComponentPlus from "../../components/boxes/BoxComponentPlus.jsx";
+import BackButton from "../../components/buttons/BackButton.jsx";
+import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader() {
     const boxes = fetch('http://localhost:3000/boxes', {

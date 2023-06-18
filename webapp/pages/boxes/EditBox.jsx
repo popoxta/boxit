@@ -1,6 +1,8 @@
 import {Await, defer, Form, Link, redirect, useActionData, useLoaderData} from "react-router-dom";
 import {Suspense, useState} from "react";
 import Loading from "../components/Loading.jsx";
+import BackButton from "../components/BackButton.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -50,15 +52,8 @@ export default function EditBox() {
 
     const conditionalRender = (data) => {
         const errors = data.message
-        if (errors) return renderError(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         return renderForm(data)
-    }
-    const renderError = (errors) => {
-        return (
-            <div className={'loading flex column center'}>
-                <h3>{errors}</h3>
-            </div>
-        )
     }
 
     function handleHexChange(e) {
@@ -72,6 +67,12 @@ export default function EditBox() {
 
         return (
             <>
+                <div className={'text-center box-header text-center'}>
+                    <Link to={'..'}>
+                        <BackButton hex={color}/>
+                    </Link>
+                    <h2>Edit Box</h2>
+                </div>
                 <Form method={'PUT'} className={'flex column center'}>
 
                     <svg className={'cube-box extra-margin'} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -97,13 +98,7 @@ export default function EditBox() {
 
     return (
         <div className={'flex column'}>
-            <div className={'text-center box-header text-center'}>
-                <Link to={'..'}>
-                    <button className={'back-button'}>{'<'}</button>
-                </Link>
-                <h2>Edit Box</h2>
-            </div>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading box...'}/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

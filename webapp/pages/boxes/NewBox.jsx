@@ -1,5 +1,6 @@
 import {Form, Link, redirect, useActionData} from "react-router-dom";
 import {useState} from "react";
+import BackButton from "../components/BackButton.jsx";
 
 export async function action({request}) {
     const data = await request.formData()
@@ -43,9 +44,8 @@ export default function NewBox() {
         <div className={'flex column'}>
             <div className={'text-center box-header text-center'}>
                 <Link to={'..'}>
-                    <button className={'back-button'}>{'<'}</button>
+                    <BackButton hex={hexValue}/>
                 </Link>
-
                 <h2>New Box</h2>
             </div>
 

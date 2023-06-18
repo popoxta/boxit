@@ -3,6 +3,10 @@ import {Suspense} from "react";
 import Loading from "../components/Loading.jsx";
 import ItemComponent from "../components/ItemComponent.jsx";
 import ItemComponentPlus from "../components/ItemComponentPlus.jsx";
+import EditButton from "../components/EditButton.jsx";
+import DeleteButton from "../components/DeleteButton.jsx";
+import BackButton from "../components/BackButton.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -23,7 +27,7 @@ export default function Box() {
 
     const renderConditional = (data) => {
         const errors = data[0].message || data[1].message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         else return renderBoxContents(data[0].box, data[1].items)
     }
 
@@ -32,25 +36,22 @@ export default function Box() {
 
         return <>
             <div className={'text-center box-header text-center'}>
+                <Link to={'..'}>
+                    <BackButton hex={hex}/>
+                </Link>
                 <h2>{box.name}</h2>
                 <div className={'flex gap-small buttons-right'}>
                     <Link to={'./edit'}>
-                        <button
-                            style={{backgroundColor: hex}}
-                            className={'button-small'}>edit
-                        </button>
+                        <EditButton hex={hex}/>
                     </Link>
                     <Link to={'./delete'}>
-                        <button
-                            style={{backgroundColor: hex}}
-                            className={'button-small'}>delete
-                        </button>
+                       <DeleteButton hex={hex}/>
                     </Link>
                 </div>
             </div>
             {items.length > 0
                 ? renderItems(items, box._id)
-                : <div className={'loading flex column center'}>
+                : <div className={'margin-top flex column center'}>
                     <h3>No items yet.</h3>
                     <Link to={`/items/new?box=${box._id}`}>
                         <button style={{backgroundColor: box.hex}} className={'button'}>
@@ -68,29 +69,10 @@ export default function Box() {
             {<ItemComponentPlus box={id}/>}
         </div>
 
-    const renderErrors = (errors) =>
-        <>
-            <div className={'text-center box-header text-center'}>
-                <h2>Error</h2>
-            </div>
-            <div className={'loading flex column center'}>
-                <h3>{errors}</h3>
-            </div>
-        </>
 
     return (
         <div className={'flex column'}>
-            <Link to={'..'}>
-                <button className={'back-button'}>{'<'}</button>
-            </Link>
-            <Suspense fallback={
-                <>
-                    <div className={'text-center box-header text-center'}>
-                        <h2>Loading Box...</h2>
-                    </div>
-                    <Loading/>
-                </>
-            }>
+            <Suspense fallback={<Loading header={'Loading Box...'}/>}>
                 <Await resolve={loaderData.data}>
                     {renderConditional}
                 </Await>

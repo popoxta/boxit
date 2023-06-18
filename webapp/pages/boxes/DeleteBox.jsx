@@ -1,6 +1,8 @@
 import {Await, defer, Link, useLoaderData, useNavigate} from "react-router-dom";
 import {Suspense, useState} from "react";
 import Loading from "../components/Loading.jsx";
+import ErrorComponent from "../components/ErrorComponent.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export function loader({params}) {
     const boxId = params.id
@@ -38,44 +40,53 @@ export default function DeleteBox() {
 
     const conditionalRender = (data) => {
         const errors = data.message || responseErrors.message
-        if (errors) return renderErrors(errors)
+        if (errors) return <ErrorComponent errors={errors}/>
         else return renderView(data)
     }
 
     const renderView = (data) => {
-        const itemCount = Number(data.itemCount)
+        const itemCount = Number(data.itemCount) //todo reinstate this
         const box = data.box
+        const hex = box.hex ?? '#CB1C85'
 
         if (itemCount > 0) {
             return (
-                <div className={'loading flex column center'}>
-                    <h3>{box.name} has {itemCount} items, please delete or move them to continue.</h3>
-                    <Link to={`../${box._id}`}>Go to items</Link>
-                </div>
+                <>
+                    <div className={'text-center box-header text-center'}>
+                        <Link to={'..'}>
+                            <BackButton hex={box.hex}/>
+                        </Link>
+                        <h2>{box.name}</h2>
+                    </div>
+                    <div className={'margin-top flex column center'}>
+                        <h3>{box.name} has {itemCount} items, please delete or move them to continue.</h3>
+                        <Link to={`../${box._id}`}><button style={{backgroundColor: hex}} className={'button'}>Go to items</button></Link>
+                    </div>
+                </>
             )
         } else {
             return (
-                <div className={'loading flex column center'}>
-                    <h3>Are you sure you want to delete {box.name}?</h3>
-                    <button className={'button'} style={{backgroundColor: box.hex}}
-                            onClick={() => handleDelete(box)}>Delete
-                    </button>
-                </div>
+                <>
+                    <div className={'text-center box-header text-center'}>
+                        <Link to={'..'}>
+                            <BackButton hex={box.hex}/>
+                        </Link>
+                        <h2>{box.name}</h2>
+                    </div>
+                    <div className={'margin-top flex column center'}>
+                        <h3>Are you sure you want to delete {box.name}?</h3>
+                        <button className={'button'} style={{backgroundColor: box.hex}}
+                                onClick={() => handleDelete(box)}>Delete
+                        </button>
+                    </div>
+                </>
             )
         }
     }
 
-    const renderErrors = (errors) => <div className={'loading flex column center'}><h3>{errors}</h3></div>
-
     return (
         <div className={'flex column'}>
-            <div className={'text-center box-header text-center'}>
-                <Link to={'/boxes'}>
-                    <button className={'back-button'}>{'<'}</button>
-                </Link>
-                <h2>Delete Box</h2>
-            </div>
-            <Suspense fallback={<Loading/>}>
+            <Suspense fallback={<Loading header={'Loading box...'}/>}>
                 <Await resolve={loaderData.data}>
                     {conditionalRender}
                 </Await>

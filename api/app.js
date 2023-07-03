@@ -14,7 +14,7 @@ const app = express()
 
 // MIDDLEWARE //
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: true,
     credentials: true,
 }))
 
@@ -33,7 +33,7 @@ app.use(session({
     }),
     cookie: {
         maxAge: 86400000,
-        sameSite: 'lax'
+        sameSite: 'none'
     }
 }))
 

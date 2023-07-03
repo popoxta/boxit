@@ -3,7 +3,7 @@
 
 ### Store your items in boxes 📦
 
-A Box / Item inventory management tool, featuring CRUD operations, DB storage, session-based authorization and it's very own API.
+A Box / Item inventory management tool, featuring CRUD operations, image upload, DB integration (MongoDB), session-based authorization, and it's very own API.
 
 
 ![image](./preview/home.png)
@@ -30,8 +30,23 @@ Feel free to check out my design file in FIGMA linked below - I've even kept in 
 - <a href="https://www.npmjs.com/package/multer">Multer</a> / <a href="https://www.npmjs.com/package/cors">cors</a>
 
 ### What's left?
-- Building & hosting
-- Mobile compatibility (CSS)
+- Building, refining & hosting
+- Better Mobile compatibility (CSS)
+
+### Want to try out BoxIt?
+This is currently a manual and basic implementation in development mode.
+BoxIt may be properly built in the future, until then you may run it locally in development mode as per the instructions below.
+
+```
+1. Clone the Repo locally
+2. Run the following command within the root directory
+    npm install webapp/; npm install api/; touch .env api/; echo "MONGO_STORE=YOUR_MONGO_CONNECTION_STRING" >> api/.env ; echo "SECRET=YOUR_SECRET" >> api/.env;
+3. Insert your MongoDB connection string and secret into the .env file
+4. Run the following commands in separate terminal instances
+    cd api/; nodemon app
+    cd webapp/; npm run dev
+```
+
 
 ### More Screenshots
 ![image](./preview/register.png)

@@ -6,7 +6,7 @@ import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader({params}) {
     const boxId = params.id
-    const box = fetch(`http://localhost:3000/boxes/${boxId}`, {
+    const box = fetch(`${import.meta.env.VITE_URL}/boxes/${boxId}`, {
         credentials: 'include'
     }).then(res => res.json())
 
@@ -16,7 +16,7 @@ export function loader({params}) {
 async function deleteBox(box) {
     const boxId = box._id
 
-    const res = await fetch(`http://localhost:3000/boxes/${boxId}/delete`, {
+    const res = await fetch(`${import.meta.env.VITE_URL}0/boxes/${boxId}/delete`, {
         method: 'DELETE',
         credentials: 'include',
     })

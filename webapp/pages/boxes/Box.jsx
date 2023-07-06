@@ -11,11 +11,11 @@ import ErrorComponent from "../../components/ErrorComponent.jsx";
 export function loader({params}) {
     const boxId = params.id
 
-    const box = fetch(`http://localhost:3000/boxes/${boxId}`, {
+    const box = fetch(`${import.meta.env.VITE_URL}/boxes/${boxId}`, {
         credentials: 'include'
     }).then(res => res.json())
 
-    const items = fetch(`http://localhost:3000/boxes/${boxId}/items`, {
+    const items = fetch(`${import.meta.env.VITE_URL}/boxes/${boxId}/items`, {
         credentials: 'include'
     }).then(res => res.json())
 

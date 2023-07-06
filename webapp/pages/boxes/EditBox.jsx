@@ -6,7 +6,7 @@ import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const boxId = params.id
-    const box = fetch(`http://localhost:3000/boxes/${boxId}`, {
+    const box = fetch(`${import.meta.env.VITE_URL}/boxes/${boxId}`, {
         credentials: 'include'
     }).then(res => res.json())
     return defer({data: box})
@@ -27,7 +27,7 @@ export async function action({request, params}) {
     if (!hexRegex.test(hex)) return {message: 'Hex code is invalid.'}
 
     const res = await fetch(
-        `http://localhost:3000/boxes/${boxId}/edit`,
+        `${import.meta.env.VITE_URL}/boxes/${boxId}/edit`,
         {
             method: 'PUT',
             credentials: 'include',

@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 
 export default function Home() {
+    console.log(import.meta.env.VITE_URL)
     return (
         <div className={'flex column center'}>
 

@@ -9,7 +9,7 @@ import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader({params}) {
     const itemId = params.id
-    const item = fetch(`http://localhost:3000/items/${itemId}`, {
+    const item = fetch(`${import.meta.env.VITE_URL}/items/${itemId}`, {
         credentials: 'include'
     }).then(res => res.json())
     return defer({data: item})

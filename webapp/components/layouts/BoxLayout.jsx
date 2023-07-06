@@ -1,7 +1,7 @@
 import {Link, Outlet, redirect} from "react-router-dom";
 
-export async function loader({request}) {
-    const res = await fetch('http://localhost:3000/profile', {
+export async function loader() {
+    const res = await fetch(`${import.meta.env.VITE_URL}/profile`, {
         credentials: 'include'
     })
     if (res.status !== 200) return redirect('/login?message=Please login or register to use Boxit.') // todo add a nice msg for the user

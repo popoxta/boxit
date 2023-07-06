@@ -7,7 +7,7 @@ import ErrorComponent from "../../components/ErrorComponent.jsx";
 import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader() {
-    const items = fetch('http://localhost:3000/items', {
+    const items = fetch('${import.meta.env.VITE_URL}/items', {
         credentials: 'include'
     }).then(res => res.json())
     return defer({data: items})

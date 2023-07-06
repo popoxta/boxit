@@ -3,7 +3,7 @@ import Header from "../Header.jsx";
 import Footer from "../Footer.jsx";
 
 export async function loader() {
-    const res = await fetch('http://localhost:3000/profile', {
+    const res = await fetch(`${import.meta.env.VITE_URL}/profile`, {
         credentials: 'include'
     })
     if (res.status === 200) return {loggedIn: true}

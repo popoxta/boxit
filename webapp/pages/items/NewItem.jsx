@@ -15,7 +15,7 @@ import ErrorComponent from "../../components/ErrorComponent.jsx";
 import BackButton from "../../components/buttons/BackButton.jsx";
 
 export function loader() {
-    const boxes = fetch('http://localhost:3000/boxes', {
+    const boxes = fetch(`${import.meta.env.VITE_URL}/boxes`, {
         credentials: 'include'
     }).then(res => res.json())
     return defer({data: boxes})
@@ -38,7 +38,7 @@ export async function action({request}) {
     if (validatedForm.message) return validatedForm
 
     const res = await fetch(
-        'http://localhost:3000/items/new',
+        `${import.meta.env.VITE_URL}/items/new`,
         {
             method: 'POST',
             credentials: 'include',

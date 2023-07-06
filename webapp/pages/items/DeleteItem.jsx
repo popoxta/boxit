@@ -6,7 +6,7 @@ import ErrorComponent from "../../components/ErrorComponent.jsx";
 
 export function loader({params}) {
     const itemId = params.id
-    const item = fetch(`http://localhost:3000/items/${itemId}`, {
+    const item = fetch(`${import.meta.env.VITE_URL}/items/${itemId}`, {
         credentials: 'include'
     }).then(res => res.json())
 
@@ -16,7 +16,7 @@ export function loader({params}) {
 async function deleteItem(item) {
     const itemId = item._id
 
-    const res = await fetch(`http://localhost:3000/items/${itemId}/delete`, {
+    const res = await fetch(`${import.meta.env.VITE_URL}/items/${itemId}/delete`, {
         method: 'DELETE',
         credentials: 'include',
     })

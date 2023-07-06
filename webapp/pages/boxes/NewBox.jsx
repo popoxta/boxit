@@ -15,7 +15,7 @@ export async function action({request}) {
     if (!hexRegex.test(hex)) return {message: 'Hex code is invalid.'}
 
     const res = await fetch(
-        'http://localhost:3000/boxes/new',
+        `${import.meta.env.VITE_URL}/boxes/new`,
         {
             method: 'POST',
             credentials: 'include',

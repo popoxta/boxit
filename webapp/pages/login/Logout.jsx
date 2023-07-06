@@ -3,7 +3,7 @@ import {useState} from "react";
 
 export async function logout(){
     const res = await fetch(
-        'http://localhost:3000/logout',
+        `${import.meta.env.VITE_URL}/logout`,
         {
             method: 'POST',
             credentials: 'include'

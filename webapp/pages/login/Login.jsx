@@ -9,7 +9,7 @@ export async function action({request}) {
     if (!password?.length) return {message: 'Please enter a password.'}
 
     const res = await fetch(
-        'http://localhost:3000/login',
+        `${import.meta.env.VITE_URL}/login`,
         {
             method: 'POST',
             credentials: 'include',

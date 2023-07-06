@@ -38,7 +38,7 @@ export async function action({request, params}) {
     if (validatedForm.message) return validatedForm
 
     const res = await fetch(
-        `http://localhost:3000/items/${itemId}/edit`,
+        `${import.meta.env.VITE_URL}/items/${itemId}/edit`,
         {
             method: 'PUT',
             credentials: 'include',

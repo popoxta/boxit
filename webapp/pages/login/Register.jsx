@@ -12,7 +12,7 @@ export async function action({request}) {
     if (password.length < 6) return {message: 'Password must be at least 6 characters.'}
 
     const res = await fetch(
-        'http://localhost:3000/register',
+        `${import.meta.env.VITE_URL}/register`,
         {
             method: 'POST',
             credentials: 'include',

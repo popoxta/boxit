@@ -20,11 +20,9 @@ bit of insight to my implementation process.
 
 ### Tools used
 
--
 
-Figma - <a href="https://www.figma.com/file/LaPIpEsTw8hk4v4pegXzFm/Boxit?type=design&node-id=0%3A1&t=8x2bcLGjHkuHKWj0-1">
+- Figma - <a href="https://www.figma.com/file/LaPIpEsTw8hk4v4pegXzFm/Boxit?type=design&node-id=0%3A1&t=8x2bcLGjHkuHKWj0-1">
 SOURCE</a>
-
 - React / <a href="https://vitejs.dev/">Vite</a>
 - <a href="https://www.npmjs.com/package/react-router">React Router</a>
 - <a href="https://www.npmjs.com/package/modern-normalize">Modern Normalize</a>
